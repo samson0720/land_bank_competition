@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG輔導平台 - 土地銀行永續橋樑計畫</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span>🏦</span>
+                <span>土地銀行永續橋樑計畫</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">首頁</a></li>
+                <li><a href="/assessment">ESG評分系統</a></li>
+                <li><a href="/platform">輔導平台</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero" style="padding: 2rem;">
+            <h1>ESG輔導平台</h1>
+            <p>模組化範本、數位碳盤查工具、銀行產品透明專區</p>
+        </section>
+
+        <!-- 功能選單 -->
+        <div class="tabs">
+            <button class="tab active">數位碳盤查工具</button>
+            <button class="tab">模組化範本</button>
+            <button class="tab">銀行產品專區</button>
+        </div>
+
+        <!-- 數位碳盤查工具 -->
+        <div id="carbon" class="tab-content active">
+            <div class="card">
+                <div class="card-header">數位碳盤查工具</div>
+                <p style="margin-bottom: 2rem; color: var(--text-light);">
+                    輸入基本營運數據，系統自動計算範疇一（直接排放）、範疇二（間接排放）的碳排放量。
+                </p>
+
+                <form id="carbon-form">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;">範疇一：直接排放</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">天然氣用量（m³/年）</label>
+                        <input type="number" name="natural-gas" class="form-control" min="0" step="0.01" placeholder="輸入天然氣用量">
+                        <small style="color: var(--text-light);">排放係數：2.02 kg CO₂/m³</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">汽油用量（L/年）</label>
+                        <input type="number" name="gasoline" class="form-control" min="0" step="0.01" placeholder="輸入汽油用量">
+                        <small style="color: var(--text-light);">排放係數：2.31 kg CO₂/L</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">柴油用量（L/年）</label>
+                        <input type="number" name="diesel" class="form-control" min="0" step="0.01" placeholder="輸入柴油用量">
+                        <small style="color: var(--text-light);">排放係數：2.68 kg CO₂/L</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">液化石油氣（LPG）用量（L/年）</label>
+                        <input type="number" name="lpg" class="form-control" min="0" step="0.01" placeholder="輸入LPG用量">
+                        <small style="color: var(--text-light);">排放係數：1.51 kg CO₂/L</small>
+                    </div>
+
+                    <h3 style="color: var(--primary-color); margin-top: 2rem; margin-bottom: 1rem;">範疇二：間接排放</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">電力用量（kWh/年）</label>
+                        <input type="number" name="electricity" class="form-control" min="0" step="0.01" placeholder="輸入電力用量" required>
+                        <small style="color: var(--text-light);">排放係數：0.509 kg CO₂/kWh（台電平均排放係數）</small>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-large">計算碳排放量</button>
+                    </div>
+                </form>
+
+                <div id="carbon-result" style="display: none; margin-top: 2rem;"></div>
+            </div>
+        </div>
+
+        <!-- 模組化範本 -->
+        <div id="templates" class="tab-content">
+            <div class="card">
+                <div class="card-header">模組化ESG報告範本</div>
+                <p style="margin-bottom: 2rem; color: var(--text-light);">
+                    根據您的企業規模與產業別，選擇適合的ESG報告範本。
+                </p>
+
+                <div class="grid">
+                    <div class="card">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">基礎版模組</h3>
+                        <p><strong>適合：</strong>初次接觸ESG的企業</p>
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>環境管理（E）：能源使用、廢棄物管理、水資源管理</li>
+                            <li>社會責任（S）：員工權益、客戶隱私、社區參與</li>
+                            <li>公司治理（G）：董事會結構、內控制度、風險管理</li>
+                        </ul>
+                        <button class="btn" onclick="downloadTemplate('basic')" style="margin-top: 1rem;">下載基礎版範本</button>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">進階版模組</h3>
+                        <p><strong>適合：</strong>已有ESG經驗的企業</p>
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>基礎版所有項目</li>
+                            <li>供應鏈管理：上游供應商ESG稽核</li>
+                            <li>氣候風險評估：TCFD框架導入</li>
+                            <li>永續創新：綠色產品與服務開發</li>
+                        </ul>
+                        <button class="btn" onclick="downloadTemplate('advanced')" style="margin-top: 1rem;">下載進階版範本</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 銀行產品專區 -->
+        <div id="products" class="tab-content">
+            <div class="card">
+                <div class="card-header">銀行產品透明專區</div>
+                <p style="margin-bottom: 2rem; color: var(--text-light);">
+                    清晰展示土地銀行所有永續金融產品，明確標示各產品的基準利率與ESG評分等級對應的利率減碼幅度。
+                </p>
+
+                <div class="grid">
+                    <div class="card">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">永續績效連結貸款（SLL）</h3>
+                        <p><strong>基準利率：</strong>2.5%</p>
+                        <p><strong>產品說明：</strong>以碳排強度下降或能源效率提升作為KPI，達標者可享有額外利率減碼</p>
+                        <div style="margin-top: 1rem;">
+                            <p><strong>利率減碼對應：</strong></p>
+                            <ul style="margin-left: 1.5rem;">
+                                <li>ESG評分A級：利率減碼0.3%（實際利率2.2%）</li>
+                                <li>ESG評分B級：利率減碼0.15%（實際利率2.35%）</li>
+                                <li>ESG評分C級：利率減碼0.05%（實際利率2.45%）</li>
+                                <li>ESG評分D級：無利率優惠（實際利率2.5%）</li>
+                            </ul>
+                        </div>
+                        <button class="btn" onclick="applyProduct('SLL')" style="margin-top: 1rem;">立即申請</button>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">綠色設備融資</h3>
+                        <p><strong>基準利率：</strong>2.5%</p>
+                        <p><strong>適用範圍：</strong>節能設備、再生能源設備、污染防治設備</p>
+                        <div style="margin-top: 1rem;">
+                            <p><strong>利率減碼條件：</strong></p>
+                            <ul style="margin-left: 1.5rem;">
+                                <li>ESG評分B級以上：利率減碼0.2%（實際利率2.3%）</li>
+                                <li>購買節能設備：額外利率減碼0.1%</li>
+                            </ul>
+                        </div>
+                        <button class="btn" onclick="applyProduct('green-equipment')" style="margin-top: 1rem;">立即申請</button>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">社會責任授信</h3>
+                        <p><strong>基準利率：</strong>2.5%</p>
+                        <p><strong>產品說明：</strong>給予社會面績效優良者優惠利率</p>
+                        <div style="margin-top: 1rem;">
+                            <p><strong>申請條件：</strong></p>
+                            <ul style="margin-left: 1.5rem;">
+                                <li>S（社會）構面評分≥30分</li>
+                                <li>過去兩年無重大勞資爭議</li>
+                                <li>利率減碼幅度依ESG總評分等級</li>
+                            </ul>
+                        </div>
+                        <button class="btn" onclick="applyProduct('social')" style="margin-top: 1rem;">立即申請</button>
+                    </div>
+
+                    <div class="card">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">永續公司治理相關貸款</h3>
+                        <p><strong>基準利率：</strong>2.5%</p>
+                        <p><strong>產品說明：</strong>治理面表現優良的企業可享優惠利率</p>
+                        <div style="margin-top: 1rem;">
+                            <p><strong>申請條件：</strong></p>
+                            <ul style="margin-left: 1.5rem;">
+                                <li>G（治理）構面評分≥15分</li>
+                                <li>已指定專責人員負責永續事務</li>
+                                <li>利率減碼幅度依ESG總評分等級</li>
+                            </ul>
+                        </div>
+                        <button class="btn" onclick="applyProduct('governance')" style="margin-top: 1rem;">立即申請</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 利率減碼對應表 -->
+            <div class="card" style="margin-top: 2rem;">
+                <div class="card-header">利率減碼對應表</div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                        <thead>
+                            <tr style="background: var(--primary-color); color: white;">
+                                <th style="padding: 1rem; text-align: left;">ESG評分等級</th>
+                                <th style="padding: 1rem; text-align: left;">評分區間</th>
+                                <th style="padding: 1rem; text-align: left;">利率減碼幅度</th>
+                                <th style="padding: 1rem; text-align: left;">適用產品</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 1rem;"><span class="badge badge-A">A級</span></td>
+                                <td style="padding: 1rem;">80-100分</td>
+                                <td style="padding: 1rem;">0.3%</td>
+                                <td style="padding: 1rem;">ESG連結貸款、綠色融資</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 1rem;"><span class="badge badge-B">B級</span></td>
+                                <td style="padding: 1rem;">60-79分</td>
+                                <td style="padding: 1rem;">0.15%</td>
+                                <td style="padding: 1rem;">ESG連結貸款、綠色融資</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 1rem;"><span class="badge badge-C">C級</span></td>
+                                <td style="padding: 1rem;">40-59分</td>
+                                <td style="padding: 1rem;">0.05%</td>
+                                <td style="padding: 1rem;">ESG連結貸款（限額）</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 1rem;"><span class="badge badge-D">D級</span></td>
+                                <td style="padding: 1rem;">0-39分</td>
+                                <td style="padding: 1rem;">0%</td>
+                                <td style="padding: 1rem;">一般貸款（需改善後重新評分）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 土地銀行 | 永續橋樑計畫</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/platform.js"></script>
+</body>
+</html>
+

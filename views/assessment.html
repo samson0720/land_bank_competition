@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG評分系統 - 土地銀行永續橋樑計畫</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span>🏦</span>
+                <span>土地銀行永續橋樑計畫</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">首頁</a></li>
+                <li><a href="/assessment">ESG評分系統</a></li>
+                <li><a href="/platform">輔導平台</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero" style="padding: 2rem;">
+            <h1>ESG評分系統</h1>
+            <p>兩階段評分機制：基礎門檻篩選 + 簡易永續績效評分</p>
+        </section>
+
+        <!-- 第一階段：基礎門檻篩選 -->
+        <section id="stage1-section" class="card">
+            <div class="card-header">第一階段：基礎門檻篩選</div>
+            <p style="margin-bottom: 2rem; color: var(--text-light);">
+                本階段將使用既有公開數據，快速篩選出有基本永續意識或有重大風險的企業。
+                凡有重大違規者，將直接排除或進入高風險審查程序。
+            </p>
+
+            <form id="stage1-form">
+                <div class="form-group">
+                    <label class="form-label">是否有環保裁罰紀錄？</label>
+                    <select name="environmental-violations" class="form-control" required>
+                        <option value="">請選擇</option>
+                        <option value="no">否（無環保裁罰紀錄）</option>
+                        <option value="yes">是（有環保裁罰紀錄）</option>
+                    </select>
+                    <small style="color: var(--text-light);">
+                        查詢依據：金管會/聯徵中心「企業ESG資料平台」，如違反《空氣污染防制法》、《水污染防治法》等
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">是否有勞工違規紀錄？</label>
+                    <select name="labor-violations" class="form-control" required>
+                        <option value="">請選擇</option>
+                        <option value="no">否（無勞工違規紀錄）</option>
+                        <option value="yes">是（有勞工違規紀錄）</option>
+                    </select>
+                    <small style="color: var(--text-light);">
+                        查詢依據：聯徵中心勞工違規查詢，如違反《勞動基準法》、《職業安全衛生法》等
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">是否有公司治理缺失？</label>
+                    <select name="governance-issues" class="form-control" required>
+                        <option value="">請選擇</option>
+                        <option value="no">否（無公司治理缺失）</option>
+                        <option value="yes">是（有公司治理缺失）</option>
+                    </select>
+                    <small style="color: var(--text-light);">
+                        查詢依據：公司治理評鑑、重大內控制度缺失
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">企業規模</label>
+                    <select name="employee-count" class="form-control" required>
+                        <option value="">請選擇</option>
+                        <option value="20">微型企業（員工 < 20人）</option>
+                        <option value="50">小型企業（員工 20-50人）</option>
+                        <option value="200">中型企業（員工 50-200人）</option>
+                        <option value="500">大型企業（員工 > 200人）</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">產業別</label>
+                    <select name="industry" class="form-control" required>
+                        <option value="">請選擇</option>
+                        <option value="manufacturing">製造業</option>
+                        <option value="service">服務業</option>
+                        <option value="trading">貿易業</option>
+                        <option value="technology">科技業</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-large">提交基礎門檻篩選</button>
+                </div>
+            </form>
+
+            <div id="stage1-result" style="display: none; margin-top: 2rem;"></div>
+        </section>
+
+        <!-- 第二階段：簡易永續績效評分 -->
+        <section id="stage2-section" class="card" style="display: none;">
+            <div class="card-header">第二階段：簡易永續績效評分</div>
+            <p style="margin-bottom: 2rem; color: var(--text-light);">
+                本階段為本提案的核心亮點，專為土地銀行與其廣大中小企業客戶設計，
+                重點在於引導企業進行「轉型」。
+            </p>
+
+            <form id="stage2-form">
+                <!-- E（環境）構面 -->
+                <div class="card" style="background: #e8f5e9; border-left: 4px solid #4caf50;">
+                    <h3 style="color: #2e7d32; margin-bottom: 1rem;">E（環境）- 30分</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">E1：碳盤查完成度（12分，佔權重最高）</label>
+                        <select name="e1_carbon_management" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="completed-scope1-2">已完成範疇一、二碳盤查並設定減碳目標（12分）</option>
+                            <option value="platform-tool">使用輔導平台完成簡易碳盤查（6分）</option>
+                            <option value="committed-next-year">尚未開始，但已承諾明年啟動（2分）</option>
+                            <option value="none">無任何碳管理意識（0分）</option>
+                        </select>
+                        <small style="color: var(--text-light);">
+                            改善建議：使用平台「數位碳盤查工具」，完成範疇一、二碳排放計算
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">E2：能源效率改善目標與行動（10分）</label>
+                        <select name="e2_energy_efficiency" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="updated-equipment-past2y">已更新主要設備為高效率節能產品（過去2年內）（10分）</option>
+                            <option value="led-full-replacement">已全面更換LED照明，並有節電數據記錄（6分）</option>
+                            <option value="basic-measures">僅有基本節約措施（3分）</option>
+                            <option value="none">無能源效率改善行動（0分）</option>
+                        </select>
+                        <small style="color: var(--text-light);">
+                            改善建議：設定年度節電/節水目標，執行具體改善行動（如更換LED燈、導入智慧電表）
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">E3：廢棄物與水資源管理（8分）</label>
+                        <div style="margin-bottom: 1rem;">
+                            <label style="margin-bottom: 0.5rem; display: block;">
+                                <input type="checkbox" name="e3_waste" value="yes"> 已制定廢棄物減量目標並有紀錄追蹤（4分）
+                            </label>
+                            <label style="display: block;">
+                                <input type="checkbox" name="e3_water" value="yes"> 設有雨水回收或廢水處理設施（4分）
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- S（社會）構面 -->
+                <div class="card" style="background: #e3f2fd; border-left: 4px solid #2196f3; margin-top: 1.5rem;">
+                    <h3 style="color: #1565c0; margin-bottom: 1rem;">S（社會）- 30分</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">S1：員工培訓與職涯發展（10分）</label>
+                        <select name="s1_training" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="yes-15hours">年度人才培訓計畫，人均時數達15小時以上（10分）</option>
+                            <option value="basic-training">僅有基礎新進人員訓練（5分）</option>
+                            <option value="none">無員工培訓計畫（0分）</option>
+                        </select>
+                        <small style="color: var(--text-light);">
+                            改善建議：制定年度人才培訓計畫，目標：每名員工至少15小時
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">S2：員工福利與友善職場（10分）</label>
+                        <select name="s2_welfare" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="exceeds-law">已提供優於法規之福利（10分）</option>
+                            <option value="basic-insurance">已提供基本團體保險或福利委員會運作（5分）</option>
+                            <option value="none">無額外福利（0分）</option>
+                        </select>
+                        <small style="color: var(--text-light);">
+                            改善建議：檢視現有福利政策，對標業界最佳實踐
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">S3：供應鏈管理（初階）（5分）</label>
+                        <select name="s3_supplychain" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="yes">已要求主要供應商簽署永續承諾書（5分）</option>
+                            <option value="no">無供應鏈永續管理（0分）</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">S4：當地社會參與（5分）</label>
+                        <select name="s4_community" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="yes">具備年度社區回饋或公益活動（5分）</option>
+                            <option value="no">無社會參與活動（0分）</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- G（治理）構面 -->
+                <div class="card" style="background: #fff3e0; border-left: 4px solid #ff9800; margin-top: 1.5rem;">
+                    <h3 style="color: #e65100; margin-bottom: 1rem;">G（治理）- 25分</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">G1：永續專責組織與承諾（10分）</label>
+                        <select name="g1_sustainability" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="executive-with-team">已指派高階主管為ESG負責人，並有跨部門小組（10分）</option>
+                            <option value="dedicated-staff">已指派專職人員處理ESG事務（5分）</option>
+                            <option value="none">無永續專責人員（0分）</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">G2：法規遵循紀錄（10分）</label>
+                        <select name="g2_compliance" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="no-major-violations">過去3年內無重大環境或勞工裁罰紀錄（10分）</option>
+                            <option value="minor-violations-resolved">有非重大違規，但已改善完成（5分）</option>
+                            <option value="major-violations">有重大違規未改善（0分）</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">G3：誠信經營與風險管理（5分）</label>
+                        <select name="g3_integrity" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="yes">已將誠信經營規範納入公司規章（5分）</option>
+                            <option value="no">無誠信經營政策（0分）</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- T（轉型透明度）構面 -->
+                <div class="card" style="background: #f3e5f5; border-left: 4px solid #9c27b0; margin-top: 1.5rem;">
+                    <h3 style="color: #6a1b9a; margin-bottom: 1rem;">T（轉型透明度）- 15分</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">T1：平台使用與透明揭露（5分）</label>
+                        <select name="t1_platform" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="yes-2years">連續兩年使用平台填報/更新TESES數據（5分）</option>
+                            <option value="no">未使用平台或使用時間不足（0分）</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">T2：永續目標設定（5分）</label>
+                        <select name="t2_targets" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="yes-quantitative">在平台上公開至少一項量化永續目標（5分）</option>
+                            <option value="no">無公開永續目標（0分）</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">T3：轉型意向與改善承諾（5分）</label>
+                        <select name="t3_commitment" class="form-control" required>
+                            <option value="">請選擇</option>
+                            <option value="yes">願意與銀行簽訂永續轉型意向書，並定期追蹤進度（5分）</option>
+                            <option value="no">暫無轉型承諾（0分）</option>
+                        </select>
+                    </div>
+
+                    <p style="color: var(--primary-color); font-weight: bold; margin-top: 0.5rem;">
+                        ※ 作為減碼利率的門檻條件，若資訊揭露越完整，利率優惠幅度越大
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-large">計算ESG評分</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- 評分結果 -->
+        <div id="assessment-result" style="display: none;"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 土地銀行 | 永續橋樑計畫</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/assessment.js"></script>
+    
+    <script>
+        // 添加全局錯誤處理
+        window.addEventListener('error', function(e) {
+            console.error('❌ JavaScript 錯誤:', e.message, e.filename, e.lineno);
+        });
+        
+        // 頁面載入完成通知
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ 頁面載入完成');
+            console.log('📝 如填好表單後無法評分，請按照以下步驟檢查：');
+            console.log('1️⃣ 確認所有欄位都已選擇（不能是空白）');
+            console.log('2️⃣ 查看控制台是否有「⚠️ 未填寫的欄位」提示');
+            console.log('3️⃣ 刷新頁面後重試');
+            console.log('4️⃣ 檢查 Network 標籤中的 POST 請求是否返回 200 狀態碼');
+        });
+    </script>
+</body>
+</html>
+
