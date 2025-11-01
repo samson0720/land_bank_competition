@@ -499,7 +499,7 @@
                 if (responses[category]) {
                     responses[category].forEach((item, index) => {
                         detailsHTML += '<div class="question-item">';
-                        detailsHTML += '<div class="question-label">Q' + (index + 1) + '：' + (item.question || '未知題目') + '</div>';
+                        detailsHTML += '<div class="question-label">' + category + (index + 1) + '：' + (item.question || '未知題目') + '</div>';
                         detailsHTML += '<div class="question-answer">✓ ' + item.label + '</div>';
                         detailsHTML += '</div>';
                     });
