@@ -30,6 +30,11 @@ app.get('/gri-assessment', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'gri-assessment.html'));
 });
 
+// 路由：GRI 評估報告
+app.get('/gri-report', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'gri-report.html'));
+});
+
 // API：評分計算
 app.post('/api/calculate-score', (req, res) => {
     const data = req.body;

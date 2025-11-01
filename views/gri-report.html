@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRI 評估報告 - 土地銀行永續橋樑計畫</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* 報告頁面專用樣式 */
+        .report-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 102, 51, 0.15);
+        }
+
+        .report-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .report-header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+
+        .report-timestamp {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            margin-top: 1rem;
+        }
+
+        .score-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, var(--bg-light) 0%, white 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .score-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0, 102, 51, 0.1);
+        }
+
+        .score-card-label {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .score-card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-card-max {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .score-progress {
+            margin-top: 1rem;
+        }
+
+        .score-progress-bar {
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .score-progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 3px;
+            transition: width 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .report-level {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
+
+        .report-level-title {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .report-level-name {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .report-level-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.95;
+        }
+
+        .report-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .report-section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .questions-detail {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .question-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .question-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .question-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .question-answer {
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .recommendation-box {
+            background: linear-gradient(135deg, rgba(0, 102, 51, 0.05) 0%, rgba(0, 179, 179, 0.05) 100%);
+            border: 1px solid rgba(0, 102, 51, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .recommendation-box h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .recommendation-box p {
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border-color);
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 102, 51, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 102, 51, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-light);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .report-container {
+                padding: 1.5rem;
+            }
+
+            .report-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .report-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .score-summary {
+                gap: 1rem;
+            }
+
+            .score-card {
+                padding: 1.5rem;
+            }
+
+            .score-card-value {
+                font-size: 2rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span>🏦</span>
+                <span>土地銀行永續橋樑計畫</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">首頁</a></li>
+                <li><a href="/assessment">ESG評分系統</a></li>
+                <li><a href="/gri-assessment">GRI評估</a></li>
+                <li><a href="/platform">輔導平台</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- 報告標題 -->
+        <section class="report-header">
+            <h1>📊 GRI 評估報告</h1>
+            <p>您的企業永續發展成熟度評估結果</p>
+            <div class="report-timestamp" id="report-timestamp"></div>
+        </section>
+
+        <!-- 報告內容 -->
+        <section class="report-container" id="report-content">
+            <!-- 評分卡片 -->
+            <div class="score-summary">
+                <div class="score-card">
+                    <div class="score-card-label">🌍 環境 (E)</div>
+                    <div class="score-card-value" id="score-e">-</div>
+                    <div class="score-card-max">最高 24 分</div>
+                    <div class="score-progress">
+                        <div class="score-progress-bar">
+                            <div class="score-progress-fill" id="progress-e" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="score-card">
+                    <div class="score-card-label">👥 社會 (S)</div>
+                    <div class="score-card-value" id="score-s">-</div>
+                    <div class="score-card-max">最高 30 分</div>
+                    <div class="score-progress">
+                        <div class="score-progress-bar">
+                            <div class="score-progress-fill" id="progress-s" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="score-card">
+                    <div class="score-card-label">⚖️ 治理 (G)</div>
+                    <div class="score-card-value" id="score-g">-</div>
+                    <div class="score-card-max">最高 24 分</div>
+                    <div class="score-progress">
+                        <div class="score-progress-bar">
+                            <div class="score-progress-fill" id="progress-g" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 評級 -->
+            <section class="report-level">
+                <div class="report-level-title">整體評級</div>
+                <div class="report-level-name" id="report-level-name">-</div>
+                <div class="report-level-description" id="report-level-description">
+                    評估中...
+                </div>
+            </section>
+
+            <!-- 詳細答案 -->
+            <section class="report-section">
+                <h2 class="report-section-title">📝 詳細答案</h2>
+                <div class="questions-detail" id="questions-detail">
+                    加載中...
+                </div>
+            </section>
+
+            <!-- 建議 -->
+            <section class="report-section">
+                <h2 class="report-section-title">💡 改善建議</h2>
+                <div id="recommendations">
+                    加載中...
+                </div>
+            </section>
+
+            <!-- 行動按鈕 -->
+            <div class="action-buttons">
+                <a href="/gri-assessment" class="action-btn btn-secondary">
+                    ← 重新評估
+                </a>
+                <button class="action-btn btn-primary" onclick="window.print()">
+                    🖨️ 列印報告
+                </button>
+                <a href="/" class="action-btn btn-secondary">
+                    返回首頁
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 土地銀行 | 永續橋樑計畫</p>
+    </footer>
+
+    <script>
+        // GRI 評分計算邏輯
+        function calculateGRIScore(responses) {
+            const scoreMapping = {
+                'no': 1,
+                'basic': 2,
+                'yes': 3,
+                'developing': 2,
+                'advanced': 3
+            };
+
+            let scores = {
+                E: 0,
+                S: 0,
+                G: 0,
+                total: 0,
+                level: '',
+                levelName: '',
+                summary: ''
+            };
+
+            // 計算各構面得分
+            ['E', 'S', 'G'].forEach(category => {
+                if (responses[category]) {
+                    responses[category].forEach(item => {
+                        const score = scoreMapping[item.value] || 0;
+                        scores[category] += score;
+                    });
+                }
+            });
+
+            // 計算總分（加權平均）
+            // E和S各佔35%，G佔30%
+            const totalWeighted = (scores.E * 0.35 + scores.S * 0.35 + scores.G * 0.30);
+            scores.total = Math.round(totalWeighted * 10) / 10;
+
+            // 判斷等級
+            if (scores.total >= 2.55) {
+                scores.level = 'A';
+                scores.levelName = '領先級 (A)';
+                scores.summary = '您的公司已具備卓越的永續發展實踐，建議進一步尋求第三方驗證或認證。';
+            } else if (scores.total >= 2.1) {
+                scores.level = 'B';
+                scores.levelName = '平均級 (B)';
+                scores.summary = '您的公司具備良好的永續發展基礎，建議重點補強評分較低的構面。';
+            } else if (scores.total >= 1.65) {
+                scores.level = 'C';
+                scores.levelName = '進展級 (C)';
+                scores.summary = '您的公司已開始建立永續管理體系，建議優先改善環境與治理構面。';
+            } else {
+                scores.level = 'D';
+                scores.levelName = '初期級 (D)';
+                scores.summary = '建議從基礎政策制定與員工意識提升開始著手，逐步建立永續發展文化。';
+            }
+
+            return scores;
+        }
+
+        // 頁面載入
+        document.addEventListener('DOMContentLoaded', function() {
+            const data = localStorage.getItem('griAssessmentData');
+            
+            if (!data) {
+                document.getElementById('report-content').innerHTML = '<div class="error-message">❌ 無法載入評估數據，請重新進行評估。</div>';
+                return;
+            }
+
+            const assessmentData = JSON.parse(data);
+            const responses = assessmentData.responses;
+            const timestamp = new Date(assessmentData.timestamp);
+
+            // 計算得分
+            const scores = calculateGRIScore(responses);
+
+            // 顯示時間戳
+            document.getElementById('report-timestamp').textContent = 
+                '評估時間：' + timestamp.toLocaleDateString('zh-TW') + ' ' + timestamp.toLocaleTimeString('zh-TW');
+
+            // 顯示評分
+            document.getElementById('score-e').textContent = scores.E.toFixed(1);
+            document.getElementById('score-s').textContent = scores.S.toFixed(1);
+            document.getElementById('score-g').textContent = scores.G.toFixed(1);
+
+            // 顯示進度條
+            document.getElementById('progress-e').style.width = (scores.E / 24 * 100) + '%';
+            document.getElementById('progress-s').style.width = (scores.S / 30 * 100) + '%';
+            document.getElementById('progress-g').style.width = (scores.G / 24 * 100) + '%';
+
+            // 顯示評級
+            document.getElementById('report-level-name').textContent = scores.levelName;
+            document.getElementById('report-level-description').textContent = scores.summary;
+
+            // 顯示詳細答案
+            let detailsHTML = '';
+            ['E', 'S', 'G'].forEach(category => {
+                detailsHTML += '<div style="margin-bottom: 1.5rem;"><h4 style="color: var(--primary-color); margin-bottom: 1rem;">';
+                if (category === 'E') detailsHTML += '🌍 環境 (E)';
+                if (category === 'S') detailsHTML += '👥 社會 (S)';
+                if (category === 'G') detailsHTML += '⚖️ 治理 (G)';
+                detailsHTML += '</h4>';
+
+                if (responses[category]) {
+                    responses[category].forEach((item, index) => {
+                        detailsHTML += '<div class="question-item">';
+                        detailsHTML += '<div class="question-label">Q' + (index + 1) + ': ' + item.label.substring(0, 50) + '...</div>';
+                        detailsHTML += '<div class="question-answer">✓ ' + item.label + '</div>';
+                        detailsHTML += '</div>';
+                    });
+                }
+                detailsHTML += '</div>';
+            });
+            document.getElementById('questions-detail').innerHTML = detailsHTML;
+
+            // 顯示建議
+            let recommendationsHTML = '';
+            if (scores.level === 'A') {
+                recommendationsHTML = `
+                    <div class="recommendation-box">
+                        <h4>🏆 您已達到領先級水準！</h4>
+                        <p>
+                            恭喜！您的企業已在 ESG 各個面向展現出色的表現。建議您：
+                            <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                                <li>考慮申請第三方 ESG 認證或驗證</li>
+                                <li>成為業界永續發展標竿企業</li>
+                                <li>深化員工和供應鏈的永續意識培訓</li>
+                                <li>進一步擴大您的永續發展報告範圍</li>
+                            </ul>
+                        </p>
+                    </div>
+                `;
+            } else if (scores.level === 'B') {
+                recommendationsHTML = `
+                    <div class="recommendation-box">
+                        <h4>📈 穩步前進的平均級企業</h4>
+                        <p>
+                            您的企業已建立良好的永續基礎。建議您：
+                            <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                                <li>針對得分較低的構面進行深入改善</li>
+                                <li>建立量化的永續發展目標</li>
+                                <li>定期進行 ESG 績效評估和更新</li>
+                                <li>與供應商分享永續發展理念</li>
+                            </ul>
+                        </p>
+                    </div>
+                `;
+            } else if (scores.level === 'C') {
+                recommendationsHTML = `
+                    <div class="recommendation-box">
+                        <h4>🌱 成長中的企業 - 加油！</h4>
+                        <p>
+                            您的企業已開始重視永續發展。建議您：
+                            <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                                <li>優先完善環境和治理政策</li>
+                                <li>指派專責人員推動 ESG 工作</li>
+                                <li>制定明確的改善時程表</li>
+                                <li>尋求外部協助和資源支持</li>
+                            </ul>
+                        </p>
+                    </div>
+                `;
+            } else {
+                recommendationsHTML = `
+                    <div class="recommendation-box">
+                        <h4>🚀 起步階段 - 開啟永續之旅</h4>
+                        <p>
+                            您的企業正在永續發展的起步階段。建議您：
+                            <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+                                <li>從制定基本永續政策開始</li>
+                                <li>建立公司層級的 ESG 治理結構</li>
+                                <li>進行員工永續意識培訓</li>
+                                <li>利用本平台的輔導工具進行改善</li>
+                            </ul>
+                        </p>
+                    </div>
+                `;
+            }
+            document.getElementById('recommendations').innerHTML = recommendationsHTML;
+
+            // 清除 localStorage
+            // localStorage.removeItem('griAssessmentData');
+        });
+    </script>
+</body>
+</html>

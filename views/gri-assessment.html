@@ -882,26 +882,14 @@
                 return;
             }
 
-            // 發送到後端
-            fetch('/api/gri-assessment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    responses: responses,
-                    timestamp: new Date().toISOString()
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('✅ 感謝您完成評估！\n\n您的 GRI 評分報告已生成。\n詳細報告將以郵件方式寄送至您的信箱。');
-                console.log('報告生成:', data);
-            })
-            .catch(error => {
-                console.error('錯誤:', error);
-                alert('📧 您的評估已提交！報告將於稍後寄送。');
-            });
+            // 保存到 localStorage
+            localStorage.setItem('griAssessmentData', JSON.stringify({
+                responses: responses,
+                timestamp: new Date().toISOString()
+            }));
+
+            // 重定向到報告頁面
+            window.location.href = '/gri-report';
         }
     </script>
 </body>
