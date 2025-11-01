@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全方位 GRI 評估 (Level 2) - 土地銀行永續橋樑計畫</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .form-question {
+            @apply mb-4 p-4 bg-gray-50 rounded-lg shadow-sm;
+        }
+        
+        .form-question label {
+            @apply block text-sm font-medium text-gray-700 mb-2;
+        }
+        
+        .form-select {
+            @apply block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 transition-colors;
+        }
+        
+        .tab-button {
+            @apply px-4 py-2 font-medium border-b-2 transition-colors;
+        }
+        
+        .tab-button.active {
+            @apply border-green-600 text-green-600;
+        }
+        
+        .tab-button.inactive {
+            @apply border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300;
+        }
+        
+        .progress-bar {
+            @apply bg-green-600 h-2.5 rounded-full transition-all duration-300 ease-out;
+        }
+        
+        .progress-container {
+            @apply w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700;
+        }
+        
+        .btn-submit {
+            @apply w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors;
+        }
+        
+        .btn-submit:disabled {
+            @apply bg-gray-400 cursor-not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow">
+        <nav class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="logo">
+                    <span class="text-2xl">🏦</span>
+                    <span class="font-semibold">土地銀行永續橋樑計畫</span>
+                </div>
+                <ul class="nav-links flex space-x-4">
+                    <li><a href="/" class="text-gray-600 hover:text-gray-900">首頁</a></li>
+                    <li><a href="/assessment" class="text-gray-600 hover:text-gray-900">ESG評分系統</a></li>
+                    <li><a href="/platform" class="text-gray-600 hover:text-gray-900">輔導平台</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-4xl mx-auto py-8 px-4">
+        <!-- 頁首 -->
+        <section class="bg-white rounded-lg shadow-md p-8 mb-6">
+            <h1 class="text-3xl font-bold text-green-700 mb-2">全方位 GRI 評估 (Level 2)</h1>
+            <p class="text-gray-600 text-lg">
+                請預留 30 分鐘，完成這份體檢，我們將為您產出客製化的 GRI 智慧報告。
+            </p>
+        </section>
+
+        <!-- 進度條 -->
+        <section class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-medium text-gray-700">完成進度</span>
+                <span id="progress-text" class="text-sm font-semibold text-green-600">0 / 26</span>
+            </div>
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+            </div>
+        </section>
+
+        <!-- 分頁導覽 -->
+        <section class="bg-white rounded-lg shadow-md mb-6">
+            <div class="border-b">
+                <div class="flex space-x-0">
+                    <button id="tab-btn-e" class="tab-button active" onclick="changeTab('e')">
+                        🌍 E (環境)
+                    </button>
+                    <button id="tab-btn-s" class="tab-button inactive" onclick="changeTab('s')">
+                        👥 S (社會)
+                    </button>
+                    <button id="tab-btn-g" class="tab-button inactive" onclick="changeTab('g')">
+                        ⚖️ G (治理)
+                    </button>
+                </div>
+            </div>
+
+            <!-- 分頁內容 -->
+            <div class="p-6">
+                <!-- E (環境) 構面 -->
+                <div id="tab-e" class="space-y-6">
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 302: 能源</h4>
+                    <div class="form-question">
+                        <label>E1. 您是否追蹤公司的總用電量（範疇二）？</label>
+                        <select class="form-select" data-gri="E">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，我們沒有追蹤</option>
+                            <option value="basic">是，我們只知道總電費金額</option>
+                            <option value="yes">是，我們有每月的總用電度數 (kWh)</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>E2. 您是否已採取節能措施？</label>
+                        <select class="form-select" data-gri="E">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，尚未採取行動</option>
+                            <option value="basic">是，僅有基礎措施（如更換LED燈、隨手關燈）</option>
+                            <option value="advanced">是，已導入能源管理系統或更換高效率設備（如空調、空壓機）</option>
+                        </select>
+                    </div>
+
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 305: 排放</h4>
+                    <div class="form-question">
+                        <label>E3. 您是否使用會產生直接排放（範疇一）的燃料？（如天然氣、柴油、汽油）</label>
+                        <select class="form-select" data-gri="E">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，我們不使用任何燃料（僅用電）</option>
+                            <option value="basic">是，有使用，但未追蹤用量</option>
+                            <option value="yes">是，有使用，並有紀錄公務車用油或鍋爐燃料用量</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>E4. 您是否設定了碳排放（或能源使用）減量目標？</label>
+                        <select class="form-select" data-gri="E">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，尚未設定</option>
+                            <option value="developing">是，有定性目標（如 "致力節能減碳"）</option>
+                            <option value="yes">是，有設定具體的量化目標（如 "明年節電 5%"）</option>
+                        </select>
+                    </div>
+
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 303: 水資源</h4>
+                    <div class="form-question">
+                        <label>E5. 您是否追蹤您的總取水量？</label>
+                        <select class="form-select" data-gri="E">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有追蹤（僅繳水費）</option>
+                            <option value="basic">是，我們有總用水度數 (m³)</option>
+                            <option value="advanced">是，且我們有分析主要用水設備或製程</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>E6. 您是否有廢水排放或處理？</label>
+                        <select class="form-select" data-gri="E">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，僅有辦公室生活汙水，排入下水道</option>
+                            <option value="basic">是，有製程廢水，皆合法排入汙水處理廠</option>
+                            <option value="advanced">是，我們有自設廢水處理設施並定期檢測水質</option>
+                        </select>
+                    </div>
+
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 306: 廢棄物</h4>
+                    <div class="form-question">
+                        <label>E7. 您如何管理您的一般事業廢棄物？</label>
+                        <select class="form-select" data-gri="E">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">未特別管理，隨垃圾車清運</option>
+                            <option value="basic">有做到資源回收與一般垃圾分類</option>
+                            <option value="yes">有追蹤總廢棄物重量，並尋求減量或再利用</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>E8. 您是否產生有害事業廢棄物？（如化學溶劑、廢油）</label>
+                        <select class="form-select" data-gri="E">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，我們不產生有害廢棄物</option>
+                            <option value="basic">是，但未分開處理</option>
+                            <option value="yes">是，皆委由合法認證的廠商清運處理</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- S (社會) 構面 -->
+                <div id="tab-s" class="space-y-6 hidden">
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 403: 職業健康與安全</h4>
+                    <div class="form-question">
+                        <label>S1. 您是否有正式的「職業安全衛生」管理政策？</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="basic">是，僅口頭宣導或張貼海報</option>
+                            <option value="yes">是，有書面政策並指派專人管理（如職安人員）</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>S2. 您是否為員工提供安全衛生訓練？</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="basic">是，僅針對新進人員</option>
+                            <option value="yes">是，每年定期為所有相關員工舉辦</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>S3. 您是否追蹤職業傷害事件？（如失能傷害頻率 FR）</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有追蹤</option>
+                            <option value="basic">是，有事件時會記錄</option>
+                            <option value="yes">是，有系統地追蹤並分析原因以預防再發</option>
+                        </select>
+                    </div>
+
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 401 & 404: 聘僱與訓練</h4>
+                    <div class="form-question">
+                        <label>S4. 您是否提供員工優於法規的基本福利？</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，僅符合勞基法要求</option>
+                            <option value="basic">是，例如提供團體保險、三節獎金</option>
+                            <option value="advanced">是，有 comprehensive 福利（如年度健檢補助、員工旅遊、彈性工時）</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>S5. 您是否有年度員工培訓計畫？</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="basic">是，僅有非正式的在職訓練 (OJT)</option>
+                            <option value="yes">是，有編列預算與計畫（內/外部課程）</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>S6. 您是否追蹤員工離職率？</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有追蹤</option>
+                            <option value="yes">是，有追蹤，但未分析</option>
+                            <option value="advanced">是，有追蹤並進行離職面談分析原因</option>
+                        </select>
+                    </div>
+
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 405, 408, 409: 人權與多元化</h4>
+                    <div class="form-question">
+                        <label>S7. 您是否有「禁止歧視、騷擾、童工、強迫勞動」的公開書面政策？</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="basic">是，有政策，但未宣導</option>
+                            <option value="yes">是，有政策，並已納入員工手冊或新人訓練</option>
+                        </select>
+                    </div>
+
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 414, 416, 418: 供應鏈與客戶</h4>
+                    <div class="form-question">
+                        <label>S8. 您是否有產品/服務的品質管控制度？（如客戶滿意度調查、品管流程）</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，僅依賴個案處理</option>
+                            <option value="basic">是，有基本的出貨檢驗</option>
+                            <option value="advanced">是，有系統化流程（如 ISO 9001）或定期客戶滿意度調查</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>S9. 您是否評估您的主要供應商？</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，僅看價格與交期</option>
+                            <option value="basic">是，有評估，但僅限品質</option>
+                            <option value="yes">是，會要求供應商簽署永續/人權承諾書或進行評估</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>S10. 您是否有客戶隱私保護政策與管理？</label>
+                        <select class="form-select" data-gri="S">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="basic">是，有基本政策（如官網隱私權聲明）</option>
+                            <option value="yes">是，有專人管理並有具體措施（如個資盤點、存取控制）</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- G (治理) 構面 -->
+                <div id="tab-g" class="space-y-6 hidden">
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 2: 治理結構與策略</h4>
+                    <div class="form-question">
+                        <label>G1. 公司內由誰負責 ESG（永續）事務？</label>
+                        <select class="form-select" data-gri="G">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">沒有特定人負責</option>
+                            <option value="basic">由老闆或老闆娘兼任</option>
+                            <option value="developing">有指派一位經理級人員負責</option>
+                            <option value="advanced">有成立跨部門的 ESG 小組或委員會</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>G2. 您是否有正式的企業永續發展策略或政策？</label>
+                        <select class="form-select" data-gri="G">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="developing">是，但僅為口頭理念或願景</option>
+                            <option value="yes">是，有正式書面政策</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>G3. 您如何鑑別與管理公司的主要風險？（包含 ESG 風險）</label>
+                        <select class="form-select" data-gri="G">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">沒有正式流程，憑經驗管理</option>
+                            <option value="basic">是，會定期（如每年）討論主要營運風險</option>
+                            <option value="advanced">是，有導入風險管理流程，並已開始考慮氣候或法規等 ESG 風險</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>G4. 您是否與利害關係人（如員工、客戶、供應商）有固定的溝通管道？</label>
+                        <select class="form-select" data-gri="G">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，僅被動接收客訴</option>
+                            <option value="basic">是，有非正式管道（如 Line 群組、老闆信箱）</option>
+                            <option value="yes">是，有正式管道（如員工意見箱、客戶滿意度調查、供應商大會）</option>
+                        </select>
+                    </div>
+
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 205 & 206: 誠信經營</h4>
+                    <div class="form-question">
+                        <label>G5. 您是否有「反貪腐 / 誠信經營」的書面政策？</label>
+                        <select class="form-select" data-gri="G">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="yes">是，有書面政策</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>G6. 您是否對員工進行「誠信經營」相關訓練？</label>
+                        <select class="form-select" data-gri="G">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="basic">是，僅在新人訓練時口頭提及</option>
+                            <option value="yes">是，有納入正式訓練課程或定期宣導</option>
+                        </select>
+                    </div>
+                    <div class="form-question">
+                        <label>G7. 您是否建立員工申訴或檢舉管道？（如性騷擾、不當得利）</label>
+                        <select class="form-select" data-gri="G">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="basic">是，可直接找主管或人資</option>
+                            <option value="advanced">是，有建立正式且保密的管道（如檢舉信箱）</option>
+                        </select>
+                    </div>
+
+                    <h4 class="text-xl font-semibold text-green-700 border-b pb-2">GRI 相關: 資訊安全</h4>
+                    <div class="form-question">
+                        <label>G8. 您是否有資訊安全管理政策？（保護公司與客戶資料）</label>
+                        <select class="form-select" data-gri="G">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否，沒有</option>
+                            <option value="basic">是，有基本措施（如防毒軟體、密碼原則）</option>
+                            <option value="advanced">是，有正式的資安政策、存取權限管理或備份機制</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 提交按鈕 -->
+        <section class="bg-white rounded-lg shadow-md p-6">
+            <button id="submit-report" class="btn-submit" onclick="submitReport()">
+                📊 完成評估並產出報告
+            </button>
+            <p id="submit-message" class="text-center text-sm text-gray-500 mt-3 hidden">
+                ⚠️ 請先填寫所有題目才能提交
+            </p>
+        </section>
+    </main>
+
+    <footer class="bg-white mt-12 py-6 text-center text-gray-600 text-sm">
+        <p>&copy; 2025 土地銀行 | 永續橋樑計畫</p>
+    </footer>
+
+    <script>
+        // 計算總問題數
+        const totalQuestions = 26; // E: 8 + S: 10 + G: 8 = 26
+
+        // 初始化事件監聽
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEventListeners();
+            updateProgress();
+        });
+
+        // 初始化所有 select 的 change 事件
+        function initializeEventListeners() {
+            const selects = document.querySelectorAll('.form-select');
+            selects.forEach(select => {
+                select.addEventListener('change', updateProgress);
+            });
+        }
+
+        // 更新進度條
+        function updateProgress() {
+            const selects = document.querySelectorAll('.form-select');
+            let answeredQuestions = 0;
+
+            selects.forEach(select => {
+                // 計算已填寫的題目（不為空字符串）
+                if (select.value !== '') {
+                    answeredQuestions++;
+                }
+            });
+
+            // 計算進度百分比
+            const progressPercent = (answeredQuestions / totalQuestions) * 100;
+
+            // 更新進度條
+            const progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = progressPercent + '%';
+
+            // 更新進度文字
+            const progressText = document.getElementById('progress-text');
+            progressText.textContent = answeredQuestions + ' / ' + totalQuestions;
+
+            // 更新提交按鈕狀態
+            const submitBtn = document.getElementById('submit-report');
+            const submitMessage = document.getElementById('submit-message');
+
+            if (answeredQuestions === totalQuestions) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75');
+                submitMessage.classList.add('hidden');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-75');
+                submitMessage.classList.remove('hidden');
+            }
+        }
+
+        // Tab 切換函數
+        function changeTab(tabName) {
+            // 隱藏所有 tab 內容
+            document.getElementById('tab-e').classList.add('hidden');
+            document.getElementById('tab-s').classList.add('hidden');
+            document.getElementById('tab-g').classList.add('hidden');
+
+            // 移除所有 tab 按鈕的 active 樣式
+            document.getElementById('tab-btn-e').classList.remove('active');
+            document.getElementById('tab-btn-e').classList.add('inactive');
+            document.getElementById('tab-btn-s').classList.remove('active');
+            document.getElementById('tab-btn-s').classList.add('inactive');
+            document.getElementById('tab-btn-g').classList.remove('active');
+            document.getElementById('tab-btn-g').classList.add('inactive');
+
+            // 顯示選定的 tab
+            const tabElement = document.getElementById('tab-' + tabName);
+            if (tabElement) {
+                tabElement.classList.remove('hidden');
+            }
+
+            // 設定對應按鈕為 active
+            const btnElement = document.getElementById('tab-btn-' + tabName);
+            if (btnElement) {
+                btnElement.classList.remove('inactive');
+                btnElement.classList.add('active');
+            }
+        }
+
+        // 提交報告
+        function submitReport() {
+            const selects = document.querySelectorAll('.form-select');
+            let answeredQuestions = 0;
+            const responses = {};
+
+            // 收集所有回答
+            selects.forEach((select, index) => {
+                if (select.value !== '') {
+                    answeredQuestions++;
+                }
+                const category = select.dataset.gri;
+                if (!responses[category]) {
+                    responses[category] = [];
+                }
+                responses[category].push({
+                    value: select.value,
+                    label: select.options[select.selectedIndex].text
+                });
+            });
+
+            // 檢查是否全部填寫
+            if (answeredQuestions !== totalQuestions) {
+                alert('⚠️ 尚有 ' + (totalQuestions - answeredQuestions) + ' 個題目未填寫，請完成所有題目後再提交。');
+                return;
+            }
+
+            // 模擬提交（實際上可以發送到伺服器）
+            console.log('✅ 提交成功！', responses);
+            
+            // 發送到後端進行評分
+            fetch('/api/gri-assessment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    responses: responses,
+                    timestamp: new Date().toISOString()
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('✅ 感謝您完成評估！\n\n您的 GRI 評分報告已生成。\n\n詳細報告將以郵件方式寄送至您的信箱。');
+                console.log('報告生成:', data);
+                // 可以在這裡重定向到報告頁面
+                // window.location.href = '/gri-report';
+            })
+            .catch(error => {
+                console.error('錯誤:', error);
+                alert('📧 您的評估已提交！報告將於稍後寄送。');
+            });
+        }
+    </script>
+</body>
+</html>

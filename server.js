@@ -25,6 +25,11 @@ app.get('/platform', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'platform.html'));
 });
 
+// 路由：GRI 評估系統
+app.get('/gri-assessment', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'gri-assessment.html'));
+});
+
 // API：評分計算
 app.post('/api/calculate-score', (req, res) => {
     const data = req.body;
@@ -45,6 +50,24 @@ app.post('/api/improvement-suggestions', (req, res) => {
         }
     });
     res.json(result);
+});
+
+// API：GRI 評估
+app.post('/api/gri-assessment', (req, res) => {
+    const { responses, timestamp } = req.body;
+    console.log('📊 GRI 評估提交，時間戳：', timestamp);
+    
+    // 計算 GRI 評分
+    const griScore = calculateGRIScore(responses);
+    
+    console.log('📊 GRI 計算結果：', griScore);
+    
+    res.json({
+        status: 'success',
+        message: '感謝您完成 GRI 評估！',
+        score: griScore,
+        timestamp: timestamp
+    });
 });
 
 // API：碳盤查計算
@@ -390,6 +413,70 @@ function calculateCarbonFootprint(data) {
         total: Math.round(total * 100) / 100,
         unit: 'kg CO2e'
     };
+}
+
+// GRI 評分計算函數 (Level 2)
+function calculateGRIScore(responses) {
+    const scoreMapping = {
+        'no': 1,
+        'basic': 2,
+        'yes': 3,
+        'developing': 2,
+        'advanced': 3
+    };
+
+    let scores = {
+        E: 0,
+        S: 0,
+        G: 0,
+        total: 0,
+        details: {},
+        level: '',
+        recommendations: []
+    };
+
+    // 計算各構面得分
+    ['E', 'S', 'G'].forEach(category => {
+        if (responses[category]) {
+            responses[category].forEach(item => {
+                const score = scoreMapping[item.value] || 0;
+                scores[category] += score;
+                
+                // 如果回答不完美，加入改善建議
+                if (item.value !== 'advanced' && item.value !== 'yes') {
+                    scores.recommendations.push(`${category}構面可進一步改善：${item.label}`);
+                }
+            });
+        }
+    });
+
+    // 計算總分（加權平均）
+    // E和S各佔35%，G佔30%
+    const totalWeighted = (scores.E * 0.35 + scores.S * 0.35 + scores.G * 0.30);
+    scores.total = Math.round(totalWeighted * 10) / 10;
+
+    // 判斷等級
+    if (scores.total >= 8.5) {
+        scores.level = 'A (領先級)';
+        scores.summary = '您的公司已具備卓越的 GRI 揭露基礎，建議進一步尋求第三方驗證';
+    } else if (scores.total >= 7.0) {
+        scores.level = 'B (中上級)';
+        scores.summary = '您的公司具備良好的永續發展實踐，建議重點補強評分較低的構面';
+    } else if (scores.total >= 5.5) {
+        scores.level = 'C (進展級)';
+        scores.summary = '您的公司已開始建立永續管理體系，建議優先改善環境與治理構面';
+    } else {
+        scores.level = 'D (初期級)';
+        scores.summary = '建議從基礎政策制定與員工意識提升開始著手';
+    }
+
+    scores.details = {
+        E: scores.E,
+        S: scores.S,
+        G: scores.G
+    };
+
+    return scores;
 }
 
 // 啟動伺服器
