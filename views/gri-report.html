@@ -423,26 +423,31 @@
 
             // 計算總分（加權平均）
             // E和S各佔35%，G佔30%
-            const totalWeighted = (scores.E * 0.35 + scores.S * 0.35 + scores.G * 0.30);
-            scores.total = Math.round(totalWeighted * 10) / 10;
+            // 先計算各構面的平均分（滿分3分）
+            const eAvg = scores.E / 8;   // 8題
+            const sAvg = scores.S / 10;  // 10題
+            const gAvg = scores.G / 8;   // 8題
+            const totalWeighted = (eAvg * 0.35 + sAvg * 0.35 + gAvg * 0.30);
+            scores.total = Math.round(totalWeighted * 100) / 100;
 
-            // 判斷等級
-            if (scores.total >= 2.55) {
+            // 判斷等級 - 按百分比（滿分100%）
+            const percentage = (scores.total / 3) * 100;
+            if (percentage >= 85) {
                 scores.level = 'A';
                 scores.levelName = '領先級 (A)';
-                scores.summary = '您的公司已具備卓越的永續發展實踐，建議進一步尋求第三方驗證或認證。';
-            } else if (scores.total >= 2.1) {
+                scores.summary = '您的公司已具備卓越的永續發展實踐（85-100%），建議進一步尋求第三方驗證或認證。';
+            } else if (percentage >= 70) {
                 scores.level = 'B';
                 scores.levelName = '平均級 (B)';
-                scores.summary = '您的公司具備良好的永續發展基礎，建議重點補強評分較低的構面。';
-            } else if (scores.total >= 1.65) {
+                scores.summary = '您的公司具備良好的永續發展基礎（70-84%），建議重點補強評分較低的構面。';
+            } else if (percentage >= 55) {
                 scores.level = 'C';
                 scores.levelName = '進展級 (C)';
-                scores.summary = '您的公司已開始建立永續管理體系，建議優先改善環境與治理構面。';
+                scores.summary = '您的公司已開始建立永續管理體系（55-69%），建議優先改善環境與治理構面。';
             } else {
                 scores.level = 'D';
                 scores.levelName = '初期級 (D)';
-                scores.summary = '建議從基礎政策制定與員工意識提升開始著手，逐步建立永續發展文化。';
+                scores.summary = '建議從基礎政策制定與員工意識提升開始著手（<55%），逐步建立永續發展文化。';
             }
 
             return scores;
