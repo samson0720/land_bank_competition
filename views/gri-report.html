@@ -489,7 +489,6 @@
 
             // 顯示詳細答案
             let detailsHTML = '';
-            const questionCounts = { E: 0, S: 0, G: 0 };
             ['E', 'S', 'G'].forEach(category => {
                 detailsHTML += '<div style="margin-bottom: 1.5rem;"><h4 style="color: var(--primary-color); margin-bottom: 1rem;">';
                 if (category === 'E') detailsHTML += '🌍 環境 (E)';
@@ -499,10 +498,8 @@
 
                 if (responses[category]) {
                     responses[category].forEach((item, index) => {
-                        questionCounts[category]++;
-                        const scoreValue = item.value === 'no' ? '1分' : (item.value === 'yes' || item.value === 'advanced') ? '3分' : (item.value === 'basic' || item.value === 'developing') ? '2分' : '';
                         detailsHTML += '<div class="question-item">';
-                        detailsHTML += '<div class="question-label">Q' + (index + 1) + '：' + scoreValue + '</div>';
+                        detailsHTML += '<div class="question-label">Q' + (index + 1) + '：' + (item.question || '未知題目') + '</div>';
                         detailsHTML += '<div class="question-answer">✓ ' + item.label + '</div>';
                         detailsHTML += '</div>';
                     });

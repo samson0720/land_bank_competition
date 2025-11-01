@@ -871,7 +871,13 @@
                 if (!responses[category]) {
                     responses[category] = [];
                 }
+                
+                // 獲取題目文本 - 從 gri-question-text 中提取
+                const questionElement = select.closest('.gri-question').querySelector('.gri-question-text');
+                const questionText = questionElement ? questionElement.textContent.trim() : '未知題目';
+                
                 responses[category].push({
+                    question: questionText,
                     value: select.value,
                     label: select.options[select.selectedIndex].text
                 });
