@@ -6,102 +6,212 @@
     <title>全方位 GRI 評估 (Level 2) - 土地銀行永續橋樑計畫</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        /* GRI 評估專用樣式 */
+        /* GRI 評估專用樣式 - 精緻版 */
+        
+        .gri-header-intro {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 24px rgba(0, 102, 51, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gri-header-intro::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .gri-header-intro h2 {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .gri-header-intro p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            opacity: 0.98;
+            position: relative;
+            z-index: 1;
+        }
+
         .gri-container {
             background: var(--bg-white);
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
             margin-bottom: 2rem;
         }
 
-        .progress-header {
+        .gri-progress-container {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .gri-progress-label {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .progress-info {
+            margin-bottom: 1rem;
             font-weight: 600;
             color: var(--text-dark);
+            font-size: 1rem;
         }
 
-        .progress-text {
+        .gri-progress-label-right {
             color: var(--primary-color);
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .progress-bar-wrapper {
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            transition: width 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 102, 51, 0.3);
         }
 
         .gri-tabs {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
             flex-wrap: wrap;
         }
 
-        .gri-tab-btn {
+        .gri-tab-btn-wrapper {
             flex: 1;
-            min-width: 120px;
-            padding: 1rem;
+            min-width: 140px;
+        }
+
+        .gri-tab-btn {
+            width: 100%;
+            padding: 1.2rem 1rem;
             background: var(--bg-light);
             border: 2px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--text-light);
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .gri-tab-btn:hover {
-            background: #f0f0f0;
+            background: white;
             border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 51, 0.1);
         }
 
         .gri-tab-btn.active {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
             border-color: var(--primary-color);
+            box-shadow: 0 4px 16px rgba(0, 102, 51, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .tab-answer-count {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            font-weight: 500;
         }
 
         .gri-tab-content {
             display: none;
+            animation: fadeIn 0.4s ease-out;
         }
 
         .gri-tab-content.active {
             display: block;
-            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .gri-section {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
+            background: linear-gradient(135deg, rgba(0, 102, 51, 0.03) 0%, rgba(0, 179, 179, 0.03) 100%);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(0, 102, 51, 0.1);
             border-left: 4px solid var(--primary-color);
+            position: relative;
+        }
+
+        .gri-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at top right, rgba(0, 179, 179, 0.05), transparent);
+            border-radius: 10px;
+            pointer-events: none;
         }
 
         .gri-section-title {
-            font-size: 1.3rem;
-            font-weight: bold;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
+            margin-bottom: 1.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(0, 102, 51, 0.15);
+            letter-spacing: -0.3px;
         }
 
         .gri-question {
             background: white;
             padding: 1.5rem;
-            border-radius: 6px;
+            border-radius: 8px;
             margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
             border-left: 3px solid var(--accent-color);
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
         }
 
         .gri-question:hover {
-            box-shadow: var(--shadow-hover);
+            box-shadow: 0 6px 16px rgba(0, 102, 51, 0.08);
+            transform: translateX(2px);
+            border-left-color: var(--primary-color);
         }
 
         .gri-question-text {
@@ -110,175 +220,173 @@
             color: var(--text-dark);
             margin-bottom: 1rem;
             font-size: 1rem;
+            line-height: 1.6;
         }
 
         .gri-question select {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.85rem 1rem;
             border: 1px solid var(--border-color);
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 0.95rem;
             cursor: pointer;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+
+        .gri-question select:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(0, 102, 51, 0.02);
         }
 
         .gri-question select:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 102, 51, 0.1);
+            box-shadow: 0 0 0 4px rgba(0, 102, 51, 0.1);
         }
 
         .gri-question-hint {
             font-size: 0.85rem;
             color: var(--text-light);
-            margin-top: 0.5rem;
+            margin-top: 0.75rem;
             font-style: italic;
-        }
-
-        .gri-progress-container {
-            margin-bottom: 2rem;
-        }
-
-        .gri-progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .gri-progress-label-right {
-            color: var(--primary-color);
-            font-size: 1.1rem;
-        }
-
-        .progress-bar-wrapper {
-            height: 30px;
-            background: var(--bg-light);
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            transition: width 0.5s ease;
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 0.9rem;
+            gap: 0.5rem;
         }
 
         .gri-submit-section {
             text-align: center;
             margin-top: 3rem;
-            padding-top: 2rem;
+            padding-top: 2.5rem;
             border-top: 2px solid var(--border-color);
         }
 
         .gri-submit-btn {
             display: inline-block;
-            padding: 1rem 3rem;
-            background: var(--primary-color);
+            padding: 1.2rem 4rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 1.1rem;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba(0, 102, 51, 0.2);
+            letter-spacing: -0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gri-submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
         .gri-submit-btn:hover:not(:disabled) {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 102, 51, 0.3);
+        }
+
+        .gri-submit-btn:active:not(:disabled)::before {
+            width: 300px;
+            height: 300px;
         }
 
         .gri-submit-btn:disabled {
-            background: #ccc;
+            background: #d0d0d0;
             cursor: not-allowed;
             opacity: 0.6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .gri-submit-message {
-            margin-top: 1rem;
+            margin-top: 1.25rem;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.95rem;
             display: none;
+            color: var(--text-light);
+            padding: 1rem;
+            background: rgba(255, 107, 0, 0.08);
+            border-radius: 6px;
+            border-left: 3px solid var(--secondary-color);
         }
 
         .gri-submit-message.warning {
-            color: #e55a00;
             display: block;
-        }
-
-        .gri-tab-counter {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: var(--secondary-color);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .gri-tab-btn-wrapper {
-            position: relative;
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .gri-header-intro {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-        }
-
-        .gri-header-intro h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .gri-header-intro p {
-            font-size: 1rem;
-            line-height: 1.6;
-            opacity: 0.95;
-        }
-
-        .tab-answer-count {
-            font-size: 0.75rem;
-            opacity: 0.8;
-            margin-top: 0.25rem;
+            color: #e55a00;
         }
 
         @media (max-width: 768px) {
+            .gri-container {
+                padding: 1.5rem;
+            }
+
+            .gri-header-intro {
+                padding: 2rem 1.5rem;
+            }
+
+            .gri-header-intro h2 {
+                font-size: 1.5rem;
+            }
+
+            .gri-header-intro p {
+                font-size: 0.95rem;
+            }
+
             .gri-tabs {
-                gap: 0.5rem;
+                gap: 0.75rem;
+            }
+
+            .gri-tab-btn-wrapper {
+                min-width: 100px;
+                flex: 1;
             }
 
             .gri-tab-btn {
-                padding: 0.75rem 0.5rem;
-                font-size: 0.9rem;
-                min-width: 100px;
+                padding: 0.9rem 0.75rem;
+                font-size: 0.85rem;
+                gap: 0.3rem;
             }
 
-            .gri-container {
-                padding: 1rem;
+            .tab-answer-count {
+                font-size: 0.7rem;
+            }
+
+            .gri-section {
+                padding: 1.25rem;
+                margin-bottom: 1.75rem;
+            }
+
+            .gri-section-title {
+                font-size: 1.1rem;
+                margin-bottom: 1.25rem;
             }
 
             .gri-question {
                 padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .gri-question-text {
+                font-size: 0.95rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .gri-submit-btn {
+                padding: 1rem 2.5rem;
+                font-size: 1rem;
             }
         }
     </style>
