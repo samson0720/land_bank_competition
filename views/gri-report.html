@@ -455,7 +455,123 @@
 
         // 頁面載入
         document.addEventListener('DOMContentLoaded', function() {
-            const data = localStorage.getItem('griAssessmentData');
+            // 優先嘗試讀取新的 API 生成報告
+            let data = localStorage.getItem('griReportData');
+            
+            if (data) {
+                // 新的 API 數據格式
+                const reportData = JSON.parse(data);
+                const scores = reportData.scores;
+                const answers = reportData.answers;
+                const answerLabels = reportData.answerLabels || {};  // 新增：完整答案文本
+                const questions = reportData.questions || {};  // 重要：初始化 questions
+                const timestamp = new Date(reportData.timestamp);
+
+                // 顯示時間戳
+                document.getElementById('report-timestamp').textContent = 
+                    '評估時間：' + timestamp.toLocaleDateString('zh-TW') + ' ' + timestamp.toLocaleTimeString('zh-TW');
+
+                // 顯示評分
+                document.getElementById('score-e').textContent = scores.E;
+                document.getElementById('score-s').textContent = scores.S;
+                document.getElementById('score-g').textContent = scores.G;
+
+                // 顯示進度條
+                document.getElementById('progress-e').style.width = (scores.E / 24 * 100) + '%';
+                document.getElementById('progress-s').style.width = (scores.S / 30 * 100) + '%';
+                document.getElementById('progress-g').style.width = (scores.G / 24 * 100) + '%';
+
+                // 顯示評級
+                document.getElementById('report-level-name').textContent = scores.levelName;
+                document.getElementById('report-level-description').textContent = scores.summary;
+
+                // 顯示詳細答案 - 新格式（直接從 answers 物件）
+                let detailsHTML = '';
+                ['E', 'S', 'G'].forEach(category => {
+                    let count = category === 'E' ? 8 : (category === 'S' ? 10 : 8);
+                    detailsHTML += '<div style="margin-bottom: 1.5rem;"><h4 style="color: var(--primary-color); margin-bottom: 1rem;">';
+                    if (category === 'E') detailsHTML += '🌍 環境 (E)';
+                    if (category === 'S') detailsHTML += '👥 社會 (S)';
+                    if (category === 'G') detailsHTML += '⚖️ 治理 (G)';
+                    detailsHTML += '</h4>';
+
+                    for (let i = 1; i <= count; i++) {
+                        const key = category + i;
+                        if (answers[key]) {
+                            // 優先使用 questions，如果沒有則使用 key
+                            let questionText = (questions && questions[key]) ? questions[key] : `題目 ${key}`;
+                            
+                            // 移除題目開頭的題號前綴（例如 "E1. " "S8. " "G3. "）
+                            questionText = questionText.replace(/^[ESG]\d+\.\s*/, '');
+                            
+                            // 使用完整答案標籤，如果沒有則使用 answers 值
+                            const answerText = (answerLabels && answerLabels[key]) ? answerLabels[key] : answers[key];
+                            
+                            detailsHTML += '<div class="question-item">';
+                            detailsHTML += '<div class="question-label">' + key + '：' + questionText + '</div>';
+                            detailsHTML += '<div class="question-answer">✓ ' + answerText + '</div>';
+                            detailsHTML += '</div>';
+                        }
+                    }
+                    detailsHTML += '</div>';
+                });
+                document.getElementById('questions-detail').innerHTML = detailsHTML;
+
+                // 顯示建議（只顯示 AI 詳細建議）
+                let recommendationsHTML = '';
+                
+                // 添加 Gemini AI 詳細建議
+                if (reportData.aiRecommendations) {
+                    // 直接使用文本內容，進行簡單的換行處理
+                    const aiText = reportData.aiRecommendations
+                        .split('\n')
+                        .map(line => {
+                            // 處理標題（##, ###）
+                            if (line.startsWith('### ')) {
+                                return '<h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem; color: var(--primary-color); font-weight: 600;">' + line.substring(4) + '</h4>';
+                            }
+                            if (line.startsWith('## ')) {
+                                return '<h3 style="margin-top: 1.5rem; margin-bottom: 1rem; color: var(--primary-color); font-weight: 700;">' + line.substring(3) + '</h3>';
+                            }
+                            // 處理列表項
+                            if (line.startsWith('- ')) {
+                                return '<div style="margin-left: 1.5rem; margin-bottom: 0.5rem;">• ' + line.substring(2) + '</div>';
+                            }
+                            // 處理粗體
+                            if (line.includes('**')) {
+                                line = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                            }
+                            // 空行
+                            if (line.trim() === '') {
+                                return '<div style="height: 0.5rem;"></div>';
+                            }
+                            // 普通文字
+                            if (line.trim()) {
+                                return '<div style="margin-bottom: 0.75rem;">' + line + '</div>';
+                            }
+                            return '';
+                        })
+                        .join('');
+                    
+                    recommendationsHTML = `
+                        <div class="recommendation-box" style="background: linear-gradient(135deg, rgba(0, 102, 51, 0.05) 0%, rgba(87, 201, 142, 0.05) 100%); border: 2px solid rgba(0, 102, 51, 0.1); padding: 2rem;">
+                            <h3 style="color: var(--primary-color); display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-size: 1.4rem;">
+                                <span>✨</span> 建議與反饋
+                            </h3>
+                            <div style="line-height: 1.9; color: var(--text-dark); font-size: 0.95rem;">
+                                ${aiText}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // 如果沒有 AI 建議，顯示加載提示
+                    recommendationsHTML = '<div class="error-message">加載中...</div>';
+                }
+                
+                document.getElementById('recommendations').innerHTML = recommendationsHTML;
+            } else {
+                // 舊的 localStorage 數據格式（向後兼容）
+                data = localStorage.getItem('griAssessmentData');
             
             if (!data) {
                 document.getElementById('report-content').innerHTML = '<div class="error-message">❌ 無法載入評估數據，請重新進行評估。</div>';
@@ -498,7 +614,6 @@
 
                 if (responses[category]) {
                     responses[category].forEach((item, index) => {
-                        // 移除題目中開頭的 "E1. " "E2. " 等前綴
                         let questionText = (item.question || '未知題目').replace(/^[ESG]\d+\.\s+/, '');
                         detailsHTML += '<div class="question-item">';
                         detailsHTML += '<div class="question-label">' + category + (index + 1) + '：' + questionText + '</div>';
@@ -510,7 +625,7 @@
             });
             document.getElementById('questions-detail').innerHTML = detailsHTML;
 
-            // 顯示建議
+                // 顯示建議（舊格式）
             let recommendationsHTML = '';
             if (scores.level === 'A') {
                 recommendationsHTML = `
@@ -574,9 +689,7 @@
                 `;
             }
             document.getElementById('recommendations').innerHTML = recommendationsHTML;
-
-            // 清除 localStorage
-            // localStorage.removeItem('griAssessmentData');
+            }
         });
     </script>
 </body>

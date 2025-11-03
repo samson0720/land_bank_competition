@@ -1,9 +1,15 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Gemini API 初始化
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 // Middleware
 app.use(bodyParser.json());
@@ -33,6 +39,11 @@ app.get('/gri-assessment', (req, res) => {
 // 路由：GRI 評估報告
 app.get('/gri-report', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'gri-report.html'));
+});
+
+// 路由：GRI 報告測試（用於開發調試）
+app.get('/test-report', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'test-report.html'));
 });
 
 // API：評分計算
@@ -74,6 +85,169 @@ app.post('/api/gri-assessment', (req, res) => {
         timestamp: timestamp
     });
 });
+
+// API：生成 GRI 報告（新增）
+app.post('/api/generate-report', async (req, res) => {
+    try {
+        const { answers } = req.body;
+        console.log('📊 GRI 報告生成請求，答案數量：', Object.keys(answers).length);
+        
+        // 計算基本評分
+        const scores = calculateGRIScoreFromAnswers(answers);
+        
+        // 生成基本報告
+        const baseReport = generateGRIMarkdownReport(scores, answers);
+        
+        // 嘗試使用 Gemini 生成詳細改善建議
+        let aiRecommendations = null;
+        try {
+            console.log('🤖 呼叫 Gemini API 生成詳細建議...');
+            const prompt = generateDetailedGeminiPrompt(answers, scores);
+            const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            aiRecommendations = response.text();
+            console.log('✅ Gemini 建議生成成功');
+        } catch (aiError) {
+            console.warn('⚠️ Gemini API 調用失敗，使用基本建議：', aiError.message);
+        }
+        
+        console.log('📊 報告生成完成');
+        
+        res.json({
+            status: 'success',
+            message: '報告生成成功',
+            report: baseReport,
+            scores: scores,
+            aiRecommendations: aiRecommendations
+        });
+    } catch (error) {
+        console.error('❌ 報告生成錯誤：', error);
+        res.status(500).json({
+            status: 'error',
+            message: '生成報告失敗',
+            error: error.message
+        });
+    }
+});
+
+// 生成給 Gemini 的提示詞
+function generateGeminiPrompt(answers, scores) {
+    const answerSummary = Object.entries(answers)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\n');
+    
+    const scoreSummary = `
+環境(E): ${scores.E}/24
+社會(S): ${scores.S}/30
+治理(G): ${scores.G}/24
+總分: ${scores.total}/78 (${scores.percentage}%)
+評級: ${scores.levelName}
+`;
+
+    return `
+你是一位資深的 ESG 永續發展顧問。我有一家公司完成了 GRI 永續評估問卷。請根據他們的答案，提供詳細且具體的改善建議。
+
+【公司的評估結果】
+${scoreSummary}
+
+【公司的具體答案】
+${answerSummary}
+
+請提供以下內容：
+
+1. **整體評估**：針對這家公司的永續發展現狀進行評估（2-3段）
+
+2. **各構面詳細分析**：
+   - 針對環境(E)、社會(S)、治理(G)分別分析優勢和不足
+   
+3. **優先改善項目**：根據答案，列出前 5 項最應該優先改善的項目，每項需包含：
+   - 改善項目名稱
+   - 為什麼重要（商業價值 + 永續價值）
+   - 具體行動步驟（3-5步）
+   - 預期效果
+   - 預計成本等級（低/中/高）
+   
+4. **快速勝利**（Quick Wins）：列出可以立即實施、低成本但能帶來改善的 3 項行動
+
+5. **長期策略**：建議 1-2 年內的永續發展策略方向
+
+請用繁體中文回答，並使用 Markdown 格式。建議要具體、可行且量化。
+`;
+}
+
+// 生成給 Gemini 的詳細提示詞（生成改善建議和正向反饋）
+function generateDetailedGeminiPrompt(answers, scores) {
+    const answerSummary = Object.entries(answers)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\n');
+    
+    const scoreSummary = `
+環境(E): ${scores.E}/24 (${Math.round((scores.E / 24) * 100)}%)
+社會(S): ${scores.S}/30 (${Math.round((scores.S / 30) * 100)}%)
+治理(G): ${scores.G}/24 (${Math.round((scores.G / 24) * 100)}%)
+總分: ${scores.total}/78 (${scores.percentage}%)
+評級: ${scores.levelName}
+`;
+
+    return `
+你是一位資深的 ESG 永續發展顧問和企業教練。
+
+【重要提醒】
+- 這份反饋是直接呈現給客戶（貴公司）的
+- 請使用「貴公司」來指代客戶公司
+- 語氣應該專業、鼓勵且建設性
+- 避免使用占位符如 [公司名稱] 等
+- 這是客戶工具平台自動生成的專業報告
+
+【貴公司的評估結果】
+${scoreSummary}
+
+【貴公司的具體答案】
+${answerSummary}
+
+請根據貴公司的具體情況，直接提供以下內容（以「貴公司」稱呼）：
+
+1. **🎯 整體評估與肯定**（2-3段）
+   - 肯定貴公司已做得好的地方
+   - 指出貴公司當前的優勢和成就
+   - 表達積極和鼓勵的態度
+
+2. **💪 優勢亮點**
+   - 列出貴公司前 3-5 項表現最好的領域
+   - 解釋為什麼這些是貴公司的重要競爭優勢
+
+3. **🚀 改善機會（而非缺陷）**
+   - 以正面的「機會」角度呈現貴公司的改善空間
+   - 針對貴公司的前 5 項優先改善項目，每項包含：
+     * 項目名稱
+     * 為什麼這是貴公司的未來機會（商業價值 + 永續價值）
+     * 具體的行動步驟（3-5步，適合貴公司規模實施）
+     * 預期的正面成果
+     * 實施難度等級（易/中/難）
+
+4. **⚡ 快速勝利**（Quick Wins）
+   - 3-5 項貴公司可以立即實施、見效快、能提升信心的行動
+   - 每項包含：實施時間（天/週）、預期效果、所需資源
+
+5. **🎁 針對貴公司的特別建議**
+   - 根據貴公司的具體答案和現況，提出 1-2 項獨特且創新的永續發展方向
+   - 這些應該是差異化的、能為貴公司帶來競爭優勢的
+
+6. **💝 激勵話語**
+   - 用鼓勵的話語，表達對貴公司承諾永續發展的期待和信心
+
+**重要指引：**
+- 全程使用正面、建設性的語氣
+- 避免批評或負面措辭，用「機會」替代「問題」
+- 提供具體、可執行的建議
+- 考慮貴公司的實際資源限制和發展階段
+- 強調永續發展帶來的商業機會和競爭優勢，不只是責任
+- 直接稱呼「貴公司」，不使用任何占位符
+
+用繁體中文回答，使用 Markdown 格式，字數約 2000-3000 字。
+`;
+}
 
 // API：碳盤查計算
 app.post('/api/carbon-calculator', (req, res) => {
@@ -482,6 +656,202 @@ function calculateGRIScore(responses) {
     };
 
     return scores;
+}
+
+// GRI 評分計算函數（從前端答案計算）
+function calculateGRIScoreFromAnswers(answers) {
+    const scoreMapping = {
+        'no': 1,
+        'basic': 2,
+        'yes': 3,
+        'developing': 2,
+        'advanced': 3
+    };
+
+    let scores = {
+        E: 0,
+        S: 0,
+        G: 0,
+        total: 0,
+        level: '',
+        levelName: '',
+        percentage: 0,
+        summary: ''
+    };
+
+    // 計算各構面得分
+    for (let key in answers) {
+        const value = answers[key];
+        const category = key.charAt(0); // E, S, 或 G
+        const score = scoreMapping[value] || 0;
+        scores[category] += score;
+    }
+
+    // 計算百分比（E: 8題 × 3 = 24, S: 10題 × 3 = 30, G: 8題 × 3 = 24）
+    const eMax = 24;
+    const sMax = 30;
+    const gMax = 24;
+    const totalMax = eMax + sMax + gMax; // 78
+    const totalScore = scores.E + scores.S + scores.G;
+    const percentage = Math.round((totalScore / totalMax) * 100);
+    
+    scores.percentage = percentage;
+    scores.total = totalScore;
+    scores.totalMax = totalMax;
+
+    // 判斷等級
+    if (percentage >= 85) {
+        scores.level = 'A';
+        scores.levelName = '領先級 (A)';
+        scores.summary = '您的公司已具備卓越的永續發展實踐（85-100%），建議進一步尋求第三方驗證或認證。';
+    } else if (percentage >= 70) {
+        scores.level = 'B';
+        scores.levelName = '平均級 (B)';
+        scores.summary = '您的公司具備良好的永續發展基礎（70-84%），建議重點補強評分較低的構面。';
+    } else if (percentage >= 55) {
+        scores.level = 'C';
+        scores.levelName = '進展級 (C)';
+        scores.summary = '您的公司已開始建立永續管理體系（55-69%），建議優先改善環境與治理構面。';
+    } else {
+        scores.level = 'D';
+        scores.levelName = '初期級 (D)';
+        scores.summary = '建議從基礎政策制定與員工意識提升開始著手（<55%），逐步建立永續發展文化。';
+    }
+
+    return scores;
+}
+
+// 生成 GRI Markdown 報告
+function generateGRIMarkdownReport(scores, answers) {
+    const timestamp = new Date().toLocaleDateString('zh-TW') + ' ' + new Date().toLocaleTimeString('zh-TW');
+    
+    let markdown = `# 📊 GRI 永續評估報告
+
+**評估時間：** ${timestamp}
+
+---
+
+## 📈 評估結果概覽
+
+### 總體評分
+- **總分：** ${scores.total} / ${scores.totalMax}
+- **完成度：** ${scores.percentage}%
+- **評級：** ${scores.levelName}
+
+### 各構面評分
+| 構面 | 評分 | 滿分 | 完成度 |
+|------|------|------|--------|
+| 🌍 環境 (E) | ${scores.E} | 24 | ${Math.round((scores.E / 24) * 100)}% |
+| 👥 社會 (S) | ${scores.S} | 30 | ${Math.round((scores.S / 30) * 100)}% |
+| ⚖️ 治理 (G) | ${scores.G} | 24 | ${Math.round((scores.G / 24) * 100)}% |
+
+---
+
+## 🎯 評級解讀
+
+### ${scores.levelName}
+
+${scores.summary}
+
+---
+
+## 📋 詳細答案
+
+`;
+
+    // E 構面詳細答案
+    markdown += `### 🌍 環境構面 (E)\n\n`;
+    for (let i = 1; i <= 8; i++) {
+        const key = 'E' + i;
+        if (answers[key]) {
+            markdown += `**E${i}：** ${answers[key]}\n\n`;
+        }
+    }
+
+    // S 構面詳細答案
+    markdown += `### 👥 社會構面 (S)\n\n`;
+    for (let i = 1; i <= 10; i++) {
+        const key = 'S' + i;
+        if (answers[key]) {
+            markdown += `**S${i}：** ${answers[key]}\n\n`;
+        }
+    }
+
+    // G 構面詳細答案
+    markdown += `### ⚖️ 治理構面 (G)\n\n`;
+    for (let i = 1; i <= 8; i++) {
+        const key = 'G' + i;
+        if (answers[key]) {
+            markdown += `**G${i}：** ${answers[key]}\n\n`;
+        }
+    }
+
+    // 改善建議
+    markdown += `---
+
+## 💡 改善建議
+
+`;
+
+    if (scores.level === 'A') {
+        markdown += `### 🏆 您已達到領先級水準！
+
+恭喜！您的企業已在 ESG 各個面向展現出色的表現。建議您：
+
+- 考慮申請第三方 ESG 認證或驗證
+- 成為業界永續發展標竿企業
+- 深化員工和供應鏈的永續意識培訓
+- 進一步擴大您的永續發展報告範圍
+`;
+    } else if (scores.level === 'B') {
+        markdown += `### 📈 穩步前進的平均級企業
+
+您的企業已建立良好的永續基礎。建議您：
+
+- 針對得分較低的構面進行深入改善
+- 建立量化的永續發展目標
+- 定期進行 ESG 績效評估和更新
+- 與供應商分享永續發展理念
+`;
+    } else if (scores.level === 'C') {
+        markdown += `### 🌱 成長中的企業 - 加油！
+
+您的企業已開始重視永續發展。建議您：
+
+- 優先完善環境和治理政策
+- 指派專責人員推動 ESG 工作
+- 制定明確的改善時程表
+- 尋求外部協助和資源支持
+`;
+    } else {
+        markdown += `### 🚀 起步階段 - 開啟永續之旅
+
+您的企業正在永續發展的起步階段。建議您：
+
+- 從制定基本永續政策開始
+- 建立公司層級的 ESG 治理結構
+- 進行員工永續意識培訓
+- 利用本平台的輔導工具進行改善
+`;
+    }
+
+    markdown += `
+
+---
+
+## 📞 下一步行動
+
+1. **詳閱本報告** - 了解您企業的優勢與不足
+2. **制定改善計畫** - 針對較弱的構面優先改進
+3. **聯絡顧問** - 尋求土地銀行的永續金融支持
+4. **定期評估** - 每半年至一年重新進行評估追蹤進度
+
+---
+
+*感謝您使用土地銀行永續橋樑計畫平台！*
+`;
+
+    return markdown;
 }
 
 // 啟動伺服器

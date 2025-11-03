@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRI 報告測試 - 測試數據注入</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .test-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+        .test-button {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 51, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 GRI 報告測試頁面</h1>
+        <p>此頁面用於測試報告顯示功能。點擊下方按鈕將注入測試數據並跳轉到報告頁面。</p>
+        
+        <button class="test-button" onclick="injectTestData()">
+            💉 注入測試數據並查看報告
+        </button>
+        
+        <div id="status" style="margin-top: 2rem; padding: 1rem; background: #f0f8ff; border-radius: 8px; display: none;"></div>
+    </div>
+
+    <script>
+        function injectTestData() {
+            try {
+                console.log('📝 正在注入測試數據...');
+                
+                // 完整的測試數據
+                const testData = {
+                    report: `# 📊 GRI 永續評估報告
+
+**評估時間：** 2025/11/2 下午4:24:39
+
+---
+
+## 📈 評估結果概覽
+
+### 總體評分
+- **總分：** 67 / 78
+- **完成度：** 86%
+- **評級：** 領先級 (A)
+
+### 各構面評分
+| 構面 | 評分 | 滿分 | 完成度 |
+|------|------|------|--------|
+| 🌍 環境 (E) | 19 | 24 | 79% |
+| 👥 社會 (S) | 25 | 30 | 83% |
+| ⚖️ 治理 (G) | 23 | 24 | 96% |`,
+                    
+                    scores: {
+                        E: 19,
+                        S: 25,
+                        G: 23,
+                        total: 67,
+                        percentage: 86,
+                        level: 'A',
+                        levelName: '領先級 (A)'
+                    },
+                    
+                    answers: {
+                        E1: 'yes', E2: 'basic', E3: 'yes', E4: 'partial', E5: 'yes', E6: 'yes', E7: 'basic', E8: 'yes',
+                        S1: 'yes', S2: 'yes', S3: 'basic', S4: 'yes', S5: 'partial', S6: 'yes', S7: 'yes', S8: 'basic', S9: 'yes', S10: 'yes',
+                        G1: 'yes', G2: 'yes', G3: 'yes', G4: 'basic', G5: 'yes', G6: 'yes', G7: 'yes', G8: 'yes'
+                    },
+                    
+                    answerLabels: {
+                        E1: '是', E2: '基本措施', E3: '是', E4: '部分實施', E5: '是', E6: '是', E7: '基本措施', E8: '是',
+                        S1: '是', S2: '是', S3: '基本措施', S4: '是', S5: '部分實施', S6: '是', S7: '是', S8: '基本措施', S9: '是', S10: '是',
+                        G1: '是', G2: '是', G3: '是', G4: '基本措施', G5: '是', G6: '是', G7: '是', G8: '是'
+                    },
+                    
+                    questions: {
+                        E1: 'E1. 是否有明確的環保政策?', E2: 'E2. 是否進行環保培訓?', E3: 'E3. 是否監測排放?', E4: 'E4. 是否有廢棄物管理?', 
+                        E5: 'E5. 是否節約能源?', E6: 'E6. 是否使用可再生能源?', E7: 'E7. 是否有環保認證?', E8: 'E8. 是否定期環保審計?',
+                        S1: 'S1. 是否有員工權益政策?', S2: 'S2. 是否進行多元化管理?', S3: 'S3. 是否有健康安全措施?', S4: 'S4. 是否進行社區投資?',
+                        S5: 'S5. 是否有供應商標準?', S6: 'S6. 是否透明報薪?', S7: 'S7. 是否有勞動實踐政策?', S8: 'S8. 是否進行社會責任培訓?',
+                        S9: 'S9. 是否回應利益相關方?', S10: 'S10. 是否進行社會績效評估?',
+                        G1: 'G1. 是否有董事會多元性?', G2: 'G2. 是否有廉政政策?', G3: 'G3. 是否有風險管理框架?', G4: 'G4. 是否有合規程序?',
+                        G5: 'G5. 是否進行內部控制?', G6: 'G6. 是否有透明披露?', G7: 'G7. 是否進行治理培訓?', G8: 'G8. 是否有利益衝突政策?'
+                    },
+                    
+                    aiRecommendations: `🎯 **整體評估與肯定**
+
+恭喜貴公司在 GRI 永續評估中取得了優異的成績，總分高達 86%，榮獲「領先級 (A)」評級！這充分展現了貴公司對於永續發展的重視和投入，以及在環境、社會和治理 (ESG) 三個面向的卓越表現。
+
+---
+
+## 💪 **優勢亮點**
+
+### 1. **卓越的治理表現（96%）**
+- 董事會結構健全，多元性充分
+- 廉政及合規機制完善
+- 風險管理框架完整
+
+### 2. **扎實的社會責任基礎（83%）**
+- 員工權益政策完備
+- 社區投資和供應商管理到位
+
+### 3. **環保承諾逐步推進（79%）**
+- 已建立基本環保政策和措施
+
+---
+
+## 🚀 **改善機會（而非缺陷）**
+
+### 1. **強化環境戰略** - 難度：中
+**為什麼是機會：** 從 79% 升至 90%+ 可進一步差異化競爭優勢
+- **行動步驟：**
+  1. 制定 2030 年碳中和目標
+  2. 擴大可再生能源使用比例
+  3. 建立環保供應鏈標準
+  4. 定期進行環保第三方認證
+
+### 2. **社會投資創新** - 難度：易
+**為什麼是機會：** 強化品牌價值，吸引人才
+- **行動步驟：**
+  1. 擴展社區教育計畫
+  2. 建立員工志願者計畫
+  3. 支持永續發展項目
+
+---
+
+## ⚡ **快速勝利（Quick Wins）**
+
+1. **發布永續報告** - 實施時間：2-4 週 - 增強品牌信譽
+2. **員工永續培訓** - 實施時間：3-6 週 - 提升內部意識
+3. **供應商評估** - 實施時間：4-8 週 - 降低供應鏈風險
+
+---
+
+## 💝 **激勵話語**
+
+您的企業已是永續發展的領航者！未來的挑戰就是機會，祝您乘勢而上，成為業界標竿！`,
+                    
+                    timestamp: new Date().toISOString()
+                };
+                
+                // 保存到 localStorage
+                localStorage.setItem('griReportData', JSON.stringify(testData));
+                
+                console.log('✅ 測試數據已注入！');
+                console.log('🔄 準備跳轉到報告頁面...');
+                
+                // 顯示狀態
+                const statusDiv = document.getElementById('status');
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = `
+                    <div style="color: green; font-weight: 600;">✅ 測試數據注入成功！</div>
+                    <div style="margin-top: 0.5rem;">準備在 2 秒後跳轉到報告頁面...</div>
+                `;
+                
+                // 跳轉到報告頁面
+                setTimeout(() => {
+                    window.location.href = '/gri-report';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('❌ 注入失敗:', error);
+                const statusDiv = document.getElementById('status');
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = `<div style="color: red; font-weight: 600;">❌ 注入失敗: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
