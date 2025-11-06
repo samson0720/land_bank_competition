@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG評估結果 - 土地銀行綠易通 (Green 'E' Pass)</title>
+    <link rel="icon" type="image/svg+xml" href="/images/plant-sprout-icon.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/chat-assistant.css">
+    <style>
+        .result-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .result-header {
+            background: linear-gradient(135deg, #006633 0%, #00b3b3 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .result-header h1 {
+            font-size: 2rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .pdf-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .pdf-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .pdf-btn-primary {
+            background: linear-gradient(135deg, #006633 0%, #00b3b3 100%);
+            color: white;
+        }
+
+        .pdf-btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #006633;
+        }
+
+        .pdf-btn-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 2px solid #ffc107;
+        }
+
+        .pdf-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .result-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            padding: 1.5rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #006633;
+            box-shadow: 0 4px 12px rgba(0, 102, 51, 0.1);
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #006633;
+            margin: 0.5rem 0;
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        @media (max-width: 768px) {
+            .pdf-actions {
+                flex-direction: column;
+            }
+
+            .pdf-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .result-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/images/land-bank-logo.jpg" alt="土地銀行" class="logo-icon">
+                <span>土地銀行綠易通 <span style="font-size: 0.85em; font-weight: 400;">(Green 'E' Pass)</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">首頁</a></li>
+                <li><a href="/assessment">ESG評估</a></li>
+                <li><a href="/esg-tracker">改善追蹤</a></li>
+                <li><a href="/sustainability">永續平台</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="result-container">
+            <!-- 結果頭部 -->
+            <div class="result-header">
+                <h1>✅ ESG評估完成</h1>
+                <p>您的ESG評估已完成，以下為詳細結果與PDF問卷</p>
+            </div>
+
+            <!-- 狀態消息 -->
+            <div id="statusMessage"></div>
+
+            <!-- PDF操作按鈕 -->
+            <div class="pdf-actions">
+                <button class="pdf-btn pdf-btn-primary" id="downloadBtn" onclick="downloadESGPDF()">
+                    📥 下載PDF問卷
+                </button>
+                <button class="pdf-btn pdf-btn-secondary" id="previewBtn" onclick="previewESGPDF()">
+                    👁️ 預覽PDF
+                </button>
+                <button class="pdf-btn pdf-btn-warning" id="printBtn" onclick="printESGPDF()">
+                    🖨️ 列印PDF
+                </button>
+                <button class="pdf-btn pdf-btn-primary" id="importToTrackerBtn" onclick="importToTracker()" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+                    📊 導入到改善追蹤
+                </button>
+                <button class="pdf-btn pdf-btn-secondary" onclick="location.href='/'">
+                    🏠 返回首頁
+                </button>
+            </div>
+
+            <!-- 評估結果摘要 -->
+            <div class="result-cards" id="resultCards">
+                <!-- 動態生成 -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 土地銀行 | 綠易通 (Green 'E' Pass)</p>
+    </footer>
+
+    <script src="/js/pdf-filler.js"></script>
+    <script>
+        // 全局變數儲存評估結果
+        let currentAssessmentResult = null;
+        let currentPDFBlob = null;
+
+        // 頁面加載初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAssessmentResult();
+        });
+
+        /**
+         * 從localStorage載入評估結果
+         */
+        function loadAssessmentResult() {
+            const resultStr = localStorage.getItem('esgResult');
+            const resultData = localStorage.getItem('esgFullData');
+            
+            if (!resultStr) {
+                showStatus('找不到評估結果，請重新進行評估', 'error');
+                return;
+            }
+
+            try {
+                currentAssessmentResult = JSON.parse(resultStr);
+                const fullData = resultData ? JSON.parse(resultData) : null;
+                
+                console.log('✅ 已加載評估結果', currentAssessmentResult);
+                console.log('📊 檢查分數字段:', {
+                    hasE: 'E' in (currentAssessmentResult.scores || {}),
+                    hasS: 'S' in (currentAssessmentResult.scores || {}),
+                    hasG: 'G' in (currentAssessmentResult.scores || {}),
+                    scores: currentAssessmentResult.scores
+                });
+                
+                // 如果缺少E/S/G分數，嘗試從fullData.esgAssessment重新計算
+                if (fullData && fullData.esgAssessment && (!currentAssessmentResult.scores?.E || !currentAssessmentResult.scores?.S || !currentAssessmentResult.scores?.G)) {
+                    console.log('⚠️ 檢測到缺少E/S/G分數，嘗試從esgAssessment重新計算...');
+                    
+                    // 使用與progress-tracker.js相同的計算邏輯
+                    const normalizedEsgAssessment = normalizeEsgAssessmentForScore(fullData.esgAssessment);
+                    const calculatedScores = calculateESGScoresFromNormalized(normalizedEsgAssessment);
+                    
+                    console.log('✅ 重新計算的分數:', calculatedScores);
+                    
+                    // 更新scores對象
+                    if (!currentAssessmentResult.scores) {
+                        currentAssessmentResult.scores = {};
+                    }
+                    currentAssessmentResult.scores.E = calculatedScores.E;
+                    currentAssessmentResult.scores.S = calculatedScores.S;
+                    currentAssessmentResult.scores.G = calculatedScores.G;
+                    currentAssessmentResult.scores.total = calculatedScores.total;
+                    
+                    // 更新localStorage中的數據
+                    localStorage.setItem('esgResult', JSON.stringify(currentAssessmentResult));
+                    if (fullData) {
+                        if (!fullData.scores) fullData.scores = {};
+                        fullData.scores.E = calculatedScores.E;
+                        fullData.scores.S = calculatedScores.S;
+                        fullData.scores.G = calculatedScores.G;
+                        fullData.scores.total = calculatedScores.total;
+                        localStorage.setItem('esgFullData', JSON.stringify(fullData));
+                    }
+                    
+                    console.log('✅ 已更新分數並保存到localStorage');
+                }
+                
+                // 顯示結果卡片
+                displayResultCards(currentAssessmentResult, fullData);
+                
+                // 自動預生成PDF
+                generateAndCachePDF(fullData || currentAssessmentResult);
+            } catch (error) {
+                console.error('❌ 結果解析錯誤:', error);
+                showStatus('評估結果載入失敗', 'error');
+            }
+        }
+        
+        /**
+         * 標準化esgAssessment字段名（與progress-tracker.js中的邏輯一致）
+         */
+        function normalizeEsgAssessmentForScore(esgAssessment) {
+            const normalized = {};
+            const fieldMapping = {
+                // E構面
+                'e1': { target: 'e1', value: 'yes' },
+                'e2': { target: 'e2', value: 'yes' },
+                'e3': { target: 'e3', value: 'yes' },
+                'e4': { target: 'e4', value: 'yes' },
+                'e5': { target: 'e5', value: 'yes' },
+                'e6': { target: 'e6', value: 'yes' },
+                // S構面
+                's1': { target: 's1', value: 'yes' },
+                's2': { target: 's2', value: 'yes' },
+                's3': { target: 's3', value: 'yes' },
+                's4': { target: 's4', value: 'yes' },
+                's5': { target: 's5', value: 'yes' },
+                // G構面
+                'g1': { target: 'g1', value: 'yes' },
+                'g2': { target: 'g2', value: 'yes' },
+                'g3': { target: 'g3', value: 'yes' },
+                'g4': { target: 'g4', value: 'yes' },
+                'g5': { target: 'g5', value: 'yes' },
+                'g6': { target: 'g6', value: 'yes' },
+                'g7': { target: 'g7', value: 'yes' }
+            };
+            
+            // 直接使用原始值，因為字段名已經是e1, s1等格式
+            Object.keys(esgAssessment).forEach(key => {
+                if (key in fieldMapping) {
+                    normalized[key] = esgAssessment[key];
+                }
+            });
+            
+            return normalized;
+        }
+        
+        /**
+         * 從標準化的esgAssessment計算E/S/G分數（與progress-tracker.js中的邏輯一致）
+         */
+        function calculateESGScoresFromNormalized(normalized) {
+            let eScore = 0, sScore = 0, gScore = 0;
+            
+            // E構面（35分）
+            if (normalized.e1 === 'yes') eScore += 6;  // 節能採購
+            if (normalized.e2 === 'yes') eScore += 7;  // 節能控管與量化指標
+            if (normalized.e3 === 'yes') eScore += 7;  // 碳排減量計畫
+            if (normalized.e4 === 'yes') eScore += 6;  // 無環境污染裁罰
+            if (normalized.e5 === 'yes') eScore += 5;  // 綠能建置投資
+            if (normalized.e6 === 'yes') eScore += 4;  // 廢棄物資源循環利用
+            
+            // S構面（35分）
+            if (normalized.s1 === 'yes') sScore += 7;  // 無鄰居檢舉事件
+            if (normalized.s2 === 'yes') sScore += 8;  // 無勞工裁罰事項
+            if (normalized.s3 === 'yes') sScore += 7;  // 公益或相關採購
+            if (normalized.s4 === 'yes') sScore += 8;  // 聘用弱勢族群或實習計畫
+            if (normalized.s5 === 'yes') sScore += 5;  // 投資ESG綠色金融商品
+            
+            // G構面（30分）
+            if (normalized.g1 === 'yes') gScore += 5;  // 依照規定繳稅
+            if (normalized.g2 === 'yes') gScore += 5;  // 無漏開發票等故意事項
+            if (normalized.g3 === 'yes') gScore += 4;  // 無逃漏裁罰事項
+            if (normalized.g4 === 'yes') gScore += 4;  // 近三年皆有盈餘
+            if (normalized.g5 === 'yes') gScore += 4;  // 定期召開董事會說明財務
+            if (normalized.g6 === 'yes') gScore += 4;  // 設立ESG專責單位
+            if (normalized.g7 === 'yes') gScore += 4;  // 編製永續報告書
+            
+            const total = eScore + sScore + gScore;
+            
+            return { E: eScore, S: sScore, G: gScore, total: total };
+        }
+
+        /**
+         * 顯示結果卡片
+         */
+        function displayResultCards(result, fullData) {
+            console.log('📊 displayResultCards 接收到的 result:', result);
+            console.log('📊 result.scores:', result.scores);
+            console.log('📊 result.scores?.E:', result.scores?.E);
+            console.log('📊 result.scores?.S:', result.scores?.S);
+            console.log('📊 result.scores?.G:', result.scores?.G);
+            console.log('📊 result.scores?.total:', result.scores?.total);
+            
+            const container = document.getElementById('resultCards');
+            
+            // 獲取分數，優先使用直接屬性，然後是details，最後是0
+            const eScore = result.scores?.E ?? result.scores?.details?.E ?? 0;
+            const sScore = result.scores?.S ?? result.scores?.details?.S ?? 0;
+            const gScore = result.scores?.G ?? result.scores?.details?.G ?? 0;
+            
+            console.log('✅ 最終使用的分數 - E:', eScore, 'S:', sScore, 'G:', gScore);
+            
+            const html = `
+                <div class="card">
+                    <div class="card-title">📊 總評級</div>
+                    <div class="card-value" style="color: ${getRatingColor(result.rating)};">
+                        ${result.rating} 級
+                    </div>
+                    <div class="card-subtitle">${result.ratingDescription}</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">📈 ESG表現</div>
+                    <div class="card-value">${result.scores?.esg || 0}%</div>
+                    <div class="card-subtitle">完成度</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">✓ 經濟活動符合度</div>
+                    <div class="card-value">${result.scores?.compliant || 0}%</div>
+                    <div class="card-subtitle">Y/T/N符合率</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🌍 環境(E)</div>
+                    <div class="card-value">${eScore}</div>
+                    <div class="card-subtitle">環境項目評分</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">👥 社會(S)</div>
+                    <div class="card-value">${sScore}</div>
+                    <div class="card-subtitle">社會項目評分</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">⚖️ 治理(G)</div>
+                    <div class="card-value">${gScore}</div>
+                    <div class="card-subtitle">治理項目評分</div>
+                </div>
+
+                ${result.loanDiscount ? `
+                <div class="card" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-color: #4caf50;">
+                    <div class="card-title">💰 貸款優惠</div>
+                    <div class="card-value" style="color: #2e7d32;">${result.loanDiscount.discountRange}</div>
+                    <div class="card-subtitle">${result.loanDiscount.description}</div>
+                </div>
+                ` : ''}
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        /**
+         * 獲取等級顏色
+         */
+        function getRatingColor(rating) {
+            const colors = {
+                'A': '#006633',
+                'B': '#00b3b3',
+                'C': '#ff9800',
+                'D': '#dc3545'
+            };
+            return colors[rating] || '#666';
+        }
+
+        /**
+         * 生成並快取PDF
+         */
+        async function generateAndCachePDF(data) {
+            try {
+                console.log('🔄 正在生成PDF...');
+                showStatus('正在準備PDF文件...', 'info');
+                
+                currentPDFBlob = await esgPdfFiller.generatePDFFromAssessment(data);
+                
+                console.log('✅ PDF已生成並快取');
+                showStatus('PDF已準備就緒，您可以下載或預覽', 'success');
+                
+                // 啟用按鈕
+                enableButtons();
+            } catch (error) {
+                console.error('❌ PDF生成失敗:', error);
+                showStatus('PDF生成失敗，請稍後重試: ' + error.message, 'error');
+                disableButtons();
+            }
+        }
+
+        /**
+         * 下載PDF
+         */
+        function downloadESGPDF() {
+            if (!currentPDFBlob) {
+                showStatus('PDF未準備好，請稍候...', 'error');
+                return;
+            }
+
+            try {
+                const filename = `ESG評估問卷_${currentAssessmentResult.companyName || '公司'}_${new Date().toISOString().split('T')[0]}.pdf`;
+                esgPdfFiller.downloadPDF(currentPDFBlob, filename);
+                showStatus('✅ PDF已開始下載', 'success');
+            } catch (error) {
+                console.error('❌ 下載失敗:', error);
+                showStatus('下載失敗: ' + error.message, 'error');
+            }
+        }
+
+        /**
+         * 預覽PDF
+         */
+        function previewESGPDF() {
+            if (!currentPDFBlob) {
+                showStatus('PDF未準備好，請稍候...', 'error');
+                return;
+            }
+
+            try {
+                esgPdfFiller.previewPDF(currentPDFBlob);
+                showStatus('✅ PDF已在新視窗中打開', 'success');
+            } catch (error) {
+                console.error('❌ 預覽失敗:', error);
+                showStatus('預覽失敗: ' + error.message, 'error');
+            }
+        }
+
+        /**
+         * 列印PDF
+         */
+        function printESGPDF() {
+            if (!currentPDFBlob) {
+                showStatus('PDF未準備好，請稍候...', 'error');
+                return;
+            }
+
+            try {
+                esgPdfFiller.printPDF(currentPDFBlob);
+                showStatus('✅ 列印對話框已打開', 'success');
+            } catch (error) {
+                console.error('❌ 列印失敗:', error);
+                showStatus('列印失敗: ' + error.message, 'error');
+            }
+        }
+
+        /**
+         * 啟用按鈕
+         */
+        function enableButtons() {
+            document.getElementById('downloadBtn').disabled = false;
+            document.getElementById('previewBtn').disabled = false;
+            document.getElementById('printBtn').disabled = false;
+            const importBtn = document.getElementById('importToTrackerBtn');
+            if (importBtn) importBtn.disabled = false;
+        }
+
+        /**
+         * 禁用按鈕
+         */
+        function disableButtons() {
+            document.getElementById('downloadBtn').disabled = true;
+            document.getElementById('previewBtn').disabled = true;
+            document.getElementById('printBtn').disabled = true;
+            const importBtn = document.getElementById('importToTrackerBtn');
+            if (importBtn) importBtn.disabled = true;
+        }
+
+        /**
+         * 顯示狀態消息
+         */
+        function showStatus(message, type) {
+            const container = document.getElementById('statusMessage');
+            container.innerHTML = `
+                <div class="status-message status-${type}">
+                    ${message}
+                </div>
+            `;
+            
+            // 3秒後自動消除success和info消息
+            if (type !== 'error') {
+                setTimeout(() => {
+                    if (container.innerHTML.includes(message)) {
+                        container.innerHTML = '';
+                    }
+                }, 3000);
+            }
+        }
+
+        /**
+         * 導入評估數據到改善追蹤系統
+         */
+        function importToTracker() {
+            try {
+                // 檢查是否有評估數據
+                const resultStr = localStorage.getItem('esgResult');
+                const fullDataStr = localStorage.getItem('esgFullData');
+                
+                if (!resultStr || !fullDataStr) {
+                    showStatus('❌ 找不到評估數據，請先完成評估', 'error');
+                    return;
+                }
+
+                const result = JSON.parse(resultStr);
+                const fullData = JSON.parse(fullDataStr);
+
+                console.log('📊 開始導入評估數據到改善追蹤系統...', { result, fullData });
+                console.log('📊 esgAssessment 原始數據:', fullData.esgAssessment);
+
+                // 字段名標準化：將簡短字段名（e1, e2, s1等）轉換為完整字段名
+                const rawEsgAssessment = fullData.esgAssessment || {};
+                const esgAssessment = {};
+                
+                // E構面映射
+                if (rawEsgAssessment.e1_carbonManagement) {
+                    esgAssessment.e1_carbonManagement = rawEsgAssessment.e1_carbonManagement;
+                } else if (rawEsgAssessment.e1) {
+                    esgAssessment.e1_carbonManagement = rawEsgAssessment.e1 === 'yes' ? 'completed-scope1-2' : 
+                                                       rawEsgAssessment.e1 === 'platform-tool' ? 'platform-tool' :
+                                                       rawEsgAssessment.e1 === 'committed-next-year' ? 'committed-next-year' : rawEsgAssessment.e1;
+                }
+                
+                if (rawEsgAssessment.e2_energyEfficiency) {
+                    esgAssessment.e2_energyEfficiency = rawEsgAssessment.e2_energyEfficiency;
+                } else if (rawEsgAssessment.e2) {
+                    esgAssessment.e2_energyEfficiency = rawEsgAssessment.e2 === 'yes' ? 'updated-equipment-past2y' :
+                                                       rawEsgAssessment.e2 === 'led-full-replacement' ? 'led-full-replacement' :
+                                                       rawEsgAssessment.e2 === 'basic-measures' ? 'basic-measures' : rawEsgAssessment.e2;
+                }
+                
+                if (rawEsgAssessment.e3_waste !== undefined) {
+                    esgAssessment.e3_waste = rawEsgAssessment.e3_waste;
+                } else if (rawEsgAssessment.e3) {
+                    esgAssessment.e3_waste = rawEsgAssessment.e3 === 'yes' ? 'yes' : 'no';
+                }
+                
+                if (rawEsgAssessment.e3_water !== undefined) {
+                    esgAssessment.e3_water = rawEsgAssessment.e3_water;
+                } else if (rawEsgAssessment.e4) {
+                    esgAssessment.e3_water = rawEsgAssessment.e4 === 'yes' ? 'yes' : 'no';
+                }
+                
+                // S構面映射
+                if (rawEsgAssessment.s1_training) {
+                    esgAssessment.s1_training = rawEsgAssessment.s1_training;
+                } else if (rawEsgAssessment.s1) {
+                    esgAssessment.s1_training = rawEsgAssessment.s1 === 'yes' ? 'yes-15hours' :
+                                                rawEsgAssessment.s1 === 'basic-training' ? 'basic-training' :
+                                                rawEsgAssessment.s1 === 'yes-15hours' ? 'yes-15hours' : rawEsgAssessment.s1;
+                }
+                
+                if (rawEsgAssessment.s2_welfare) {
+                    esgAssessment.s2_welfare = rawEsgAssessment.s2_welfare;
+                } else if (rawEsgAssessment.s2) {
+                    esgAssessment.s2_welfare = rawEsgAssessment.s2 === 'yes' ? 'exceeds-law' :
+                                              rawEsgAssessment.s2 === 'basic-insurance' ? 'basic-insurance' :
+                                              rawEsgAssessment.s2 === 'exceeds-law' ? 'exceeds-law' : rawEsgAssessment.s2;
+                }
+                
+                if (rawEsgAssessment.s3_supplychain) {
+                    esgAssessment.s3_supplychain = rawEsgAssessment.s3_supplychain;
+                } else if (rawEsgAssessment.s3) {
+                    esgAssessment.s3_supplychain = rawEsgAssessment.s3 === 'yes' ? 'yes' : 'no';
+                }
+                
+                if (rawEsgAssessment.s4_community) {
+                    esgAssessment.s4_community = rawEsgAssessment.s4_community;
+                } else if (rawEsgAssessment.s4) {
+                    esgAssessment.s4_community = rawEsgAssessment.s4 === 'yes' ? 'yes' : 'no';
+                }
+                
+                // G構面映射
+                if (rawEsgAssessment.g1_sustainability) {
+                    esgAssessment.g1_sustainability = rawEsgAssessment.g1_sustainability;
+                } else if (rawEsgAssessment.g1) {
+                    esgAssessment.g1_sustainability = rawEsgAssessment.g1 === 'yes' ? 'executive-with-team' :
+                                                    rawEsgAssessment.g1 === 'dedicated-staff' ? 'dedicated-staff' :
+                                                    rawEsgAssessment.g1 === 'executive-with-team' ? 'executive-with-team' : rawEsgAssessment.g1;
+                }
+                
+                if (rawEsgAssessment.g2_compliance) {
+                    esgAssessment.g2_compliance = rawEsgAssessment.g2_compliance;
+                } else if (rawEsgAssessment.g2) {
+                    esgAssessment.g2_compliance = rawEsgAssessment.g2 === 'yes' ? 'no-major-violations' :
+                                                 rawEsgAssessment.g2 === 'minor-violations-resolved' ? 'minor-violations-resolved' :
+                                                 rawEsgAssessment.g2 === 'no-major-violations' ? 'no-major-violations' : rawEsgAssessment.g2;
+                }
+                
+                if (rawEsgAssessment.g3_integrity) {
+                    esgAssessment.g3_integrity = rawEsgAssessment.g3_integrity;
+                } else if (rawEsgAssessment.g3) {
+                    esgAssessment.g3_integrity = rawEsgAssessment.g3 === 'yes' ? 'yes' : 'no';
+                }
+                
+                // T構面
+                if (rawEsgAssessment.t1_platform) esgAssessment.t1_platform = rawEsgAssessment.t1_platform;
+                if (rawEsgAssessment.t2_targets) esgAssessment.t2_targets = rawEsgAssessment.t2_targets;
+                if (rawEsgAssessment.t3_commitment) esgAssessment.t3_commitment = rawEsgAssessment.t3_commitment;
+                
+                // 兼容舊字段名
+                if (rawEsgAssessment.s1_employeeSatisfaction) esgAssessment.s1_employeeSatisfaction = rawEsgAssessment.s1_employeeSatisfaction;
+                if (rawEsgAssessment.s2_community) esgAssessment.s2_community = rawEsgAssessment.s2_community;
+                if (rawEsgAssessment.s3_social) esgAssessment.s3_social = rawEsgAssessment.s3_social;
+                if (rawEsgAssessment.g1_governanceStructure) esgAssessment.g1_governanceStructure = rawEsgAssessment.g1_governanceStructure;
+                if (rawEsgAssessment.g2_riskManagement) esgAssessment.g2_riskManagement = rawEsgAssessment.g2_riskManagement;
+                if (rawEsgAssessment.g3_audit) esgAssessment.g3_audit = rawEsgAssessment.g3_audit;
+                if (rawEsgAssessment.g4_transparency) esgAssessment.g4_transparency = rawEsgAssessment.g4_transparency;
+                if (rawEsgAssessment.g5_ethics) esgAssessment.g5_ethics = rawEsgAssessment.g5_ethics;
+                if (rawEsgAssessment.g6_compliance) esgAssessment.g6_compliance = rawEsgAssessment.g6_compliance;
+                if (rawEsgAssessment.g7_supplyChain) esgAssessment.g7_supplyChain = rawEsgAssessment.g7_supplyChain;
+                
+                console.log('📊 標準化後的 esgAssessment:', esgAssessment);
+
+                // 計算E/S/G分數
+                let eScore = 0, sScore = 0, gScore = 0;
+
+                // E構面：e1-e6（滿分35分）
+                if (esgAssessment.e1_carbonManagement === 'completed-scope1-2') eScore += 12;
+                else if (esgAssessment.e1_carbonManagement === 'platform-tool') eScore += 6;
+                else if (esgAssessment.e1_carbonManagement === 'committed-next-year') eScore += 3;
+                else if (esgAssessment.e1 === 'yes') eScore += 6;
+
+                if (esgAssessment.e2_energyEfficiency === 'updated-equipment-past2y') eScore += 10;
+                else if (esgAssessment.e2_energyEfficiency === 'led-full-replacement') eScore += 7;
+                else if (esgAssessment.e2_energyEfficiency === 'basic-measures') eScore += 4;
+                else if (esgAssessment.e2 === 'yes') eScore += 7;
+
+                if (esgAssessment.e3 === 'yes') eScore += 7;
+                else {
+                    if (esgAssessment.e3_waste === 'yes') eScore += 3;
+                    if (esgAssessment.e3_water === 'yes') eScore += 3;
+                }
+                
+                if (esgAssessment.e4 === 'yes') eScore += 6;
+                if (esgAssessment.e5 === 'yes') eScore += 5;
+                if (esgAssessment.e6 === 'yes') eScore += 4;
+
+                // S構面：s1-s5（滿分35分）
+                if (esgAssessment.s1_training === 'yes-15hours') sScore += 10;
+                else if (esgAssessment.s1_training === 'basic-training') sScore += 4;
+                else if (esgAssessment.s1_employeeSatisfaction === 'yes') sScore += 10;
+                else if (esgAssessment.s1 === 'yes') sScore += 7;
+                
+                if (esgAssessment.s2_welfare === 'exceeds-law') sScore += 10;
+                else if (esgAssessment.s2_welfare === 'basic-insurance') sScore += 5;
+                else if (esgAssessment.s2_community === 'yes') sScore += 10;
+                else if (esgAssessment.s2 === 'yes') sScore += 8;
+                
+                if (esgAssessment.s3_supplychain === 'yes') sScore += 5;
+                else if (esgAssessment.s3_social === 'yes') sScore += 10;
+                else if (esgAssessment.s3 === 'yes') sScore += 7;
+                
+                if (esgAssessment.s4_community === 'yes') sScore += 5;
+                else if (esgAssessment.s4 === 'yes') sScore += 8;
+                
+                if (esgAssessment.s5 === 'yes') sScore += 5;
+                
+                // G構面：g1-g7（滿分30分）
+                if (esgAssessment.g1_sustainability === 'executive-with-team') gScore += 10;
+                else if (esgAssessment.g1_sustainability === 'dedicated-staff') gScore += 5;
+                else if (esgAssessment.g1_governanceStructure === 'yes') gScore += 5;
+                else if (esgAssessment.g1 === 'yes') gScore += 5;
+                
+                if (esgAssessment.g2_compliance === 'no-major-violations') gScore += 10;
+                else if (esgAssessment.g2_compliance === 'minor-violations-resolved') gScore += 5;
+                else if (esgAssessment.g2_riskManagement === 'yes') gScore += 3;
+                else if (esgAssessment.g2 === 'yes') gScore += 5;
+                
+                if (esgAssessment.g3_integrity === 'yes') gScore += 5;
+                else if (esgAssessment.g3_audit === 'yes') gScore += 3;
+                else if (esgAssessment.g3 === 'yes') gScore += 4;
+                
+                if (esgAssessment.g4 === 'yes') gScore += 4;
+                if (esgAssessment.g5 === 'yes') gScore += 4;
+                if (esgAssessment.g6 === 'yes') gScore += 4;
+                if (esgAssessment.g7 === 'yes') gScore += 4;
+                
+                // 限制G分數不超過30分（滿分）
+                gScore = Math.min(gScore, 30);
+
+                // 計算總分（不再包含T構面）
+                const backendScores = result.scores || {};
+                
+                // 計算總分：E35 + S35 + G30 = 100
+                const calculatedTotal = eScore + sScore + gScore;
+                
+                // 如果後端返回的esg是百分比（0-100），直接使用；否則使用計算的總分
+                let totalScore = calculatedTotal;
+                if (backendScores.esg && backendScores.esg > 0 && backendScores.esg <= 100 && calculatedTotal === 0) {
+                    // 只有在計算總分為0時才使用後端的百分比
+                    totalScore = Math.round(backendScores.esg);
+                }
+                
+                console.log('📊 分數計算結果:', {
+                    eScore: eScore,
+                    sScore: sScore,
+                    gScore: gScore,
+                    calculatedTotal: calculatedTotal,
+                    backendEsg: backendScores.esg,
+                    finalTotal: totalScore,
+                    esgAssessmentKeys: Object.keys(esgAssessment)
+                });
+
+                // 創建評估記錄
+                const now = Date.now();
+                const assessment = {
+                    id: `assessment_${now}`,
+                    date: fullData.date || new Date().toISOString().split('T')[0],
+                    timestamp: now,
+                    scores: {
+                        total: totalScore,
+                        E: eScore,
+                        S: sScore,
+                        G: gScore,
+                        compliant: backendScores.compliant || 0,
+                        esg: backendScores.esg || totalScore
+                    },
+                    rating: result.rating || 'D',
+                    ratingDescription: result.ratingDescription || '',
+                    environmentalData: {
+                        scope1Emissions: fullData.scope1Emissions || 0,
+                        scope2Emissions: fullData.scope2Emissions || 0,
+                        electricityUsage: fullData.electricityUsage || 0,
+                        waterUsage: fullData.waterUsage || 0
+                    },
+                    details: esgAssessment
+                };
+
+                // 獲取或創建歷史數據
+                let historyData = {
+                    companyId: fullData.companyTaxId || 'default',
+                    companyName: fullData.companyName || '企業',
+                    assessments: [],
+                    achievements: [],
+                    metadata: {
+                        lastUpdated: new Date().toISOString(),
+                        totalAssessments: 0
+                    }
+                };
+
+                const existingHistory = localStorage.getItem('esgHistory');
+                if (existingHistory) {
+                    try {
+                        historyData = JSON.parse(existingHistory);
+                        // 確保數組存在
+                        if (!historyData.assessments) historyData.assessments = [];
+                        if (!historyData.achievements) historyData.achievements = [];
+                    } catch (e) {
+                        console.warn('⚠️ 歷史數據解析失敗，將創建新的', e);
+                    }
+                }
+
+                // 檢查是否已存在（避免重複）
+                const exists = historyData.assessments.some(a => 
+                    Math.abs(a.timestamp - assessment.timestamp) < 10000 // 10秒內
+                );
+
+                if (exists) {
+                    showStatus('⚠️ 此評估已存在於改善追蹤系統中', 'info');
+                    // 仍然跳轉到追蹤頁面
+                    setTimeout(() => {
+                        window.location.href = '/esg-tracker';
+                    }, 1500);
+                    return;
+                }
+
+                // 添加到歷史記錄
+                historyData.assessments.push(assessment);
+                historyData.assessments.sort((a, b) => a.timestamp - b.timestamp);
+                historyData.metadata.lastUpdated = new Date().toISOString();
+                historyData.metadata.totalAssessments = historyData.assessments.length;
+
+                // 更新公司信息
+                if (fullData.companyName) historyData.companyName = fullData.companyName;
+                if (fullData.companyTaxId) historyData.companyId = fullData.companyTaxId;
+
+                // 保存到localStorage
+                localStorage.setItem('esgHistory', JSON.stringify(historyData));
+
+                console.log('✅ 評估數據已導入到改善追蹤系統:', {
+                    assessmentId: assessment.id,
+                    totalScore: assessment.scores.total,
+                    rating: assessment.rating,
+                    totalAssessments: historyData.assessments.length
+                });
+
+                showStatus('✅ 已成功導入到改善追蹤系統！正在跳轉...', 'success');
+
+                // 跳轉到改善追蹤頁面
+                setTimeout(() => {
+                    window.location.href = '/esg-tracker';
+                }, 1500);
+
+            } catch (error) {
+                console.error('❌ 導入失敗:', error);
+                showStatus('❌ 導入失敗：' + error.message, 'error');
+            }
+        }
+    </script>
+    <script src="/js/chat-assistant.js"></script>
+</body>
+</html>
+
+

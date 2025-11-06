@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>永續平台 - 土地銀行綠易通 (Green 'E' Pass)</title>
+    <link rel="icon" type="image/svg+xml" href="/images/plant-sprout-icon.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/chat-assistant.css">
+    <style>
+        /* 永續平台專用樣式 - 參考玉山金控風格 */
+        
+        :root {
+            --sustainability-green: #006633;
+            --sustainability-light-green: #00b3b3;
+            --sustainability-bg: #f8f9fa;
+            --sustainability-card-bg: #ffffff;
+            --sustainability-text: #333333;
+            --sustainability-text-light: #666666;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'PingFang TC', 'Arial', sans-serif;
+            background-color: var(--sustainability-bg);
+        }
+
+        /* Hero Section */
+        .sustainability-hero {
+            background: linear-gradient(135deg, var(--sustainability-green) 0%, #004d26 50%, var(--sustainability-light-green) 100%);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sustainability-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="10%" cy="10%" r="300" fill="rgba(255,255,255,0.05)"/><circle cx="90%" cy="90%" r="250" fill="rgba(255,255,255,0.03)"/></svg>');
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .sustainability-hero .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .sustainability-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            animation: slideInDown 0.8s ease-out;
+        }
+
+        .sustainability-hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: slideInUp 0.8s ease-out 0.2s both;
+            line-height: 1.8;
+        }
+
+        @keyframes slideInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Main Content */
+        .sustainability-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Category Section */
+        .category-section {
+            margin-bottom: 5rem;
+        }
+
+        .category-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--sustainability-green);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .category-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--sustainability-green), var(--sustainability-light-green));
+            margin: 1rem auto 0;
+        }
+
+        .category-description {
+            font-size: 1.1rem;
+            color: var(--sustainability-text-light);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Card Grid */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        /* Case Card */
+        .case-card {
+            background: var(--sustainability-card-bg);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border-top: 4px solid var(--sustainability-green);
+        }
+
+        .case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0, 102, 51, 0.05), transparent);
+            transition: left 0.3s ease;
+            pointer-events: none;
+        }
+
+        .case-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 102, 51, 0.15);
+        }
+
+        .case-card:hover::before {
+            left: 100%;
+        }
+
+        .case-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .case-number {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--sustainability-green), var(--sustainability-light-green));
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .case-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--sustainability-green);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .case-description {
+            color: var(--sustainability-text-light);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .case-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--sustainability-green);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .case-link:hover {
+            color: var(--sustainability-light-green);
+            gap: 0.75rem;
+        }
+
+        .case-link::after {
+            content: '→';
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .case-link:hover::after {
+            transform: translateX(4px);
+        }
+
+        /* Special styling for single case sections */
+        .single-case {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .single-case .case-card {
+            padding: 3rem;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .sustainability-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .sustainability-hero p {
+                font-size: 1.1rem;
+            }
+
+            .category-title {
+                font-size: 2rem;
+            }
+
+            .cases-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .case-card {
+                padding: 2rem;
+            }
+        }
+
+        /* 滾動動畫 */
+        .category-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .category-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/images/land-bank-logo.jpg" alt="土地銀行" class="logo-icon">
+                <span>土地銀行綠易通 <span style="font-size: 0.85em; font-weight: 400;">(Green 'E' Pass)</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">首頁</a></li>
+                <li><a href="/assessment">ESG評估</a></li>
+                <li><a href="/esg-tracker">改善追蹤</a></li>
+                <li><a href="/sustainability">永續平台</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="sustainability-hero">
+        <div class="container">
+            <h1>土地銀行 永續平台</h1>
+            <p>展現我們的永續發展成果，攜手企業共創綠色未來</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="sustainability-content">
+        <!-- 區塊 1：永續解方 - 能源產業 -->
+        <section class="category-section" id="energy">
+            <div class="category-header">
+                <h2 class="category-title">永續解方 - 能源產業</h2>
+                <p class="category-description">
+                    這是土銀著力最深的領域。我們將「再生能源」做為一個大板塊，積極推動各類綠色能源專案，協助台灣能源轉型。
+                </p>
+            </div>
+            <div class="cases-grid">
+                <div class="case-card">
+                    <span class="case-icon">🌋</span>
+                    <span class="case-number">案例 1</span>
+                    <h3 class="case-title">地熱發電 (公股首例)</h3>
+                    <p class="case-description">
+                        土銀首度跨足地熱發電，獨家融資「結元能源」開發新北硫磺子坪電廠。這是公股銀行首例地熱發電融資案，展現土銀在再生能源領域的創新與突破。
+                    </p>
+                    <a href="https://www.geothermal-taiwan.org.tw/News/Show?id=3884" target="_blank" rel="noopener noreferrer" class="case-link">查看報導來源</a>
+                </div>
+
+                <div class="case-card">
+                    <span class="case-icon">💨</span>
+                    <span class="case-number">案例 2</span>
+                    <h3 class="case-title">離岸風電</h3>
+                    <p class="case-description">
+                        土銀攜手26家金融機構，共同主辦1,030億元「渢妙一期」離岸風電聯貸案。這是台灣離岸風電產業的重要里程碑，展現土銀在大型綠色能源專案融資的專業能力。
+                    </p>
+                    <a href="https://www.landbank.com.tw/Bulletin/Detail/20f05e8c-5259-4794-b93d-b2cf008585a1" target="_blank" rel="noopener noreferrer" class="case-link">查看報導來源</a>
+                </div>
+
+                <div class="case-card">
+                    <span class="case-icon">☀️</span>
+                    <span class="case-number">案例 3</span>
+                    <h3 class="case-title">太陽能電廠 (租賃龍頭)</h3>
+                    <p class="case-description">
+                        土銀統籌主辦聯貸案，助「中租控股」充實建置太陽能電廠所需資金。中租控股為台灣太陽能電廠租賃龍頭，此專案協助擴大再生能源投資規模。
+                    </p>
+                    <a href="https://wantrich.chinatimes.com/news/20220901900795-420501" target="_blank" rel="noopener noreferrer" class="case-link">查看報導來源</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 區塊 2：永續解方 - 跨產業合作 -->
+        <section class="category-section" id="cross-industry">
+            <div class="category-header">
+                <h2 class="category-title">永續解方 - 跨產業合作</h2>
+                <p class="category-description">
+                    這個案例非常符合您的需求，一次就涵蓋多個產業。透過綠色存款專案，土銀成功串聯科技、金融、光電、製造、營造等不同產業，共同推動永續發展。
+                </p>
+            </div>
+            <div class="single-case">
+                <div class="case-card">
+                    <span class="case-icon">🤝</span>
+                    <span class="case-number">案例 4</span>
+                    <h3 class="case-title">綠色存款專案 (一次涵蓋多產業)</h3>
+                    <p class="case-description">
+                        土銀推出「綠色存款專案」，獲旺矽科技（科技業）、新光產險（金融保險業）、友達光電（光電業）、閎暉實業（製造業）、根基營造（營造業）及瑞鼎科技（科技業）等六家企業響應，共同撥付32億元資金支持綠色專案。此專案展現土銀在跨產業永續合作方面的領導地位。
+                    </p>
+                    <a href="https://tw.news.yahoo.com/%E5%9C%9F%E9%8A%80%E7%B6%A0%E8%89%B2%E5%AD%98%E6%AC%BE%E5%B0%88%E6%A1%88-%E5%85%AD%E5%AE%B6%E4%BC%81%E6%A5%AD%E6%8C%B7%E6%B3%A832%E5%84%84%E5%85%83-112649348.html" target="_blank" rel="noopener noreferrer" class="case-link">查看報導來源</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 區塊 3：永續解方 - 建築房地產 -->
+        <section class="category-section" id="real-estate">
+            <div class="category-header">
+                <h2 class="category-title">永續解方 - 建築房地產</h2>
+                <p class="category-description">
+                    這是土銀的傳統強項，結合ESG的轉型。我們推出綠建築房貸優惠方案，並積極支持都市更新及危老建築物重建，推動建築業的永續轉型。
+                </p>
+            </div>
+            <div class="single-case">
+                <div class="case-card">
+                    <span class="case-icon">🏗️</span>
+                    <span class="case-number">案例 5</span>
+                    <h3 class="case-title">綠建築房貸與都更</h3>
+                    <p class="case-description">
+                        土銀推出「綠建築房貸」優惠方案，並積極支持都市更新及危老建築物重建。透過提供優惠利率，鼓勵民眾選擇符合綠建築標章的建物，同時協助老舊建築更新，提升整體居住環境品質與能源效率。
+                    </p>
+                    <a href="https://www.landbank.com.tw/Category/Items/%E6%B0%B8%E7%BA%CC%E6%8E%88%E4%BF%A1" target="_blank" rel="noopener noreferrer" class="case-link">查看報導來源</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 區塊 4：銀行業標竿 - 風險治理 -->
+        <section class="category-section" id="governance">
+            <div class="category-header">
+                <h2 class="category-title">銀行業標竿 - 風險治理</h2>
+                <p class="category-description">
+                    這個案例說明土銀如何從源頭控管專案的ESG風險，是G（治理）的關鍵績效。透過導入赤道原則，土銀在審查大型專案融資時，主動評估其對環境與社會的衝擊。
+                </p>
+            </div>
+            <div class="single-case">
+                <div class="case-card">
+                    <span class="case-icon">⚖️</span>
+                    <span class="case-number">案例 6</span>
+                    <h3 class="case-title">簽署「赤道原則」 (Equator Principles)</h3>
+                    <p class="case-description">
+                        土銀導入赤道原則，在審查大型專案融資時，主動評估其對環境與社會的衝擊。這是國際金融業在環境與社會風險管理的重要標準，展現土銀在永續治理方面的決心與專業。
+                    </p>
+                    <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                        <a href="https://news.cnyes.com/news/id/4891099" target="_blank" rel="noopener noreferrer" class="case-link">查看報導來源</a>
+                        <a href="https://www.landbank.com.tw/Category/Items/%E8%B5%A4%E9%81%93%E5%8E%9F%E5%89%87" target="_blank" rel="noopener noreferrer" class="case-link">查看官方報告</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 區塊 5：社會共融 - 體育/社區 -->
+        <section class="category-section" id="social-inclusion">
+            <div class="category-header">
+                <h2 class="category-title">社會共融 - 體育/社區</h2>
+                <p class="category-description">
+                    這部分是 S（社會）的重要案例，也是土銀的特色。我們長期投入體育人才培育，並打造友善職場環境，展現企業對社會責任的承諾。
+                </p>
+            </div>
+            <div class="cases-grid">
+                <div class="case-card">
+                    <span class="case-icon">🏸</span>
+                    <span class="case-number">案例 7</span>
+                    <h3 class="case-title">長期培育體育國手 (羽球隊)</h3>
+                    <p class="case-description">
+                        土銀長年成立甲組羽球隊及網球隊，培育體育人才（如奧運金牌王齊麟），連續16年獲教育部「體育推手獎」。這是土銀長期投入社會責任的重要成果，為台灣體育發展貢獻心力。
+                    </p>
+                    <a href="https://money.udn.com/money/story/5636/8373691" target="_blank" rel="noopener noreferrer" class="case-link">查看報導來源</a>
+                </div>
+
+                <div class="case-card">
+                    <span class="case-icon">💚</span>
+                    <span class="case-number">案例 8</span>
+                    <h3 class="case-title">友善職場 (員工照護)</h3>
+                    <p class="case-description">
+                        打造幸福友善職場，育嬰留職停薪復職率達100%，員工離職率低於1%。土銀重視員工權益與福利，創造優質工作環境，成為金融業友善職場的標竿。
+                    </p>
+                    <a href="https://www.allnews.tw/news/82250" target="_blank" rel="noopener noreferrer" class="case-link">查看報導來源</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 土地銀行 | 綠易通 (Green 'E' Pass) | 攜手企業，共創永續未來</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/chat-assistant.js"></script>
+    <script>
+        // 滾動動畫
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // 觀察所有區塊
+        document.querySelectorAll('.category-section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
+

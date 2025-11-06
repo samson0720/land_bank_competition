@@ -1,0 +1,19 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <!-- 深綠色圓形背景 -->
+  <circle cx="24" cy="24" r="24" fill="#006633"/>
+  
+  <!-- 白色抽象字母設計 - 土地銀行標誌 -->
+  <g fill="white" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- 左側形狀：類似9或S，頂部圓角曲線，垂直段，向中心彎曲，底部左側圓角 -->
+    <path d="M12 10 Q9 12, 9 16 L9 22 Q9 26, 11 28 Q13 30, 13 32 Q13 34, 11 36 Q9 36, 9 38" 
+          fill="none" stroke-width="3.2"/>
+    
+    <!-- 右側形狀：類似5或L，右側垂直筆畫，底部橫向延伸向左，然後向下向右彎曲，底部右側圓角 -->
+    <path d="M34 10 L34 26 Q34 28, 32 30 Q30 32, 28 32 L26 32 Q24 32, 24 34 Q24 36, 26 36 L34 36" 
+          fill="none" stroke-width="3.2"/>
+    
+    <!-- 中央粗對角線：從右上到左下，連接並整合左右形狀 -->
+    <path d="M36 8 L12 40" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>
+

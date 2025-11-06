@@ -1,0 +1,1130 @@
+/* ESG Progress Tracker - 現代化儀表板樣式 */
+
+/* ============ 現代化顏色系統 ============ */
+:root {
+    /* 主色調 - 更豐富的漸變 */
+    --color-e: #10b981;
+    --color-e-light: #34d399;
+    --color-e-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --color-s: #3b82f6;
+    --color-s-light: #60a5fa;
+    --color-s-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    --color-g: #8b5cf6;
+    --color-g-light: #a78bfa;
+    --color-g-gradient: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    
+    /* 品牌色 */
+    --color-primary: #006633;
+    --color-primary-dark: #004d26;
+    --color-primary-light: #00b3b3;
+    --color-primary-gradient: linear-gradient(135deg, #006633 0%, #00b3b3 100%);
+    
+    /* 狀態色 */
+    --color-success: #10b981;
+    --color-danger: #ef4444;
+    --color-warning: #f59e0b;
+    --color-info: #3b82f6;
+    
+    /* 文字色 */
+    --color-text: #1f2937;
+    --color-text-light: #6b7280;
+    --color-text-lighter: #9ca3af;
+    
+    /* 背景色 */
+    --color-bg: #f9fafb;
+    --color-bg-secondary: #f3f4f6;
+    --color-card: #ffffff;
+    --color-card-hover: #fafbfc;
+    
+    /* 邊框和陰影 */
+    --color-border: #e5e7eb;
+    --color-border-light: #f3f4f6;
+    
+    /* 現代化陰影系統 */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+    
+    /* 玻璃態效果 */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.18);
+}
+
+/* ============ 全局樣式 ============ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft JhengHei', 'PingFang TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    color: var(--color-text);
+    line-height: 1.6;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    min-height: 100vh;
+}
+
+/* ============ 容器 ============ */
+.tracker-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    background: transparent;
+    min-height: calc(100vh - 200px);
+}
+
+/* ============ 儀表板標題 - 現代化設計 ============ */
+.tracker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding: 2.5rem 3rem;
+    background: linear-gradient(135deg, #006633 0%, #004d26 50%, #00b3b3 100%);
+    border-radius: 20px;
+    color: white;
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.tracker-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.header-info {
+    position: relative;
+    z-index: 1;
+}
+
+.header-info h1 {
+    font-size: 2.25rem;
+    margin: 0 0 0.75rem 0;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.header-info p {
+    margin: 0;
+    opacity: 0.95;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.header-actions .btn {
+    padding: 0.875rem 1.75rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-actions .btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.header-actions .btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* ============ 摘要卡片 - 現代化設計 ============ */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.card {
+    background: var(--color-card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--color-border-light);
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-primary-gradient);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.card:hover::before {
+    transform: scaleX(1);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-border);
+}
+
+.card-header {
+    padding: 1.75rem 2rem;
+    background: linear-gradient(135deg, rgba(0, 102, 51, 0.03) 0%, rgba(0, 179, 179, 0.03) 100%);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.3px;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+/* ============ 總分卡片 - 增強設計 ============ */
+.score-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+}
+
+.score-card .score-display {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+}
+
+.score-current {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -2px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.esg-card .score-max {
+    font-size: 1.5rem;
+    color: #999;
+    font-weight: 400;
+    opacity: 0.7;
+    letter-spacing: 0.5px;
+}
+
+.esg-card .score-max::before {
+    content: '/';
+    margin-right: 2px;
+    opacity: 0.5;
+}
+
+.score-progress {
+    margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 16px;
+    background: var(--color-bg-secondary);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--color-primary-gradient);
+    border-radius: 10px;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 102, 51, 0.3);
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.progress-text {
+    display: block;
+    text-align: right;
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    color: var(--color-text);
+    font-weight: 700;
+}
+
+.score-comparison {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, rgba(0, 102, 51, 0.08) 0%, rgba(0, 179, 179, 0.08) 100%);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 102, 51, 0.15);
+}
+
+.comparison-label {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+.comparison-value {
+    font-weight: 800;
+    margin-left: 0.5rem;
+    font-size: 1.15rem;
+}
+
+.comparison-value.positive {
+    color: var(--color-success);
+    font-weight: 800;
+}
+
+.comparison-value.negative {
+    color: var(--color-danger);
+    font-weight: 800;
+}
+
+.comparison-value.neutral {
+    color: var(--color-text);
+    font-weight: 700;
+}
+
+.rating-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-primary-gradient);
+    color: white;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: var(--shadow-md);
+    margin-top: 0.5rem;
+}
+
+/* ============ 改善率卡片 - 增強設計 ============ */
+.improvement-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+}
+
+.improvement-card .improvement-display {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.improvement-icon {
+    font-size: 4rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.improvement-value {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--color-success);
+    line-height: 1;
+    text-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+}
+
+.improvement-details {
+    color: var(--color-text-light);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 10px;
+}
+
+/* ============ 成就卡片 - 增強設計 ============ */
+.achievements-summary-card {
+    background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%);
+}
+
+.achievements-summary-card .achievements-count {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.count-number {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    line-height: 1;
+}
+
+.count-label {
+    color: var(--color-text-light);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    display: block;
+}
+
+.achievements-preview {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.achievement-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background: rgba(245, 158, 11, 0.1);
+    border: 2px solid rgba(245, 158, 11, 0.3);
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.achievement-badge:hover {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.5);
+    transform: scale(1.05);
+}
+
+.achievement-badge .icon {
+    font-size: 1.5rem;
+}
+
+.no-achievements {
+    text-align: center;
+    color: var(--color-text-lighter);
+    font-style: italic;
+    padding: 2rem 1rem;
+}
+
+/* ============ 標籤頁 - 現代化設計 ============ */
+.tracker-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    background: var(--color-card);
+    padding: 0.5rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border-light);
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 1rem 1.75rem;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    white-space: nowrap;
+}
+
+.tab-btn::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: var(--color-primary-gradient);
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+    border-radius: 3px 3px 0 0;
+}
+
+.tab-btn:hover {
+    color: var(--color-primary);
+    background: rgba(0, 102, 51, 0.05);
+}
+
+.tab-btn.active {
+    color: var(--color-primary);
+    background: rgba(0, 102, 51, 0.1);
+}
+
+.tab-btn.active::before {
+    width: 80%;
+}
+
+/* ============ 標籤內容 ============ */
+.tab-content-wrapper {
+    position: relative;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============ 圖表卡片 - 現代化設計 ============ */
+.chart-card {
+    margin-bottom: 2.5rem;
+    background: var(--color-card);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border-light);
+    overflow: hidden;
+}
+
+.chart-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 2rem;
+    background: linear-gradient(135deg, rgba(0, 102, 51, 0.03) 0%, rgba(0, 179, 179, 0.03) 100%);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.chart-controls select {
+    padding: 0.625rem 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.chart-controls select:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.chart-card .card-body {
+    padding: 2.5rem;
+}
+
+.chart-card canvas {
+    max-height: 400px;
+}
+
+/* ============ E/S/G 卡片 - 增強設計 ============ */
+.esg-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.esg-card {
+    border-left: 5px solid;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.esg-card:hover {
+    transform: translateY(-6px);
+}
+
+.environment-card {
+    border-left-color: var(--color-e);
+    background: linear-gradient(135deg, #ffffff 0%, rgba(16, 185, 129, 0.03) 100%);
+    border-left-width: 4px;
+}
+
+.environment-card:hover {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(16, 185, 129, 0.06) 100%);
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
+}
+
+.social-card {
+    border-left-color: var(--color-s);
+    background: linear-gradient(135deg, #ffffff 0%, rgba(59, 130, 246, 0.03) 100%);
+    border-left-width: 4px;
+}
+
+.social-card:hover {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(59, 130, 246, 0.06) 100%);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+}
+
+.governance-card {
+    border-left-color: var(--color-g);
+    background: linear-gradient(135deg, #ffffff 0%, rgba(139, 92, 246, 0.03) 100%);
+    border-left-width: 4px;
+}
+
+.governance-card:hover {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(139, 92, 246, 0.06) 100%);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+}
+
+.esg-card .esg-score {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 1.75rem;
+    gap: 0.5rem;
+}
+
+.esg-card .score-current {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.environment-card .score-current {
+    color: #10b981;
+    text-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+.social-card .score-current {
+    color: #3b82f6;
+    text-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.governance-card .score-current {
+    color: #8b5cf6;
+    text-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+}
+
+.esg-progress {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.esg-progress .progress-bar {
+    flex: 1;
+    height: 10px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.esg-progress .progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.esg-progress .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.esg-progress .progress-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    min-width: 45px;
+    text-align: right;
+}
+
+.environment-bar .progress-fill {
+    background: var(--color-e-gradient);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.social-bar .progress-fill {
+    background: var(--color-s-gradient);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.governance-bar .progress-fill {
+    background: var(--color-g-gradient);
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-link:hover {
+    color: var(--color-primary-light);
+    transform: translateX(4px);
+}
+
+/* ============ 成就網格 - 現代化設計 ============ */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.achievement-item {
+    padding: 2rem 1.5rem;
+    background: var(--color-card);
+    border-radius: 16px;
+    border: 2px solid var(--color-border-light);
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-primary-gradient);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.achievement-item.unlocked {
+    border-color: var(--color-success);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(16, 185, 129, 0.1) 100%);
+    box-shadow: var(--shadow);
+}
+
+.achievement-item.unlocked::before {
+    background: var(--color-e-gradient);
+    transform: scaleX(1);
+}
+
+.achievement-item.unlocked:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.achievement-item.locked {
+    opacity: 0.6;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+}
+
+.achievement-item .icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+.achievement-item .name {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+    font-size: 1.1rem;
+}
+
+.achievement-item.locked .name {
+    color: var(--color-text-light);
+}
+
+.achievement-item .description {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+}
+
+.achievement-item .date {
+    font-size: 0.75rem;
+    color: var(--color-text-lighter);
+    font-style: italic;
+}
+
+/* ============ 詳細統計 - 現代化設計 ============ */
+.detail-stats {
+    margin-bottom: 2rem;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-bg-secondary);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.stat-item:hover {
+    background: var(--color-card);
+    border-color: var(--color-border);
+    transform: translateX(4px);
+}
+
+.stat-label {
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: 1rem;
+}
+
+.stat-value {
+    font-weight: 800;
+    font-size: 1.25rem;
+}
+
+.stat-change {
+    font-size: 0.9rem;
+    margin-left: 1rem;
+    font-weight: 600;
+}
+
+.stat-change.positive {
+    color: var(--color-success);
+}
+
+.stat-change.negative {
+    color: var(--color-danger);
+}
+
+/* ============ 模態框 - 現代化設計 ============ */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-xl);
+    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--color-border-light);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 1.75rem;
+    font-weight: 800;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text-light);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--color-text);
+    background: var(--color-bg-secondary);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--color-border-light);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    background: var(--color-bg-secondary);
+}
+
+/* ============ 載入動畫 - 現代化設計 ============ */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+    margin-top: 1.5rem;
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* ============ 響應式設計 ============ */
+@media (max-width: 768px) {
+    .tracker-container {
+        padding: 1.5rem 1rem;
+    }
+
+    .tracker-header {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-start;
+        padding: 2rem 1.5rem;
+    }
+
+    .header-info h1 {
+        font-size: 1.75rem;
+    }
+
+    .header-actions {
+        width: 100%;
+    }
+
+    .header-actions .btn {
+        flex: 1;
+        min-width: 120px;
+    }
+
+    .summary-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .esg-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .tracker-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0.5rem;
+    }
+
+    .tab-btn {
+        white-space: nowrap;
+        padding: 0.875rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    .score-current {
+        font-size: 3rem;
+    }
+
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card .card-body {
+        padding: 1.5rem;
+    }
+}
+
+/* ============ 動畫效果增強 ============ */
+.card {
+    animation: slideInUp 0.6s ease-out backwards;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============ 滾動條美化 ============ */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-dark);
+}

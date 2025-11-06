@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESG 改善追蹤儀表板 - 土地銀行綠易通 (Green 'E' Pass)</title>
+    <link rel="icon" type="image/svg+xml" href="/images/plant-sprout-icon.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/progress-tracker.css">
+    <link rel="stylesheet" href="/css/chat-assistant.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/images/land-bank-logo.jpg" alt="土地銀行" class="logo-icon">
+                <span>土地銀行綠易通 <span style="font-size: 0.85em; font-weight: 400;">(Green 'E' Pass)</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">首頁</a></li>
+                <li><a href="/assessment">ESG評估</a></li>
+                <li><a href="/esg-tracker">改善追蹤</a></li>
+                <li><a href="/sustainability">永續平台</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="tracker-container">
+        <!-- Dashboard Header -->
+        <div class="tracker-header">
+            <div class="header-info">
+                <h1 id="company-name">企業 ESG 改善追蹤儀表板</h1>
+                <p id="last-updated">最後更新：載入中...</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='/assessment'">
+                    🔄 重新評估
+                </button>
+                <button class="btn btn-primary" onclick="exportReport()">
+                    📥 導出報告
+                </button>
+                <button class="btn btn-secondary" onclick="shareReport()">
+                    📧 分享結果
+                </button>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+            <!-- Total Score Card -->
+            <div class="card score-card">
+                <div class="card-header">
+                    <h3>ESG 總分</h3>
+                </div>
+                <div class="card-body">
+                    <div class="score-display">
+                        <span class="score-current" id="total-score">--</span>
+                    </div>
+                    <div class="score-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="total-progress" style="width: 0%"></div>
+                        </div>
+                        <span class="progress-text" id="total-percentage">0%</span>
+                    </div>
+                    <div class="score-comparison" id="total-comparison">
+                        <span class="comparison-label">與上期比較：</span>
+                        <span class="comparison-value">--</span>
+                    </div>
+                    <div class="rating-badge" id="rating-badge">
+                        <span>評級：</span><span id="rating-value">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Improvement Rate Card -->
+            <div class="card improvement-card">
+                <div class="card-header">
+                    <h3>改善率</h3>
+                </div>
+                <div class="card-body">
+                    <div class="improvement-display">
+                        <span class="improvement-icon" id="improvement-icon">📈</span>
+                        <span class="improvement-value" id="improvement-value">--</span>
+                    </div>
+                    <div class="improvement-details" id="improvement-details">
+                        <p>較上期提升 <span id="improvement-points">--</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Card -->
+            <div class="card achievements-summary-card">
+                <div class="card-header">
+                    <h3>🏆 成就徽章</h3>
+                </div>
+                <div class="card-body">
+                    <div class="achievements-count">
+                        <span class="count-number" id="achievements-count">0</span>
+                        <span class="count-label">個已解鎖</span>
+                    </div>
+                    <div class="achievements-preview" id="achievements-preview">
+                        <p class="no-achievements">尚無成就</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tracker-tabs">
+            <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')">
+                📊 總覽
+            </button>
+            <button class="tab-btn" data-tab="environment" onclick="switchTab('environment')">
+                🌍 環境 (E)
+            </button>
+            <button class="tab-btn" data-tab="social" onclick="switchTab('social')">
+                👥 社會 (S)
+            </button>
+            <button class="tab-btn" data-tab="governance" onclick="switchTab('governance')">
+                ⚖️ 治理 (G)
+            </button>
+            <button class="tab-btn" data-tab="achievements" onclick="switchTab('achievements')">
+                🏆 成就
+            </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content-wrapper">
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="tab-overview">
+                <!-- Trend Chart -->
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <h3>📈 ESG 表現趨勢</h3>
+                        <div class="chart-controls">
+                            <select id="time-range-select" onchange="updateCharts()">
+                                <option value="6months">最近6個月</option>
+                                <option value="1year">最近1年</option>
+                                <option value="all">全部歷史</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="trend-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- E/S/G Progress Cards -->
+                <div class="esg-cards">
+                    <!-- Environment Card -->
+                    <div class="card esg-card environment-card">
+                        <div class="card-header">
+                            <h3>🌍 環境 (E)</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="esg-score">
+                                <span class="score-current" id="e-score">--</span>
+                                <span class="score-max">35</span>
+                            </div>
+                            <div class="esg-progress">
+                                <div class="progress-bar environment-bar">
+                                    <div class="progress-fill" id="e-progress" style="width: 0%"></div>
+                                </div>
+                                <span class="progress-text" id="e-percentage">0%</span>
+                            </div>
+                            <div class="esg-comparison" id="e-comparison">
+                                <span class="comparison-label">改善率：</span>
+                                <span class="comparison-value">--</span>
+                            </div>
+                            <button class="btn btn-link" onclick="switchTab('environment')">查看詳情 →</button>
+                        </div>
+                    </div>
+
+                    <!-- Social Card -->
+                    <div class="card esg-card social-card">
+                        <div class="card-header">
+                            <h3>👥 社會 (S)</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="esg-score">
+                                <span class="score-current" id="s-score">--</span>
+                                <span class="score-max">35</span>
+                            </div>
+                            <div class="esg-progress">
+                                <div class="progress-bar social-bar">
+                                    <div class="progress-fill" id="s-progress" style="width: 0%"></div>
+                                </div>
+                                <span class="progress-text" id="s-percentage">0%</span>
+                            </div>
+                            <div class="esg-comparison" id="s-comparison">
+                                <span class="comparison-label">改善率：</span>
+                                <span class="comparison-value">--</span>
+                            </div>
+                            <button class="btn btn-link" onclick="switchTab('social')">查看詳情 →</button>
+                        </div>
+                    </div>
+
+                    <!-- Governance Card -->
+                    <div class="card esg-card governance-card">
+                        <div class="card-header">
+                            <h3>⚖️ 治理 (G)</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="esg-score">
+                                <span class="score-current" id="g-score">--</span>
+                                <span class="score-max">30</span>
+                            </div>
+                            <div class="esg-progress">
+                                <div class="progress-bar governance-bar">
+                                    <div class="progress-fill" id="g-progress" style="width: 0%"></div>
+                                </div>
+                                <span class="progress-text" id="g-percentage">0%</span>
+                            </div>
+                            <div class="esg-comparison" id="g-comparison">
+                                <span class="comparison-label">改善率：</span>
+                                <span class="comparison-value">--</span>
+                            </div>
+                            <button class="btn btn-link" onclick="switchTab('governance')">查看詳情 →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Radar Chart -->
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <h3>📊 E/S/G 對比雷達圖</h3>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="radar-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Achievements -->
+                <div class="card achievements-card">
+                    <div class="card-header">
+                        <h3>🏆 最近獲得的成就</h3>
+                        <button class="btn btn-link" onclick="switchTab('achievements')">查看全部 →</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="achievements-grid" id="recent-achievements">
+                            <p class="no-achievements">尚無成就</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Environment Tab -->
+            <div class="tab-content" id="tab-environment">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🌍 環境 (E) 詳細分析</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="detail-stats" id="e-detail-stats">
+                            <!-- 動態生成詳細統計 -->
+                        </div>
+                        <div class="detail-chart">
+                            <canvas id="e-detail-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Tab -->
+            <div class="tab-content" id="tab-social">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>👥 社會 (S) 詳細分析</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="detail-stats" id="s-detail-stats">
+                            <!-- 動態生成詳細統計 -->
+                        </div>
+                        <div class="detail-chart">
+                            <canvas id="s-detail-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Governance Tab -->
+            <div class="tab-content" id="tab-governance">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>⚖️ 治理 (G) 詳細分析</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="detail-stats" id="g-detail-stats">
+                            <!-- 動態生成詳細統計 -->
+                        </div>
+                        <div class="detail-chart">
+                            <canvas id="g-detail-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Tab -->
+            <div class="tab-content" id="tab-achievements">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🏆 成就徽章</h3>
+                        <button class="btn btn-secondary" onclick="checkAchievements()">檢查成就</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="achievements-section">
+                            <h4>已解鎖成就</h4>
+                            <div class="achievements-grid" id="unlocked-achievements">
+                                <!-- 動態生成 -->
+                            </div>
+                        </div>
+                        <div class="achievements-section">
+                            <h4>未解鎖成就</h4>
+                            <div class="achievements-grid locked" id="locked-achievements">
+                                <!-- 動態生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Achievement Notification Modal -->
+    <div class="modal" id="achievement-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 恭喜！</h2>
+                <button class="modal-close" onclick="closeAchievementModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="achievement-modal-body">
+                <!-- 動態生成成就內容 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeAchievementModal()">太棒了！</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>載入中...</p>
+    </div>
+
+    <!-- Chat Assistant -->
+    <div id="chat-assistant-container"></div>
+
+    <!-- Scripts -->
+    <script src="/js/chat-assistant.js"></script>
+    <script src="/js/progress-tracker.js"></script>
+</body>
+</html>
+
+

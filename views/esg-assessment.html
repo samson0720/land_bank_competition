@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企業永續經濟活動自評 - 土地銀行綠易通 (Green 'E' Pass)</title>
+    <link rel="icon" type="image/svg+xml" href="/images/plant-sprout-icon.svg">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/chat-assistant.css">
+    <style>
+        /* ESG評估專用樣式 */
+        .esg-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .esg-header {
+            background: linear-gradient(135deg, #006633 0%, #00b3b3 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .esg-header h1 {
+            font-size: 2rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+        }
+
+        .esg-header p {
+            margin: 0;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .esg-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+        }
+
+        .esg-tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            margin-bottom: -2px;
+        }
+
+        .esg-tab-btn:hover {
+            color: #006633;
+        }
+
+        .esg-tab-btn.active {
+            color: #006633;
+            border-bottom-color: #006633;
+        }
+
+        .esg-tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .esg-tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .esg-section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 102, 51, 0.03) 0%, rgba(0, 179, 179, 0.03) 100%);
+            border-left: 4px solid #006633;
+            border-radius: 8px;
+        }
+
+        .esg-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #006633;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 0.75rem;
+        }
+
+        .esg-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .esg-form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .esg-form-group input,
+        .esg-form-group select,
+        .esg-form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .esg-form-group input:focus,
+        .esg-form-group select:focus,
+        .esg-form-group textarea:focus {
+            outline: none;
+            border-color: #006633;
+            box-shadow: 0 0 0 3px rgba(0, 102, 51, 0.1);
+        }
+
+        .esg-form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .esg-form-group.checkbox-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background-color: rgba(0, 102, 51, 0.05);
+        }
+
+        .checkbox-item input[type="checkbox"],
+        .checkbox-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin: 0;
+            flex-shrink: 0;
+            accent-color: #006633;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            line-height: 1.5;
+        }
+
+        /* 改進radio和checkbox組的佈局 */
+        .radio-group,
+        .checkbox-group-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .radio-item,
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .radio-item:hover,
+        .check-item:hover {
+            background: white;
+            border-color: #006633;
+            box-shadow: 0 2px 8px rgba(0, 102, 51, 0.1);
+        }
+
+        .radio-item input[type="radio"],
+        .check-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin: 0;
+            flex-shrink: 0;
+            accent-color: #006633;
+        }
+
+        .radio-item label,
+        .check-item label {
+            margin: 0;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .radio-item label:hover,
+        .check-item label:hover {
+            color: #006633;
+        }
+
+        .activity-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .activity-card:hover {
+            border-color: #006633;
+            box-shadow: 0 4px 12px rgba(0, 102, 51, 0.1);
+        }
+
+        .activity-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .activity-sequence {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #006633;
+        }
+
+        .activity-rating {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .rating-y {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .rating-t {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .rating-n {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .rating-x {
+            background: #d6d8db;
+            color: #383d41;
+        }
+
+        .btn-add-activity {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: #006633;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-activity:hover {
+            background: #004d26;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 51, 0.2);
+        }
+
+        .btn-remove-activity {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: #f8d7da;
+            color: #721c24;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove-activity:hover {
+            background: #f5c6cb;
+        }
+
+        .submit-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+        }
+
+        .btn-submit {
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #006633 0%, #004d26 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 102, 51, 0.2);
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 102, 51, 0.3);
+        }
+
+        .btn-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .required {
+            color: #dc3545;
+            margin-left: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .esg-container {
+                padding: 1.5rem;
+            }
+
+            .esg-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .esg-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .esg-tabs {
+                gap: 0.5rem;
+            }
+
+            .esg-tab-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .esg-form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-submit {
+                width: 100%;
+            }
+        }
+
+        .checkbox-group-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            background: white;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .check-item:hover {
+            background: #f5faf8;
+            border-color: #006633;
+        }
+
+        .check-item input[type="checkbox"] {
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: #006633;
+            flex-shrink: 0;
+        }
+
+        .check-item label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0;
+            word-break: break-word;
+        }
+
+        /* 進度條容器 */
+        .esg-progress-container {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .esg-progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .esg-progress-percentage {
+            font-size: 1.5rem;
+            color: #006633;
+            font-weight: 700;
+        }
+
+        .progress-bar-wrapper {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #006633 0%, #00b3b3 100%);
+            transition: width 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 102, 51, 0.3);
+        }
+
+        /* 評估狀態提示 */
+        .esg-status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, rgba(0, 102, 51, 0.05), rgba(0, 179, 179, 0.05));
+            border-left: 4px solid #006633;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #006633;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="/images/land-bank-logo.jpg" alt="土地銀行" class="logo-icon">
+                <span>土地銀行綠易通 <span style="font-size: 0.85em; font-weight: 400;">(Green 'E' Pass)</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">首頁</a></li>
+                <li><a href="/assessment">ESG評估</a></li>
+                <li><a href="/esg-tracker">改善追蹤</a></li>
+                <li><a href="/sustainability">永續平台</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="esg-header">
+            <h1>📋 企業永續經濟活動自評問卷</h1>
+            <p>依據「永續經濟活動認定參考指引(第二版)」，協助企業評估經濟活動是否符合永續發展標準。</p>
+        </section>
+
+        <section class="esg-container">
+            <!-- 分頁標籤 -->
+            <div class="esg-tabs">
+                <button class="esg-tab-btn active" onclick="switchTab(event, 'table1')">
+                    📊 表格一：企業ESG資訊
+                </button>
+                <button class="esg-tab-btn" onclick="switchTab(event, 'table2')">
+                    ✓ 表格二：經濟活動評估
+                </button>
+            </div>
+
+            <!-- ========== 表格一：企業ESG資訊 ========== -->
+            <div id="table1" class="esg-tab-content active">
+                <!-- 進度條 -->
+                <div class="esg-progress-container">
+                    <div class="esg-progress-header">
+                        <span>📋 評估進度</span>
+                        <span class="esg-progress-percentage"><span id="progress-percentage">0</span>%</span>
+                    </div>
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div style="margin-top: 0.75rem; font-size: 0.9rem; color: #666;">
+                        已填寫: <span id="completed-fields">0</span> / <span id="total-fields">0</span> 欄位
+                    </div>
+                </div>
+
+                <!-- 評估狀態提示 -->
+                <div class="esg-status-indicator">
+                    <span class="status-dot"></span>
+                    <span>🔄 系統正在評估您的回答，請完整填寫所有必填欄位（標記 <span class="required" style="color: #dc3545;">*</span>）</span>
+                </div>
+
+                <!-- 一、基本資料 -->
+                <div class="esg-section">
+                    <div class="esg-section-title">一、基本資料</div>
+
+                    <div class="esg-form-row">
+                        <div class="esg-form-group">
+                            <label>企業名稱 <span class="required">*</span></label>
+                            <input type="text" id="company-name" placeholder="請輸入企業名稱" required>
+                        </div>
+                        <div class="esg-form-group">
+                            <label>企業統編 <span class="required">*</span></label>
+                            <input type="text" id="company-tax-id" placeholder="請輸入統一編號" required>
+                        </div>
+                    </div>
+
+                    <div class="esg-form-row">
+                        <div class="esg-form-group">
+                            <label>過去一年年度 <span class="required">*</span></label>
+                            <input type="number" id="past-year" placeholder="例：113" required>
+                        </div>
+                        <div class="esg-form-group">
+                            <label>填寫日期 <span class="required">*</span></label>
+                            <input type="date" id="assessment-date" required>
+                        </div>
+                    </div>
+
+                    <div class="esg-form-row">
+                        <div class="esg-form-group">
+                            <label>過去一年營業收入 (千元) <span class="required">*</span></label>
+                            <input type="number" id="revenue" placeholder="請輸入營業收入" required>
+                        </div>
+                        <div class="esg-form-group">
+                            <label>過去一年資產總額 (千元) <span class="required">*</span></label>
+                            <input type="number" id="total-assets" placeholder="請輸入資產總額" required>
+                        </div>
+                    </div>
+
+                    <div class="esg-form-group">
+                        <label>營業收入/資產資料屬性 <span class="required">*</span></label>
+                        <select id="data-attribute" required>
+                            <option value="">-- 請選擇 --</option>
+                            <option value="financial-audit">財務簽證</option>
+                            <option value="tax-audit">稅務簽證</option>
+                            <option value="self-report">自結報告</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 二、溫室氣體排放 -->
+                <div class="esg-section">
+                    <div class="esg-section-title">二、過去一年溫室氣體排放</div>
+                    <p class="form-hint">盤查邊界係以全公司為主，如僅部分盤查，請於下方說明</p>
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; background-color: #f0f7f3; border-left: 4px solid #00b3b3; border-radius: 6px;">
+                        <p style="margin: 0; font-size: 0.95rem; color: #333;">
+                            💡 <strong>溫室氣體排放量估算工具：</strong> 
+                            如需協助估算溫室氣體排放量，可使用
+                            <a href="https://ghgregistry.moenv.gov.tw/epa_ghg/calcaulate/03_2_info_edit.aspx" target="_blank" style="color: #006633; text-decoration: underline; font-weight: 600;">
+                              環境部氣候變遷署「事業溫室氣體排放量資訊平台」試算工具
+                            </a>
+                            進行計算。
+                        </p>
+                    </div>
+
+                    <div class="esg-form-group">
+                        <label>直接排放 (範疇一) - 公噸CO₂當量</label>
+                        <input type="number" id="scope1-emissions" placeholder="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="esg-form-group checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="scope1-verification">
+                            <label for="scope1-verification">經第三方機構驗證</label>
+                        </div>
+                    </div>
+
+                    <div class="esg-form-group">
+                        <label>能源間接排放 (範疇二) - 公噸CO₂當量</label>
+                        <input type="number" id="scope2-emissions" placeholder="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="esg-form-group checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="scope2-verification">
+                            <label for="scope2-verification">經第三方機構驗證</label>
+                        </div>
+                    </div>
+
+                    <div class="esg-form-group">
+                        <label>其他間接排放 (範疇三) - 公噸CO₂當量</label>
+                        <input type="number" id="scope3-emissions" placeholder="0" min="0" step="0.01">
+                    </div>
+
+                    <div class="esg-form-group checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="scope3-verification">
+                            <label for="scope3-verification">經第三方機構驗證</label>
+                        </div>
+                    </div>
+
+                    <div class="esg-form-group">
+                        <label>部分盤查邊界說明 (50字內)</label>
+                        <textarea id="boundary-description" rows="3" placeholder="若為全公司盤查可留空"></textarea>
+                    </div>
+                </div>
+
+                <!-- 三、能源管理 -->
+                <div class="esg-section">
+                    <div class="esg-section-title">三、能源管理</div>
+
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; background-color: #f0f7f3; border-left: 4px solid #00b3b3; border-radius: 6px;">
+                        <p style="margin: 0; font-size: 0.95rem; color: #333; line-height: 1.6;">
+                            💡 <strong>用電/用水查詢說明：</strong> 
+                            用電及用水度數可下載《台灣電力APP》、《台灣自來水APP》，或Mydata網站(網址：mydata.nat.gov.tw)進行查詢。
+                        </p>
+                    </div>
+
+                    <div class="esg-form-row">
+                        <div class="esg-form-group">
+                            <label>全公司用電總度數 (度)</label>
+                            <input type="number" id="electricity-usage" placeholder="0" min="0">
+                        </div>
+                        <div class="esg-form-group">
+                            <label>全公司用水度數 (度)</label>
+                            <input type="number" id="water-usage" placeholder="0" min="0">
+                        </div>
+                    </div>
+
+                    <div class="esg-form-group">
+                        <label>使用再生能源</label>
+                        <select id="renewable-energy" onchange="toggleRenewableFields()">
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否</option>
+                            <option value="yes">是</option>
+                        </select>
+                    </div>
+
+                    <div id="renewable-fields" style="display:none;">
+                        <div class="esg-form-row">
+                            <div class="esg-form-group">
+                                <label>外購再生能源度數</label>
+                                <input type="number" id="renewable-purchased" placeholder="0" min="0">
+                            </div>
+                            <div class="esg-form-group">
+                                <label>自產再生能源度數</label>
+                                <input type="number" id="renewable-produced" placeholder="0" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="esg-form-group checkbox-group">
+                        <label>能源管理系統驗證 (如ISO 50001)</label>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="energy-management-system">
+                            <label for="energy-management-system">已取得驗證</label>
+                        </div>
+                    </div>
+
+                    <div class="esg-form-group">
+                        <label>再生能源憑證 (RECs) 累積購買量 (張)</label>
+                        <input type="number" id="rec-certificates" placeholder="0" min="0">
+                    </div>
+                </div>
+
+                <!-- 四、ESG評估 -->
+                <div class="esg-section">
+                    <div class="esg-section-title">四、環境保護、社會責任與公司治理</div>
+
+                    <!-- 環保項目 -->
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: #006633; margin-bottom: 1rem;">🌍 環境保護 (E)</h3>
+                        <div class="esg-form-group checkbox-group">
+                            <label>E1: 公司近三年內進行節能採購？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e1" value="yes" id="e1-yes">
+                                <label for="e1-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e1" value="no" id="e1-no">
+                                <label for="e1-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>E2: 公司針對節能有進行控管並訂定量化指標？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e2" value="yes" id="e2-yes">
+                                <label for="e2-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e2" value="no" id="e2-no">
+                                <label for="e2-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>E3: 公司對於碳排減量有進行採購或轉型計畫？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e3" value="yes" id="e3-yes">
+                                <label for="e3-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e3" value="no" id="e3-no">
+                                <label for="e3-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>E4: 公司近三年無環境污染等裁罰事項？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e4" value="yes" id="e4-yes">
+                                <label for="e4-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e4" value="no" id="e4-no">
+                                <label for="e4-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>E5: 公司針對綠能建置有進行投資或明確計畫？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e5" value="yes" id="e5-yes">
+                                <label for="e5-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e5" value="no" id="e5-no">
+                                <label for="e5-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>E6: 公司針對廢棄物資源循環利用或促進原物料永續使用？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e6" value="yes" id="e6-yes">
+                                <label for="e6-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="e6" value="no" id="e6-no">
+                                <label for="e6-no">否</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 社會項目 -->
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="color: #006633; margin-bottom: 1rem;">👥 社會責任 (S)</h3>
+                        <div class="esg-form-group checkbox-group">
+                            <label>S1: 公司近三年無鄰居檢舉事件？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s1" value="yes" id="s1-yes">
+                                <label for="s1-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s1" value="no" id="s1-no">
+                                <label for="s1-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>S2: 公司近三年無勞工裁罰事項發生？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s2" value="yes" id="s2-yes">
+                                <label for="s2-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s2" value="no" id="s2-no">
+                                <label for="s2-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>S3: 公司近三年曾有公益或相關採購？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s3" value="yes" id="s3-yes">
+                                <label for="s3-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s3" value="no" id="s3-no">
+                                <label for="s3-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>S4: 公司聘用弱勢族群或提供學生實習計畫？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s4" value="yes" id="s4-yes">
+                                <label for="s4-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s4" value="no" id="s4-no">
+                                <label for="s4-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>S5: 公司投資ESG相關綠色金融商品？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s5" value="yes" id="s5-yes">
+                                <label for="s5-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="s5" value="no" id="s5-no">
+                                <label for="s5-no">否</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 治理項目 -->
+                    <div>
+                        <h3 style="color: #006633; margin-bottom: 1rem;">⚖️ 公司治理 (G)</h3>
+                        <div class="esg-form-group checkbox-group">
+                            <label>G1: 公司有依照規定繳稅？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g1" value="yes" id="g1-yes">
+                                <label for="g1-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g1" value="no" id="g1-no">
+                                <label for="g1-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>G2: 公司無漏開發票等故意事項？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g2" value="yes" id="g2-yes">
+                                <label for="g2-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g2" value="no" id="g2-no">
+                                <label for="g2-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>G3: 公司近三年無逃漏裁罰事項發生？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g3" value="yes" id="g3-yes">
+                                <label for="g3-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g3" value="no" id="g3-no">
+                                <label for="g3-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>G4: 公司近三年皆有盈餘？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g4" value="yes" id="g4-yes">
+                                <label for="g4-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g4" value="no" id="g4-no">
+                                <label for="g4-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>G5: 公司有定期召開董事會並說明財務狀況？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g5" value="yes" id="g5-yes">
+                                <label for="g5-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g5" value="no" id="g5-no">
+                                <label for="g5-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>G6: 公司有定期與股東或關係人說明營運狀況？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g6" value="yes" id="g6-yes">
+                                <label for="g6-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g6" value="no" id="g6-no">
+                                <label for="g6-no">否</label>
+                            </div>
+                        </div>
+
+                        <div class="esg-form-group checkbox-group">
+                            <label>G7: 公司有編製永續報告書？</label>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g7" value="yes" id="g7-yes">
+                                <label for="g7-yes">是</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="radio" name="g7" value="no" id="g7-no">
+                                <label for="g7-no">否</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 表格一的下一步按鈕 -->
+                <div class="submit-section" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+                    <button type="button" class="btn-next" onclick="goToTable2()" style="background-color: #006633; color: white; padding: 0.75rem 2rem; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s ease;">
+                        ➜ 下一步：進入表格二
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========== 表格二：經濟活動評估 ========== -->
+            <div id="table2" class="esg-tab-content">
+                <div class="esg-section">
+                    <div class="esg-section-title">二、自評經濟活動適用/符合永續經濟活動認定參考指引(第二版)之情形</div>
+
+                    <div class="esg-form-group">
+                        <label>企業在衡量期間是否有任一營運經濟活動或個別專案項目適用本指引？ <span class="required">*</span></label>
+                        <select id="has-applicable-activities" onchange="toggleActivitiesTable()" required>
+                            <option value="">-- 請選擇 --</option>
+                            <option value="no">否 (毋需填寫表格二)</option>
+                            <option value="yes">是 (請續答下一題)</option>
+                        </select>
+                    </div>
+
+                    <div id="activities-selection" style="display: none;">
+                        <div class="esg-form-group checkbox-group">
+                            <label>請問您要自評的項目包含哪些？ (可複選)</label>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="include-operating" onchange="updateActivityTables()">
+                                <label for="include-operating">營運經濟活動</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="include-projects" onchange="updateActivityTables()">
+                                <label for="include-projects">個別專案項目</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 營運經濟活動部分 -->
+                    <div id="operating-activities-section" style="display: none; margin-top: 2rem;">
+                        <div style="margin-bottom: 1.5rem;">
+                            <h3 style="color: #006633; margin-bottom: 1rem;">營運經濟活動</h3>
+                            <div id="operating-activities-container"></div>
+                            <button type="button" class="btn-add-activity" onclick="addOperatingActivity()">
+                                + 新增營運經濟活動
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 個別專案項目部分 -->
+                    <div id="project-activities-section" style="display: none; margin-top: 2rem;">
+                        <div style="margin-bottom: 1.5rem;">
+                            <h3 style="color: #006633; margin-bottom: 1rem;">個別專案項目</h3>
+                            <div id="project-activities-container"></div>
+                            <button type="button" class="btn-add-activity" onclick="addProjectActivity()">
+                                + 新增個別專案項目
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 表格二的操作按鈕 -->
+                <div class="submit-section" style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+                    <button type="button" class="btn-back" onclick="goToTable1()" style="background-color: #999; color: white; padding: 0.75rem 2rem; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.3s ease;">
+                        ⬅ 返回表格一
+                    </button>
+                    <button class="btn-submit" onclick="submitAssessment()">
+                        📊 提交評估並查看結果
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ESG評估載入介面 -->
+    <div id="assessment-loading" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); display: none; align-items: center; justify-content: center; z-index: 1000;">
+        <div style="background: white; padding: 2.5rem; border-radius: 12px; text-align: center; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);">
+            <div style="font-size: 3.5rem; margin-bottom: 1rem; animation: bounce 1s infinite;">⏳</div>
+            <p style="font-size: 1.2rem; font-weight: 700; color: #006633; margin: 0 0 0.75rem 0;">正在評估您的回答...</p>
+            <p style="color: #666; margin: 0; font-size: 0.95rem;">系統正在分析永續經濟活動符合度，請稍候...</p>
+            <p style="color: #999; margin-top: 1rem; font-size: 0.85rem;">⏱️ 通常需要 5-15 秒鐘（取決於 AI 分析速度）</p>
+        </div>
+    </div>
+
+    <style>
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+
+    <footer>
+        <p>&copy; 2025 土地銀行 | 綠易通 (Green 'E' Pass)</p>
+    </footer>
+
+    <script src="/js/esg-data.js"></script>
+    <script>
+        // 全局變數
+        let operatingActivityCount = 0;
+        let projectActivityCount = 0;
+
+        // 生成經濟活動代號選項
+        function getActivityCodeOptions() {
+            return Object.entries(ESG_ACTIVITIES)
+                .map(([code, activity]) => `<option value="${code}">${code} - ${activity.name}</option>`)
+                .join('');
+        }
+
+        // Tab 切換函數
+        function switchTab(event, tabName) {
+            event.preventDefault();
+            
+            // 隱藏所有 tab
+            document.querySelectorAll('.esg-tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.esg-tab-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // 顯示選定的 tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // 切換再生能源欄位
+        function toggleRenewableFields() {
+            const renewableValue = document.getElementById('renewable-energy').value;
+            const fields = document.getElementById('renewable-fields');
+            fields.style.display = renewableValue === 'yes' ? 'block' : 'none';
+        }
+
+        // 切換經濟活動表
+        function toggleActivitiesTable() {
+            const value = document.getElementById('has-applicable-activities').value;
+            const selectionDiv = document.getElementById('activities-selection');
+            selectionDiv.style.display = value === 'yes' ? 'block' : 'none';
+
+            if (value !== 'yes') {
+                document.getElementById('include-operating').checked = false;
+                document.getElementById('include-projects').checked = false;
+                updateActivityTables();
+            }
+        }
+
+        // 更新活動表顯示
+        function updateActivityTables() {
+            const showOperating = document.getElementById('include-operating').checked;
+            const showProjects = document.getElementById('include-projects').checked;
+
+            document.getElementById('operating-activities-section').style.display = showOperating ? 'block' : 'none';
+            document.getElementById('project-activities-section').style.display = showProjects ? 'block' : 'none';
+
+            if (!showOperating) operatingActivityCount = 0;
+            if (!showProjects) projectActivityCount = 0;
+        }
+
+        // 新增營運經濟活動
+        function addOperatingActivity() {
+            operatingActivityCount++;
+            const container = document.getElementById('operating-activities-container');
+            const activityHTML = createActivityCard('operating', operatingActivityCount);
+            container.insertAdjacentHTML('beforeend', activityHTML);
+        }
+
+        // 新增個別專案項目
+        function addProjectActivity() {
+            projectActivityCount++;
+            const container = document.getElementById('project-activities-container');
+            const activityHTML = createActivityCard('project', projectActivityCount);
+            container.insertAdjacentHTML('beforeend', activityHTML);
+        }
+
+        // 創建活動卡片HTML
+        function createActivityCard(type, sequenceNum) {
+            const seq = String(sequenceNum).padStart(2, '0');
+            const typeLabel = type === 'operating' ? '營運經濟活動' : '個別專案項目';
+            const typeId = type === 'operating' ? 'operating' : 'project';
+
+            return `
+                <div class="activity-card" id="${typeId}-activity-${seq}" data-activity-type="${type}">
+                    <button type="button" class="btn-remove-activity" onclick="removeActivity('${typeId}', '${seq}')">
+                        ✕ 移除
+                    </button>
+                    
+                    <div class="activity-card-header">
+                        <span class="activity-sequence">序號 ${seq}：${typeLabel}</span>
+                        <span class="activity-rating" id="rating-${typeId}-${seq}" style="display:none;"></span>
+                    </div>
+
+                    <div class="esg-form-group">
+                        <label>1. 適用指引經濟活動代號 <span class="required">*</span></label>
+                        <select id="activity-code-${typeId}-${seq}" name="activity-code" onchange="updateActivityCategory('${typeId}', '${seq}')" required>
+                            <option value="">-- 請選擇經濟活動代號 --</option>
+                            ${getActivityCodeOptions()}
+                        </select>
+                        <p class="form-hint">✓ 共${Object.keys(ESG_ACTIVITIES).length}項經濟活動代碼</p>
+                    </div>
+
+                    <div class="esg-form-group">
+                        <label>2. 該項目適用本指引之類別</label>
+                        <div style="padding: 1rem; background: white; border-radius: 6px;">
+                            <div style="margin-bottom: 0.75rem;">
+                                <strong id="category-${typeId}-${seq}" name="category">未選擇代號</strong>
+                                <span id="category-type-${typeId}-${seq}" style="color: #666; font-size: 0.9rem;"></span>
+                            </div>
+                            <div style="color: #999; font-size: 0.85rem;">
+                                (此欄位將根據上一題選擇自動帶入)
+                            </div>
+                        </div>
+                    </div>
+
+                    ${type === 'operating' ? `
+                    <div class="esg-form-group">
+                        <label>3. 該營運經濟活動前一年占全部營收之比重 <span class="required">*</span></label>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="number" 
+                                   id="revenue-share-${typeId}-${seq}" 
+                                   name="revenue-share-${typeId}-${seq}"
+                                   min="0" 
+                                   max="100" 
+                                   step="0.01"
+                                   placeholder="例如：70"
+                                   style="width: 120px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;"
+                                   required>
+                            <span style="font-size: 1rem; color: #666;">%</span>
+                        </div>
+                        <p class="form-hint">請輸入該活動占前一年總營收的百分比（0-100%）</p>
+                    </div>
+                    ` : ''}
+
+                    <div class="esg-section" style="border-left-color: #00b3b3;">
+                        <div class="esg-section-title" style="color: #00b3b3;">條件一：是否符合【對任一環境目的具有實質貢獻】？</div>
+                        <div class="esg-form-group checkbox-group">
+                            <label>請勾選所有符合之項目：</label>
+                            <div id="condition1-options-${typeId}-${seq}" style="margin-top: 1rem;">
+                                <p style="color: #999;">請先選擇經濟活動代號</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="esg-section" style="border-left-color: #00b3b3;">
+                        <div class="esg-section-title" style="color: #00b3b3;">條件二：是否符合【未造成重大環境危害】？</div>
+                        <div class="esg-form-group checkbox-group">
+                            <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
+                                衡量期間內，企業是否未曾因違反以下環保相關法規而受到目的事業主管機關的重大裁處？
+                            </p>
+                            <div class="radio-group" style="margin-top: 1rem;">
+                                <div class="radio-item">
+                                    <input type="radio" name="condition2-${typeId}-${seq}" value="yes" id="c2-yes-${typeId}-${seq}" onchange="updateActivityRating('${typeId}', '${seq}')">
+                                    <label for="c2-yes-${typeId}-${seq}"><strong>是</strong> - 皆未違反任何法規（完全符合條件）</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="condition2-${typeId}-${seq}" value="no" id="c2-no-${typeId}-${seq}" onchange="updateActivityRating('${typeId}', '${seq}')">
+                                    <label for="c2-no-${typeId}-${seq}"><strong>否</strong> - 有違反記錄（請勾選違反的法規項目）</label>
+                                </div>
+                            </div>
+                            <div id="condition2-violations-${typeId}-${seq}" style="display:none; margin-top: 1.5rem; padding: 1.5rem; background: #fff8f0; border-left: 4px solid #ff9800; border-radius: 6px;">
+                                <p style="margin-top: 0; margin-bottom: 1rem; color: #666; font-weight: 600;">⚠️ 請勾選衡量期間內曾因違反的法規項目：</p>
+                                <div class="checkbox-group-list">
+                                    <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0e0;">
+                                        <div style="font-weight: 600; color: #006633; margin-bottom: 0.5rem;">1️⃣ 氣候變遷減緩</div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-climate-${typeId}-${seq}">
+                                            <label for="v-climate-${typeId}-${seq}">違反《氣候變遷因應法》</label>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0e0;">
+                                        <div style="font-weight: 600; color: #006633; margin-bottom: 0.5rem;">2️⃣ 水及海洋資源的永續性及保育</div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-water-${typeId}-${seq}">
+                                            <label for="v-water-${typeId}-${seq}">違反《水利法》</label>
+                                        </div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-ocean-${typeId}-${seq}">
+                                            <label for="v-ocean-${typeId}-${seq}">違反《海洋污染防治法》</label>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0e0;">
+                                        <div style="font-weight: 600; color: #006633; margin-bottom: 0.5rem;">3️⃣ 轉型至循環經濟</div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-circular-${typeId}-${seq}">
+                                            <label for="v-circular-${typeId}-${seq}">違反《資源回收再利用法》</label>
+                                        </div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-waste-${typeId}-${seq}">
+                                            <label for="v-waste-${typeId}-${seq}">違反《廢棄物清理法》</label>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0e0;">
+                                        <div style="font-weight: 600; color: #006633; margin-bottom: 0.5rem;">4️⃣ 污染預防與控制</div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-air-${typeId}-${seq}">
+                                            <label for="v-air-${typeId}-${seq}">違反《空氣污染防制法》</label>
+                                        </div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-water-pollution-${typeId}-${seq}">
+                                            <label for="v-water-pollution-${typeId}-${seq}">違反《水污染防治法》</label>
+                                        </div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-soil-${typeId}-${seq}">
+                                            <label for="v-soil-${typeId}-${seq}">違反《土壤及地下水污染整治法》</label>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 0;">
+                                        <div style="font-weight: 600; color: #006633; margin-bottom: 0.5rem;">5️⃣ 生物多樣性保育及復育</div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-biodiversity-${typeId}-${seq}">
+                                            <label for="v-biodiversity-${typeId}-${seq}">違反《野生動物保育法》</label>
+                                        </div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-forest-${typeId}-${seq}">
+                                            <label for="v-forest-${typeId}-${seq}">違反《森林法》</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="esg-section" style="border-left-color: #00b3b3;">
+                        <div class="esg-section-title" style="color: #00b3b3;">條件三：是否符合【未造成重大社會危害】？</div>
+                        <div class="esg-form-group checkbox-group">
+                            <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
+                                衡量期間內，企業是否未曾因違反以下社會相關法規而受到目的事業主管機關的重大裁處？
+                            </p>
+                            <div class="radio-group" style="margin-top: 1rem;">
+                                <div class="radio-item">
+                                    <input type="radio" name="condition3-${typeId}-${seq}" value="yes" id="c3-yes-${typeId}-${seq}" onchange="updateActivityRating('${typeId}', '${seq}')">
+                                    <label for="c3-yes-${typeId}-${seq}"><strong>是</strong> - 未有任何違反記錄（完全符合條件）</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="condition3-${typeId}-${seq}" value="no" id="c3-no-${typeId}-${seq}" onchange="updateActivityRating('${typeId}', '${seq}')">
+                                    <label for="c3-no-${typeId}-${seq}"><strong>否</strong> - 有違反記錄（請勾選違反的法規項目）</label>
+                                </div>
+                            </div>
+                            <div id="condition3-violations-${typeId}-${seq}" style="display:none; margin-top: 1.5rem; padding: 1.5rem; background: #fef3f0; border-left: 4px solid #d32f2f; border-radius: 6px;">
+                                <p style="margin-top: 0; margin-bottom: 1rem; color: #666; font-weight: 600;">⚠️ 請勾選衡量期間內曾因違反的法規項目：</p>
+                                <div class="checkbox-group-list">
+                                    <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0e0;">
+                                        <div style="font-weight: 600; color: #c41c3b; margin-bottom: 0.5rem;">1️⃣ 勞動基準</div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-labor-${typeId}-${seq}">
+                                            <label for="v-labor-${typeId}-${seq}">違反《勞動基準法》（含工時、薪資、休假等）</label>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0e0;">
+                                        <div style="font-weight: 600; color: #c41c3b; margin-bottom: 0.5rem;">2️⃣ 職業安全衛生</div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-occupational-${typeId}-${seq}">
+                                            <label for="v-occupational-${typeId}-${seq}">違反《職業安全衛生法》（含職災、工安等）</label>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0e0;">
+                                        <div style="font-weight: 600; color: #c41c3b; margin-bottom: 0.5rem;">3️⃣ 性別平等及人權</div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-gender-${typeId}-${seq}">
+                                            <label for="v-gender-${typeId}-${seq}">違反《性別平等工作法》（含性騷擾、性別歧視等）</label>
+                                        </div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-child-labor-${typeId}-${seq}">
+                                            <label for="v-child-labor-${typeId}-${seq}">違反《勞動基準法》第五章（童工、少年勞工保護）</label>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 0;">
+                                        <div style="font-weight: 600; color: #c41c3b; margin-bottom: 0.5rem;">4️⃣ 其他社會保障</div>
+                                        <div class="check-item">
+                                            <input type="checkbox" id="v-social-${typeId}-${seq}">
+                                            <label for="v-social-${typeId}-${seq}">違反其他相關勞工保護或人權法規</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="esg-section" style="border-left-color: #d4a574;">
+                        <div class="esg-section-title" style="color: #d4a574;">轉型計畫</div>
+                        <div class="esg-form-group checkbox-group">
+                            <label style="margin-bottom: 1rem;">若上述三項條件未能全部符合，貴公司是否有轉型計畫？</label>
+                            <div class="radio-group" style="margin-top: 1rem;">
+                                <div class="radio-item">
+                                    <input type="radio" name="transition-plan-${typeId}-${seq}" value="yes" id="trans-yes-${typeId}-${seq}" onchange="updateActivityRating('${typeId}', '${seq}')">
+                                    <label for="trans-yes-${typeId}-${seq}">是 - 已訂有具體轉型計畫</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="transition-plan-${typeId}-${seq}" value="no" id="trans-no-${typeId}-${seq}" onchange="updateActivityRating('${typeId}', '${seq}')">
+                                    <label for="trans-no-${typeId}-${seq}">否 - 尚無轉型計畫</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" name="transition-plan-${typeId}-${seq}" value="not-applicable" id="trans-na-${typeId}-${seq}" onchange="updateActivityRating('${typeId}', '${seq}')">
+                                    <label for="trans-na-${typeId}-${seq}">不適用 - 已全部符合條件</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 移除活動
+        function removeActivity(type, seq) {
+            const elementId = type === 'operating' ? `operating-activity-${seq}` : `project-activity-${seq}`;
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => element.remove(), 300);
+            }
+        }
+
+        // 更新經濟活動類別
+        function updateActivityCategory(type, seq) {
+            const codeSelect = document.getElementById(`activity-code-${type}-${seq}`);
+            const code = codeSelect.value;
+            const categoryElement = document.getElementById(`category-${type}-${seq}`);
+            const categoryTypeElement = document.getElementById(`category-type-${type}-${seq}`);
+            
+            if (ESG_ACTIVITIES[code]) {
+                const activity = ESG_ACTIVITIES[code];
+                categoryElement.textContent = activity.name;
+                categoryTypeElement.textContent = `(${activity.category})`;
+                updateCondition1Options(type, seq, code);
+            } else {
+                categoryElement.textContent = '未選擇代號';
+                categoryTypeElement.textContent = '';
+            }
+        }
+
+        // 獲取條件一選項（根據經濟活動代號）
+        function getConditionOneOptions(code) {
+            if (CONDITION_ONE_OPTIONS && CONDITION_ONE_OPTIONS[code]) {
+                const conditionData = CONDITION_ONE_OPTIONS[code];
+                const options = [];
+                
+                if (conditionData.options && Array.isArray(conditionData.options)) {
+                    conditionData.options.forEach(categoryGroup => {
+                        if (categoryGroup.items && Array.isArray(categoryGroup.items)) {
+                            const items = categoryGroup.items;
+                            
+                            // 添加分類標題
+                            options.push({
+                                label: `【${categoryGroup.category}】`,
+                                isCategory: true
+                            });
+                            
+                            // 分析整體結構來判定各項是否為說明文字
+                            for (let i = 0; i < items.length; i++) {
+                                const item = items[i];
+                                const nextItem = items[i + 1];
+                                
+                                // 判斷當前項是否為分組說明
+                                // 特徵：
+                                // 1. 【分類】格式 -> 分類標題
+                                // 2. 結尾冒號 + 下一行有更多縮進 -> 分組標題
+                                // 3. 結尾冒號 + 不以數字或大寫字母開頭 + 是指示性詞彙 + 下一行不存在 -> 獨立說明
+                                
+                                let isGroupHeader = false;
+                                
+                                if (item.match(/^【.*】$/)) {
+                                    // 【分類】格式
+                                    isGroupHeader = true;
+                                } else if (item.match(/：$/)) {
+                                    // 結尾冒號的項目
+                                    const currentIndent = item.match(/^(\s*)/)[1].length;
+                                    const nextIndent = nextItem ? nextItem.match(/^(\s*)/)[1].length : 0;
+                                    
+                                    if (nextItem && nextIndent > currentIndent) {
+                                        // 下一行有更多縮進，這是分組標題
+                                        isGroupHeader = true;
+                                    } else if (item.match(/^(以符合|若無法|符合以下|同時符合|至少符合|除符合|運輸機具|設備符合|產製符合|符合|共通適用|對「|以下|列述|包括|指下列)/)) {
+                                        // 純指示句（沒有具體內容）
+                                        isGroupHeader = true;
+                                    }
+                                } else if (item.match(/^[^(]*[（(]/)) {
+                                    // 類似「1. 條件描述（說明文字）」的格式，如果主要是說明文字
+                                    // 檢查是否為純粹的說明（不含具體標準）
+                                    if (item.match(/[：:]\s*$/) || item.match(/^[^0-9]*(\(|（)/)) {
+                                        isGroupHeader = true;
+                                    }
+                                }
+                                
+                                if (isGroupHeader) {
+                                    // 分組說明 - 不可勾選
+                                    options.push({
+                                        label: item,
+                                        isExplanation: true
+                                    });
+                                } else {
+                                    // 所有其他都是可選項目
+                                    options.push({
+                                        label: `  ✓ ${item}`
+                                    });
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                return {
+                    title: conditionData.title || code,
+                    options: options.length > 0 ? options : [{label: '暫無可用選項'}]
+                };
+            }
+            
+            return {
+                title: `${code} - 實質貢獻檢查`,
+                options: [{label: '暫無該經濟活動的條件一標準'}]
+            };
+        }
+
+        // 更新條件一選項
+        function updateCondition1Options(type, seq, code) {
+            const container = document.getElementById(`condition1-options-${type}-${seq}`);
+            const conditionData = getConditionOneOptions(code);
+            
+            let html = `<label style="display: block; margin-bottom: 1rem; font-weight: 600; color: #333;">
+                        ${conditionData.title} - 實質貢獻檢查項目：
+                        </label>`;
+            
+            conditionData.options.forEach((option, index) => {
+                const id = `c1-${code}-${index}-${type}-${seq}`;
+                
+                // 如果是分類標題，用不同樣式
+                if (option.isCategory) {
+                    html += `
+                        <div style="margin-top: 1rem; margin-bottom: 0.5rem; padding: 0.5rem; background: #f0f7f3; border-left: 3px solid #006633; border-radius: 4px;">
+                            <strong style="color: #006633;">${option.label}</strong>
+                        </div>
+                    `;
+                } 
+                // 如果是說明文字，顯示為灰色文本（不可勾選）
+                else if (option.isExplanation) {
+                    html += `
+                        <div style="margin: 0.75rem 0; padding: 0.75rem 1rem; background: #fafafa; color: #666; font-size: 0.9rem; border-left: 3px solid #ccc; border-radius: 4px; line-height: 1.5;">
+                            📝 ${option.label}
+                        </div>
+                    `;
+                }
+                // 否則是實際標準項目，顯示為可勾選的複選框
+                else {
+                    html += `
+                        <div class="checkbox-item" style="margin-left: 1rem;">
+                            <input type="checkbox" id="${id}" name="condition1-${type}-${seq}" data-type="${type}" data-seq="${seq}" onchange="updateActivityRating('${type}', '${seq}')">
+                            <label for="${id}">${option.label}</label>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        // 計算活動評等
+        function updateActivityRating(type, seq) {
+            const c2Radio = document.querySelector(`input[name="condition2-${type}-${seq}"]:checked`);
+            const c2Value = c2Radio ? c2Radio.value : null;
+
+            // 切換條件二違反項目顯示
+            if (c2Radio) {
+                const violationsDiv = document.getElementById(`condition2-violations-${type}-${seq}`);
+                violationsDiv.style.display = c2Value === 'no' ? 'block' : 'none';
+            }
+
+            const c3Radio = document.querySelector(`input[name="condition3-${type}-${seq}"]:checked`);
+            const c3Value = c3Radio ? c3Radio.value : null;
+
+            // 切換條件三違反項目顯示
+            if (c3Radio) {
+                const violationsDiv = document.getElementById(`condition3-violations-${type}-${seq}`);
+                violationsDiv.style.display = c3Value === 'no' ? 'block' : 'none';
+            }
+
+            const condition1Checked = document.querySelector(`#condition1-options-${type}-${seq} input[type="checkbox"]:checked`);
+            const condition1 = !!condition1Checked;
+            const condition2 = c2Value === 'yes';
+            const condition3 = c3Value === 'yes';
+            const transitionRadio = document.querySelector(`input[name="transition-plan-${type}-${seq}"]:checked`);
+            const transitionValue = transitionRadio ? transitionRadio.value : null;
+
+            let rating = '';
+            let ratingClass = '';
+
+            // 評等邏輯
+            if (condition1 && condition2 && condition3) {
+                rating = 'Y (符合)';
+                ratingClass = 'rating-y';
+            } else if ((!condition1 || !condition2 || !condition3) && transitionValue === 'yes') {
+                rating = 'T (轉型中)';
+                ratingClass = 'rating-t';
+            } else if ((!condition1 || !condition2 || !condition3) && transitionValue === 'no') {
+                rating = 'N (不符合)';
+                ratingClass = 'rating-n';
+            } else if (transitionValue === 'not-applicable') {
+                rating = 'X (不適用)';
+                ratingClass = 'rating-x';
+            }
+
+            // 更新評語顯示
+            if (rating) {
+                const ratingElement = document.getElementById(`rating-${type}-${seq}`);
+                ratingElement.className = `activity-rating ${ratingClass}`;
+                ratingElement.textContent = rating;
+                ratingElement.style.display = 'inline-block';
+            }
+        }
+
+        // 提交評估
+        function submitAssessment() {
+            console.log('🔍 開始收集表單數據...');
+            
+            // 顯示載入介面
+            const loadingDialog = document.getElementById('assessment-loading');
+            loadingDialog.style.display = 'flex';
+            
+            // 獲取提交按鈕（用於更新狀態）
+            const submitBtn = document.querySelector('.btn-submit');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = '評估中...';
+            }
+            
+            // 延遲執行，讓載入介面先顯示
+            setTimeout(() => {
+                try {
+                    // 收集所有數據
+                    const formData = {
+                        table1Data: {
+                            companyName: document.getElementById('company-name').value,
+                            companyTaxId: document.getElementById('company-tax-id').value,
+                            pastYear: document.getElementById('past-year').value,
+                            assessmentDate: document.getElementById('assessment-date').value,
+                            revenue: document.getElementById('revenue').value,
+                            totalAssets: document.getElementById('total-assets').value,
+                            dataAttribute: document.getElementById('data-attribute').value,
+                            thirdPartyVerification: document.getElementById('scope1-verification').checked || 
+                                                   document.getElementById('scope2-verification').checked ||
+                                                   document.getElementById('scope3-verification').checked,
+                            sustainabilityReport: document.querySelector('input[name="g7"]:checked')?.value === 'yes'
+                        },
+                        esgAssessment: {
+                            e1: document.querySelector('input[name="e1"]:checked')?.value,
+                            e2: document.querySelector('input[name="e2"]:checked')?.value,
+                            e3: document.querySelector('input[name="e3"]:checked')?.value,
+                            e4: document.querySelector('input[name="e4"]:checked')?.value,
+                            e5: document.querySelector('input[name="e5"]:checked')?.value,
+                            e6: document.querySelector('input[name="e6"]:checked')?.value,
+                            s1: document.querySelector('input[name="s1"]:checked')?.value,
+                            s2: document.querySelector('input[name="s2"]:checked')?.value,
+                            s3: document.querySelector('input[name="s3"]:checked')?.value,
+                            s4: document.querySelector('input[name="s4"]:checked')?.value,
+                            s5: document.querySelector('input[name="s5"]:checked')?.value,
+                            g1: document.querySelector('input[name="g1"]:checked')?.value,
+                            g2: document.querySelector('input[name="g2"]:checked')?.value,
+                            g3: document.querySelector('input[name="g3"]:checked')?.value,
+                            g4: document.querySelector('input[name="g4"]:checked')?.value,
+                            g5: document.querySelector('input[name="g5"]:checked')?.value,
+                            g6: document.querySelector('input[name="g6"]:checked')?.value,
+                            g7: document.querySelector('input[name="g7"]:checked')?.value
+                        },
+                        activities: []
+                    };
+
+                    console.log('📋 表格一數據已收集');
+
+                    // 收集所有活動卡片（無論是營運還是專案）
+                    const allActivityCards = document.querySelectorAll('[data-activity-type]');
+                    console.log(`🎯 找到 ${allActivityCards.length} 個活動卡片`);
+
+                    allActivityCards.forEach((card, index) => {
+                        const activityType = card.getAttribute('data-activity-type');
+                        const cardId = card.id; // e.g., "operating-activity-01" or "project-activity-01"
+                        
+                        // 從 cardId 提取序號
+                        const seqMatch = cardId.match(/activity-(\d+)/);
+                        const seq = seqMatch ? seqMatch[1] : String(index + 1).padStart(2, '0');
+                        const typeLabel = activityType === 'operating' ? 'operating' : 'project';
+                        
+                        console.log(`📌 處理 ${typeLabel} 活動 ${seq}`);
+                        
+                        // 收集經濟活動代號
+                        const codeSelect = card.querySelector(`select[name="activity-code"]`);
+                        const activityCode = codeSelect?.value;
+                        
+                        if (!activityCode) {
+                            console.log(`⚠️ 活動 ${seq} 未選擇代號，跳過`);
+                            return;
+                        }
+                        
+                        // 從 select 中獲取活動名稱
+                        const activityName = codeSelect?.options[codeSelect.selectedIndex]?.text || '';
+                        
+                        // 獲取類別（從 ESG_ACTIVITIES 數據中）
+                        const activity = ESG_ACTIVITIES[activityCode];
+                        const category = activity?.category || '一般經濟活動';
+                        
+                        // 收集營收比重（僅營運經濟活動）
+                        let revenueShare = null;
+                        if (activityType === 'operating') {
+                            const revenueShareInput = card.querySelector(`input[name="revenue-share-${typeLabel}-${seq}"]`);
+                            revenueShare = revenueShareInput?.value ? parseFloat(revenueShareInput.value) : null;
+                        }
+                        
+                        // 收集條件一：檢查所有 condition1 復選框是否被勾選，並收集具體項目
+                        const condition1Inputs = card.querySelectorAll(`input[name^="condition1-"]:checked`);
+                        const condition1Checked = condition1Inputs.length > 0;
+                        const condition1Items = [];
+                        condition1Inputs.forEach(input => {
+                            // 從 label 文本中提取環境目的類型
+                            const label = card.querySelector(`label[for="${input.id}"]`);
+                            if (label) {
+                                const labelText = label.textContent || '';
+                                // 檢查 label 文本是否包含環境目的類型關鍵詞
+                                if (labelText.includes('氣候變遷減緩') || labelText.includes('減緩')) {
+                                    if (!condition1Items.includes('氣候變遷減緩')) {
+                                        condition1Items.push('氣候變遷減緩');
+                                    }
+                                }
+                                if (labelText.includes('氣候變遷調適') || labelText.includes('調適')) {
+                                    if (!condition1Items.includes('氣候變遷調適')) {
+                                        condition1Items.push('氣候變遷調適');
+                                    }
+                                }
+                                if (labelText.includes('水及海洋資源') || labelText.includes('水及海洋')) {
+                                    if (!condition1Items.includes('水及海洋資源的永續性及保育')) {
+                                        condition1Items.push('水及海洋資源的永續性及保育');
+                                    }
+                                }
+                                if (labelText.includes('污染預防') || labelText.includes('污染')) {
+                                    if (!condition1Items.includes('污染預防與控制')) {
+                                        condition1Items.push('污染預防與控制');
+                                    }
+                                }
+                                if (labelText.includes('生物多樣性') || labelText.includes('生物')) {
+                                    if (!condition1Items.includes('生物多樣性保育及復育')) {
+                                        condition1Items.push('生物多樣性保育及復育');
+                                    }
+                                }
+                                if (labelText.includes('循環經濟') || labelText.includes('循環')) {
+                                    if (!condition1Items.includes('轉型至循環經濟')) {
+                                        condition1Items.push('轉型至循環經濟');
+                                    }
+                                }
+                            }
+                        });
+                        
+                        // 收集條件二 - 構建正確的 name 屬性
+                        const condition2Name = `condition2-${typeLabel}-${seq}`;
+                        const condition2Input = card.querySelector(`input[name="${condition2Name}"]:checked`);
+                        const condition2 = condition2Input?.value === 'yes';
+                        
+                        // 收集條件二的具體違反項目（如果條件二為否）
+                        const condition2Violations = [];
+                        if (!condition2) {
+                            const violationInputs = card.querySelectorAll(`#condition2-violations-${typeLabel}-${seq} input[type="checkbox"]:checked`);
+                            violationInputs.forEach(input => {
+                                const id = input.id;
+                                if (id.includes('climate')) condition2Violations.push('氣候變遷減緩');
+                                else if (id.includes('water')) condition2Violations.push('水及海洋資源的永續性及保育');
+                                else if (id.includes('ocean')) condition2Violations.push('水及海洋資源的永續性及保育');
+                                else if (id.includes('pollution')) condition2Violations.push('污染預防與控制');
+                                else if (id.includes('biodiversity')) condition2Violations.push('生物多樣性保育及復育');
+                                else if (id.includes('circular')) condition2Violations.push('轉型至循環經濟');
+                            });
+                        }
+                        
+                        // 收集條件三 - 構建正確的 name 屬性
+                        const condition3Name = `condition3-${typeLabel}-${seq}`;
+                        const condition3Input = card.querySelector(`input[name="${condition3Name}"]:checked`);
+                        const condition3 = condition3Input?.value === 'yes';
+                        
+                        // 收集轉型計畫 - 構建正確的 name 屬性
+                        const transitionPlanName = `transition-plan-${typeLabel}-${seq}`;
+                        const transitionPlanInput = card.querySelector(`input[name="${transitionPlanName}"]:checked`);
+                        let transitionPlan = transitionPlanInput?.value;
+                        
+                        // 轉換轉型計畫值
+                        if (transitionPlan === 'yes') {
+                            transitionPlan = '是';
+                        } else if (transitionPlan === 'no') {
+                            transitionPlan = '否';
+                        } else if (transitionPlan === 'not-applicable') {
+                            transitionPlan = '不適用';
+                        }
+                        
+                        console.log(`🔍 條件二名稱: ${condition2Name}, 值: ${condition2Input?.value || '未選擇'}`);
+                        console.log(`🔍 條件三名稱: ${condition3Name}, 值: ${condition3Input?.value || '未選擇'}`);
+                        console.log(`🔍 轉型計畫名稱: ${transitionPlanName}, 值: ${transitionPlanInput?.value || '未選擇'} → ${transitionPlan}`);
+                        
+                        // 計算評級
+                        let rating = 'N';
+                        if (category === '不適用') {
+                            rating = 'X';
+                        } else if (condition1Checked && condition2 && condition3) {
+                            rating = 'Y';
+                        } else if ((!condition1Checked || !condition2 || !condition3) && transitionPlan === '是') {
+                            rating = 'T';
+                        }
+                        
+                        console.log(`✅ 活動 ${seq} (${activityCode}): C1=${condition1Checked}, C2=${condition2}, C3=${condition3}, Rating=${rating}`);
+                        
+                        formData.activities.push({
+                            sequenceNum: seq,
+                            type: activityType,
+                            activityCode: activityCode,
+                            activityName: activityName,
+                            category: category,
+                            rating: rating,
+                            revenueShare: revenueShare, // 營收比重（僅營運經濟活動）
+                            condition1: condition1Checked,
+                            condition1Items: condition1Items, // 條件一的具體環境目的類型
+                            condition2: condition2,
+                            condition2Violations: condition2Violations, // 條件二的具體違反項目
+                            condition3: condition3,
+                            transitionPlan: transitionPlan
+                        });
+                    });
+
+                    console.log('✅ 所有活動已收集，共', formData.activities.length, '項');
+                    console.log('📊 完整表單數據:', formData);
+
+                    // 驗證必填項
+                    if (!formData.table1Data.companyName) {
+                        alert('請填寫企業名稱');
+                        return;
+                    }
+
+                    // 提交到 API
+                    fetch('/api/submit-esg-assessment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.status === 'success') {
+                            // 保存結果到 localStorage
+                            localStorage.setItem('esgResult', JSON.stringify(result));
+                            
+                            // 保存完整數據到localStorage（用於PDF生成）
+                            const fullAssessmentData = {
+                                companyName: document.getElementById('company-name').value,
+                                companyTaxId: document.getElementById('company-tax-id').value,
+                                year: document.getElementById('past-year').value,
+                                date: document.getElementById('assessment-date').value,
+                                revenue: document.getElementById('revenue').value,
+                                totalAssets: document.getElementById('total-assets').value,
+                                scope1Emissions: parseFloat(document.getElementById('scope1-emissions')?.value || 0),
+                                scope2Emissions: parseFloat(document.getElementById('scope2-emissions')?.value || 0),
+                                scope3Emissions: parseFloat(document.getElementById('scope3-emissions')?.value || 0),
+                                electricityUsage: parseFloat(document.getElementById('electricity-usage')?.value || 0),
+                                waterUsage: parseFloat(document.getElementById('water-usage')?.value || 0),
+                                esgAssessment: formData.esgAssessment,
+                                activities: formData.activities,
+                                scores: result.scores,
+                                rating: result.rating,
+                                ratingDescription: result.ratingDescription,
+                                loanDiscount: result.loanDiscount
+                            };
+                            
+                            localStorage.setItem('esgFullData', JSON.stringify(fullAssessmentData));
+                            
+                            // 導向結果頁面
+                            showResultModal(result);
+                        } else {
+                            alert('❌ 評估失敗：' + result.message);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = '📊 提交評估並查看結果';
+                        }
+                        
+                        // ✅ 隱藏載入介面（在結果顯示後）
+                        loadingDialog.style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('提交錯誤：', error);
+                        alert('❌ 提交失敗，請檢查網絡連接');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = '📊 提交評估並查看結果';
+                        
+                        // ✅ 隱藏載入介面（發生錯誤時）
+                        loadingDialog.style.display = 'none';
+                    });
+                } catch (error) {
+                    console.error('評估過程中發生錯誤：', error);
+                    alert('❌ 評估失敗，請稍後再試');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '📊 提交評估並查看結果';
+                    // ✅ 隱藏載入介面（同步錯誤時）
+                    loadingDialog.style.display = 'none';
+                }
+            }, 1000); // 延遲 1 秒鐘
+        }
+
+        // 顯示結果彈窗
+        function showResultModal(result) {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+            `;
+            
+            const ratingColor = {
+                'A': '#006633',
+                'B': '#00b3b3',
+                'C': '#ff9800'
+            };
+            
+            const ratingEmoji = {
+                'A': '🏆',
+                'B': '👍',
+                'C': '📈'
+            };
+            
+            const content = `
+                <div style="background: white; border-radius: 12px; padding: 2rem; max-width: 700px; max-height: 80vh; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+                    <h2 style="text-align: center; color: #333; margin-bottom: 1rem;">✅ 評估完成</h2>
+                    
+                    <div style="text-align: center; margin: 2rem 0; padding: 1.5rem; background: linear-gradient(135deg, ${ratingColor[result.rating]}22 0%, ${ratingColor[result.rating]}11 100%); border-radius: 12px; border: 2px solid ${ratingColor[result.rating]};">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">${ratingEmoji[result.rating]}</div>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: ${ratingColor[result.rating]}; margin-bottom: 0.5rem;">${result.rating} 級</div>
+                        <div style="font-size: 1.1rem; color: #333; font-weight: 600;">${result.ratingDescription}</div>
+                    </div>
+                    
+                    <div style="margin: 1.5rem 0; padding: 1rem; background: #f5f5f5; border-radius: 8px;">
+                        <h3 style="color: #333; margin-top: 0;">📊 評分統計</h3>
+                        <p style="margin: 0.5rem 0;"><strong>ESG 表現：</strong> ${result.scores.esg}%</p>
+                        <p style="margin: 0.5rem 0;"><strong>經濟活動符合度：</strong> ${result.scores.compliant}%</p>
+                        <p style="margin: 0.5rem 0;"><strong>符合 (Y)：</strong> ${result.scores.details.Y} 項 | <strong>轉型中 (T)：</strong> ${result.scores.details.T} 項 | <strong>不符合 (N)：</strong> ${result.scores.details.N} 項</p>
+                        ${result.scores.compliant === 0 ? `
+                        <div style="margin-top: 1rem; padding: 1rem; background: #fff3e0; border-left: 4px solid #ff9800; border-radius: 6px;">
+                            <p style="color: #e65100; margin: 0; font-size: 0.95rem;">
+                                💡 <strong>提示：</strong> 經濟活動符合度為 0% 表示您未填寫表格二（經濟活動評估）。若要評估特定經濟活動，請返回表格二填寫相關信息。
+                            </p>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div style="margin: 1.5rem 0; padding: 1.5rem; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border: 2px solid #4caf50; border-radius: 8px;">
+                        <h3 style="color: #2e7d32; margin-top: 0; font-size: 1.2rem;">💰 貸款利率優惠</h3>
+                        <div style="font-size: 2.5rem; font-weight: 700; color: #4caf50; margin: 1rem 0;">減少 ${result.loanDiscount.discount}%</div>
+                        <p style="color: #333; font-weight: 600; margin: 0.5rem 0; font-size: 1.1rem;">${result.loanDiscount.description}</p>
+                        
+                        <div style="margin: 1rem 0; padding: 1rem; background: #e8f5e9; border-radius: 6px; border: 1px solid #81c784;">
+                            <p style="color: #2e7d32; margin: 0; font-weight: 600;">📊 利率優惠範圍</p>
+                            <p style="color: #1b5e20; font-size: 1.1rem; margin: 0.5rem 0 0 0; font-weight: 700;">${result.loanDiscount.discountRange}</p>
+                        </div>
+                        
+                        <div style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 6px; border-left: 4px solid #4caf50;">
+                            <p style="color: #333; font-weight: 600; margin-top: 0; margin-bottom: 0.75rem;">✨ 專屬權益：</p>
+                            <ul style="margin: 0; padding-left: 1.5rem; color: #555;">
+                                ${result.loanDiscount.benefits.map(benefit => `<li style="margin: 0.5rem 0; line-height: 1.5;">${benefit}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div style="margin-top: 1rem; padding: 1rem; background: #fffde7; border-radius: 6px; border-left: 4px solid #fbc02d;">
+                            <p style="color: #666; font-size: 0.95rem; margin: 0;">
+                                📌 <strong>優惠條件：</strong> ${result.loanDiscount.condition}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 1.5rem 0; padding: 1.5rem; background: #fff8f0; border-left: 4px solid #ff9800; border-radius: 8px;">
+                        <h3 style="color: #333; margin-top: 0; font-size: 1.1rem;">💡 建議與回饋</h3>
+                        <div style="color: #555; line-height: 1.9; white-space: pre-line; word-break: break-word; font-size: 0.95rem; letter-spacing: 0.3px;">
+                            ${result.feedback}
+                        </div>
+                    </div>
+                    
+                    ${result.supplementaryResources && result.supplementaryResources.length > 0 ? `
+                    <div style="margin: 2rem 0; padding: 1.5rem; background: linear-gradient(135deg, #e8f7ff 0%, #f0e5ff 100%); border: 2px solid #6366f1; border-radius: 12px; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);">
+                        <h3 style="color: #4f46e5; margin-top: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.4rem;">📚</span>
+                            補充資源
+                        </h3>
+                        <p style="color: #666; font-size: 0.9rem; margin: 0.75rem 0 1.5rem 0; line-height: 1.6;">
+                            以下資源可協助貴公司進一步提升永續發展水準，建議根據貴公司需求查閱相關內容：
+                        </p>
+                        
+                        ${result.supplementaryResources.map((resource, idx) => `
+                        <div style="margin: 1.25rem 0; padding: 1.25rem; background: white; border-radius: 8px; border-left: 4px solid #6366f1; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                            <div style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                                <span style="background: #eef2ff; color: #6366f1; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;">
+                                    ${idx + 1}
+                                </span>
+                                <h4 style="color: #333; margin: 0; font-weight: 600; font-size: 1rem; line-height: 1.5;">
+                                    ${resource.title}
+                                </h4>
+                            </div>
+                            <p style="color: #555; font-size: 0.9rem; margin: 0.5rem 0 0.75rem 0; margin-left: 3.5rem; line-height: 1.6;">
+                                ${resource.description}
+                            </p>
+                            <div style="margin-left: 3.5rem; display: flex; gap: 0.75rem; align-items: center;">
+                                <a href="${resource.url}" target="_blank" style="display: inline-block; padding: 0.5rem 1rem; background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 0.85rem; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);">
+                                    🔗 查閱資源
+                                </a>
+                                <span style="color: #999; font-size: 0.75rem; word-break: break-all; flex: 1; line-height: 1.4;">
+                                    ${resource.url}
+                                </span>
+                            </div>
+                        </div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+                    
+                    <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+                        <button onclick="this.closest('div').parentElement.parentElement.remove()" style="padding: 0.75rem 1.5rem; background: #f0f0f0; color: #333; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">關閉</button>
+                        <button onclick="window.location.href='/esg-result'" style="padding: 0.75rem 1.5rem; background: #006633; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">📄 查看結果PDF</button>
+                        <button onclick="location.reload()" style="padding: 0.75rem 1.5rem; background: #00b3b3; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">🔄 重新評估</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.innerHTML = content;
+            document.body.appendChild(modal);
+        }
+
+        // 切換到表格二
+        function goToTable2() {
+            document.getElementById('table1').classList.remove('active');
+            document.getElementById('table2').classList.add('active');
+            // 更新 tab 按鈕的活動狀態
+            document.querySelectorAll('.esg-tab-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.esg-tab-btn')[1].classList.add('active');
+            document.getElementById('has-applicable-activities').focus(); // 聚焦到表格二的選擇欄位
+        }
+
+        // 切換到表格一
+        function goToTable1() {
+            document.getElementById('table2').classList.remove('active');
+            document.getElementById('table1').classList.add('active');
+            // 更新 tab 按鈕的活動狀態
+            document.querySelectorAll('.esg-tab-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.esg-tab-btn')[0].classList.add('active');
+            // 如果表格二有活動，則回到表格一時，需要重新計算評等
+            // 這裡簡化處理，直接移除活動卡片，避免重複計算
+            document.getElementById('operating-activities-container').innerHTML = '';
+            document.getElementById('project-activities-container').innerHTML = '';
+            operatingActivityCount = 0;
+            projectActivityCount = 0;
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ ESG評估表單已加載');
+            
+            // 初始化進度計算
+            initProgressTracking();
+        });
+
+        // 進度追蹤函數
+        function initProgressTracking() {
+            const requiredFields = [
+                'company-name', 'company-tax-id', 'past-year', 'assessment-date',
+                'revenue', 'total-assets', 'audit-type',
+                'scope1-emissions', 'scope2-emissions', 'scope3-emissions',
+                'electricity-usage', 'water-usage', 'renewable-energy'
+            ];
+            
+            document.getElementById('total-fields').textContent = requiredFields.length;
+            
+            // 監聽所有必填字段的變化
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('change', updateProgress);
+                    field.addEventListener('input', updateProgress);
+                }
+            });
+            
+            // 初始化一次進度
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const requiredFields = [
+                'company-name', 'company-tax-id', 'past-year', 'assessment-date',
+                'revenue', 'total-assets', 'audit-type',
+                'scope1-emissions', 'scope2-emissions', 'scope3-emissions',
+                'electricity-usage', 'water-usage', 'renewable-energy'
+            ];
+            
+            let completedCount = 0;
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field && field.value && field.value.trim() !== '') {
+                    completedCount++;
+                }
+            });
+            
+            const percentage = Math.round((completedCount / requiredFields.length) * 100);
+            
+            document.getElementById('progress-percentage').textContent = percentage;
+            document.getElementById('completed-fields').textContent = completedCount;
+            document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+    </script>
+    <script src="/js/chat-assistant.js"></script>
+</body>
+</html>
